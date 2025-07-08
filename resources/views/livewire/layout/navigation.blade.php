@@ -20,24 +20,30 @@ new class extends Component
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+            <div class="flex items-center"> <!-- Added items-center for vertical alignment -->
+                <!-- Custom Logo Section - Integrated your custom logo and text -->
+                <div class="shrink-0 flex items-center"> <!-- Ensure logo and text are aligned -->
                     <a href="{{ route('dashboard') }}" wire:navigate>
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <img class="h-8 w-auto" src="{{ asset('images/logo.png') }}" alt="Badan Informasi Geospasial Logo">
                     </a>
                 </div>
+                <!-- Text "Badan Informasi Geospasial" moved here, next to the logo -->
+                <span class="ml-2 text-gray-800 font-semibold text-sm">Badan Informasi Geospasial</span>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                <!-- Custom Navigation Links - Adjusted spacing -->
+                <!-- Removed sm:-my-px and sm:ms-10, added ml-6 for spacing from logo/text -->
+                <div class="hidden space-x-4 sm:flex ml-20">
+                    <a href="#" class="border-b-2 border-transparent text-gray-900 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Beranda</a>
+                    <a href="#" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Layanan Kami</a>
+                    <a href="#" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Peta Interaktif</a>
+                    <a href="#" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">SKM</a>
+                    <a href="#" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">FAQ</a>
+                    <a href="#" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Hubungi Kami</a>
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <!-- Settings Dropdown - Adjusted spacing to bring it closer to nav links -->
+            <div class="hidden sm:flex sm:items-center -me-2"> <!-- Changed sm:ms-6 to -me-2 or similar for closer spacing -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -66,7 +72,7 @@ new class extends Component
                 </x-dropdown>
             </div>
 
-            <!-- Hamburger -->
+            <!-- Hamburger - This part remains unchanged for mobile menu toggle -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -78,15 +84,21 @@ new class extends Component
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
+    <!-- Responsive Navigation Menu - Updated with your custom links -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Dashboard') }}
+                {{ __('Beranda') }}
             </x-responsive-nav-link>
+            <!-- Your custom responsive navigation links -->
+            <x-responsive-nav-link href="#">Layanan Kami</x-responsive-nav-link>
+            <x-responsive-nav-link href="#">Peta Interaktif</x-responsive-nav-link>
+            <x-responsive-nav-link href="#">SKM</x-responsive-nav-link>
+            <x-responsive-nav-link href="#">FAQ</x-responsive-nav-link>
+            <x-responsive-nav-link href="#">Hubungi Kami</x-responsive-nav-link>
         </div>
 
-        <!-- Responsive Settings Options -->
+        <!-- Responsive Settings Options - Remains unchanged -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
