@@ -43,10 +43,10 @@ new class extends Component {
                 </x-nav-link>
                 <x-nav-link :href="" wire:navigate>
                     {{ __('SKM') }}
-                </x-nav-link>
-                <x-nav-link :href="" wire:navigate>
+                </x-nav-link>--}}
+                <x-nav-link :href="route('hubungi')" :active="request()->routeIs('hubungi')" wire:navigate>
                     {{ __('Hubungi Kami') }}
-                </x-nav-link> --}}
+                </x-nav-link>
             </div>
 
             <!-- Settings Dropdown - Adjusted spacing to bring it closer to nav links -->
