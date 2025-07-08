@@ -3,8 +3,7 @@
 use App\Livewire\Actions\Logout;
 use Livewire\Volt\Component;
 
-new class extends Component
-{
+new class extends Component {
     /**
      * Log the current user out of the application.
      */
@@ -20,38 +19,52 @@ new class extends Component
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex items-center"> <!-- Added items-center for vertical alignment -->
-                <!-- Custom Logo Section - Integrated your custom logo and text -->
+            <div class="flex items-center">
                 <div class="shrink-0 flex items-center"> <!-- Ensure logo and text are aligned -->
                     <a href="{{ route('home') }}" wire:navigate>
-                        <img class="h-8 w-auto" src="{{ asset('images/logo.png') }}" alt="Badan Informasi Geospasial Logo">
+                        <img class="h-8 w-auto" src="{{ asset('images/logo.png') }}"
+                            alt="Badan Informasi Geospasial Logo">
                     </a>
                 </div>
                 <!-- Text "Badan Informasi Geospasial" moved here, next to the logo -->
                 <span class="ml-2 text-gray-800 font-semibold text-sm">Badan Informasi Geospasial</span>
+            </div>
 
-                <!-- Custom Navigation Links - Adjusted spacing -->
-                <!-- Removed sm:-my-px and sm:ms-10, added ml-6 for spacing from logo/text -->
-                <div class="hidden space-x-4 sm:flex ml-20">
-                    <a href="#" class="border-b-2 border-transparent text-gray-900 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Beranda</a>
-                    <a href="#" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Layanan Kami</a>
-                    <a href="#" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Peta Interaktif</a>
-                    <a href="#" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">SKM</a>
-                    <a href="#" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">FAQ</a>
-                    <a href="#" class="border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">Hubungi Kami</a>
-                </div>
+            <!-- Custom Navigation Links - Centered -->
+            <div class="hidden space-x-4 sm:flex items-center">
+                <x-nav-link :href="route('home')" :active="request()->routeIs('home')" wire:navigate>
+                    {{ __('Home') }}
+                </x-nav-link>
+                <x-nav-link :href="route('layanan.index')" :active="request()->routeIs('layanan.*')" wire:navigate>
+                    {{ __('Layanan Kami') }}
+                </x-nav-link>
+                {{-- <x-nav-link :href="" wire:navigate>
+                    {{ __('Peta Interaktif') }}
+                </x-nav-link>
+                <x-nav-link :href="" wire:navigate>
+                    {{ __('SKM') }}
+                </x-nav-link>
+                <x-nav-link :href="" wire:navigate>
+                    {{ __('Hubungi Kami') }}
+                </x-nav-link> --}}
             </div>
 
             <!-- Settings Dropdown - Adjusted spacing to bring it closer to nav links -->
-            <div class="hidden sm:flex sm:items-center -me-2"> <!-- Changed sm:ms-6 to -me-2 or similar for closer spacing -->
+            <div class="hidden sm:flex sm:items-center -me-2">
+                <!-- Changed sm:ms-6 to -me-2 or similar for closer spacing -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+                        <button
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
+                                x-on:profile-updated.window="name = $event.detail.name"></div>
 
                             <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
                                 </svg>
                             </div>
                         </button>
@@ -74,10 +87,14 @@ new class extends Component
 
             <!-- Hamburger - This part remains unchanged for mobile menu toggle -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button @click="open = ! open"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -94,14 +111,15 @@ new class extends Component
             <x-responsive-nav-link href="#">Layanan Kami</x-responsive-nav-link>
             <x-responsive-nav-link href="#">Peta Interaktif</x-responsive-nav-link>
             <x-responsive-nav-link href="#">SKM</x-responsive-nav-link>
-            <x-responsive-nav-link href="#">FAQ</x-responsive-nav-link>
             <x-responsive-nav-link href="#">Hubungi Kami</x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options - Remains unchanged -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+                <div class="font-medium text-base text-gray-800"
+                    x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
+                    x-on:profile-updated.window="name = $event.detail.name"></div>
                 <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
             </div>
 
