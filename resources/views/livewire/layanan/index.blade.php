@@ -52,7 +52,7 @@
                     class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100">
                     <!-- produk Image -->
                     <div class="relative h-48 bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
-                        <img src="{{ $produk['gambar_produk'] }}" alt="{{ $produk['nama_produk'] }}"
+                        <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="{{ $produk['nama_produk'] }}"
                             class="w-full h-full object-cover">
 
                         <!-- Sale Badge -->
