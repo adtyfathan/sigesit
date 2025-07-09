@@ -95,10 +95,10 @@
         <div class="mt-12">
             <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Temukan Kami di Peta</h3>
             <div class="bg-gray-200 rounded-xl overflow-hidden shadow-md" style="height: 400px; width: 100%;">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.856983055423!2d106.8407424147708!3d-6.574421995252873!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c7ed6f235555%3A0xf639a061b4d0e2e2!2sCibinong%2C%20Bogor%20Regency%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1678888888888!5m2!1sen!2sid"
-                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15863.029856641572!2d106.8407421!3d-6.4950348!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c0d12e62b01b%3A0x6b4f7a77e5c5457a!2sGR5X%2BMP%20Pakansari%2C%20Bogor%20Regency%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1700000000000!5m2!1sen!2sid"
+                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
             </div>
         </div>
 
