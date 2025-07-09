@@ -1,14 +1,75 @@
 <div>
     {{-- Hero Section --}}
     <div class="relative h-screen flex items-center justify-center text-center
-                bg-cover bg-center bg-no-repeat"
-                style="background-image: url('{{ asset('images/banner2.jpg') }}');"> {{-- ADDED THIS LINE --}}
+                 bg-cover bg-center bg-no-repeat"
+                 style="background-image: url('{{ asset('images/banner4.jpg') }}');"> {{-- ADDED THIS LINE --}}
         <div class="absolute inset-0 bg-black opacity-30"></div>
         <div class="relative z-10 text-white px-4 sm:px-6 lg:px-8">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Badan Informasi Geospasial</h1>
             <p class="text-lg md:text-xl">Satu Data, Satu Peta, Untuk Indonesia Maju</p>
         </div>
     </div>
+
+    {{-- Berita Terbaru Section --}}
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Berita Terbaru</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
+                    <img class="w-full h-56 object-cover" src="{{ asset('images/berita1.jpg') }}" alt="Judul Berita 1">
+                    <div class="p-6">
+                        <p class="text-sm text-gray-500 mb-2">05 Juli 2025</p>
+                        <h3 class="font-bold text-xl text-gray-900 mb-2 truncate">Peningkatan Akurasi Data Geospasial Nasional</h3>
+                        <p class="text-gray-700 text-sm leading-relaxed line-clamp-3">
+                            BIG meluncurkan program baru untuk meningkatkan akurasi dan cakupan data geospasial di seluruh wilayah Indonesia, melibatkan teknologi terbaru dan partisipasi masyarakat.
+                        </p>
+                        <a href="#" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            Baca Selengkapnya
+                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
+                    <img class="w-full h-56 object-cover" src="{{ asset('images/berita2.jpg') }}" alt="Judul Berita 2">
+                    <div class="p-6">
+                        <p class="text-sm text-gray-500 mb-2">01 Juli 2025</p>
+                        <h3 class="font-bold text-xl text-gray-900 mb-2 truncate">Kerja Sama Lintas Sektor untuk Satu Data Indonesia</h3>
+                        <p class="text-gray-700 text-sm leading-relaxed line-clamp-3">
+                            Kolaborasi antara BIG dan berbagai kementerian/lembaga terus diperkuat guna mewujudkan visi Satu Data Indonesia yang terintegrasi dan akurat.
+                        </p>
+                        <a href="#" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            Baca Selengkapnya
+                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
+                    <img class="w-full h-56 object-cover" src="{{ asset('images/berita3.jpg') }}" alt="Judul Berita 3">
+                    <div class="p-6">
+                        <p class="text-sm text-gray-500 mb-2">28 Juni 2025</p>
+                        <h3 class="font-bold text-xl text-gray-900 mb-2 truncate">Workshop Pemanfaatan Informasi Geospasial untuk Pembangunan Daerah</h3>
+                        <p class="text-gray-700 text-sm leading-relaxed line-clamp-3">
+                            Ratusan perwakilan pemerintah daerah mengikuti workshop yang diselenggarakan BIG untuk meningkatkan pemahaman dan pemanfaatan informasi geospasial dalam perencanaan pembangunan.
+                        </p>
+                        <a href="#" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            Baca Selengkapnya
+                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <a href="/berita" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                    Lihat Semua Berita
+                    <svg class="ml-2 -mr-0.5 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
 
     {{-- TERPOPULER Section --}}
     <section class="py-16 bg-gray-50">
@@ -86,6 +147,56 @@
         </div>
     </section>
 
+    {{-- Hasil SKM Section --}}
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-12">Hasil Survei Kepuasan Masyarakat (SKM)</h2>
+            <p class="text-lg text-gray-600 mb-10">Kami berkomitmen untuk terus meningkatkan kualitas pelayanan berdasarkan masukan dari Anda.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+                <div class="bg-indigo-50 p-6 rounded-lg shadow-md flex flex-col justify-center transform hover:scale-105 transition duration-300">
+                    <p class="text-5xl font-bold text-indigo-700 mb-2">87.5</p>
+                    <p class="text-xl font-semibold text-gray-800">Indeks Kepuasan Masyarakat (IKM)</p>
+                    <p class="text-md text-gray-600 mt-2">Kategori: <span class="font-bold text-green-700">Sangat Baik</span></p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md space-y-4 col-span-2">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 text-left">Penilaian Aspek Layanan (Tahun Berjalan)</h3>
+                    <div class="flex items-center">
+                        <span class="w-1/3 text-left font-medium text-gray-700">Kualitas Pelayanan</span>
+                        <div class="w-2/3 bg-gray-200 rounded-full h-3">
+                            <div class="bg-blue-600 h-3 rounded-full" style="width: 90%;"></div>
+                        </div>
+                        <span class="ml-4 font-semibold text-blue-700">90%</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <span class="w-1/3 text-left font-medium text-gray-700">Kecepatan Respon</span>
+                        <div class="w-2/3 bg-gray-200 rounded-full h-3">
+                            <div class="bg-blue-600 h-3 rounded-full" style="width: 85%;"></div>
+                        </div>
+                        <span class="ml-4 font-semibold text-blue-700">85%</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <span class="w-1/3 text-left font-medium text-gray-700">Keramahan Staf</span>
+                        <div class="w-2/3 bg-gray-200 rounded-full h-3">
+                            <div class="bg-blue-600 h-3 rounded-full" style="width: 92%;"></div>
+                        </div>
+                        <span class="ml-4 font-semibold text-blue-700">92%</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-6 text-left">Berdasarkan <span class="font-medium">1.500</span> responden pada periode Januari - Juni 2025.</p>
+                </div>
+            </div>
+
+            <a href="/laporan-skm-lengkap" class="mt-12 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                Lihat Laporan SKM Lengkap
+                <svg class="ml-2 -mr-0.5 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+
     {{-- FAQ Section --}}
     <section class="py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -135,6 +246,24 @@
                         <p class="text-justify">Anda bisa mengunjungi halaman "Hubungi Kami" di website resmi BIG untuk informasi kontak, alamat kantor, atau formulir pertanyaan.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+       <section class="py-16 bg-[#2E86DE] text-white"> {{-- Menggunakan Light Blue dari palet Anda --}}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Siap Menjelajahi Informasi Geospasial?</h2>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto mb-10">
+                Temukan kekayaan data, layanan inovatif, dan wawasan geospasial yang Anda butuhkan untuk mendukung pembangunan Indonesia.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <a href="{{ route('layanan.index') }}" wire:navigate
+                   class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-md shadow-lg text-white bg-[#0F3057] hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F3057] transition duration-300 ease-in-out transform hover:-translate-y-1">
+                    Jelajahi Layanan Kami
+                </a>
+                <a href="{{ route('hubungi') }}" wire:navigate
+                   class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-base font-bold rounded-md shadow-lg text-white hover:bg-white hover:text-[#2E86DE] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition duration-300 ease-in-out transform hover:-translate-y-1">
+                    Hubungi Kami
+                </a>
             </div>
         </div>
     </section>
