@@ -79,7 +79,7 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex space-x-2">
-                                            <a href=""
+                                            <a href="{{ route('admin.produk.show', $produk->id) }}"
                                                 class="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors">
                                                 Lihat
                                             </a>
