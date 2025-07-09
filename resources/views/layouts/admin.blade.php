@@ -30,12 +30,12 @@
                 <div class="flex-1 overflow-y-auto">
                     <nav class="p-4 space-y-2">
                         <!-- Dashboard -->
-                        <a href="#" wire:navigate
+                        <a href="{{ route('admin.dashboard.index') }}" wire:navigate
                             class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200">
                             <span>Dashboard</span>
                         </a>
 
-                        <a href="#" wire:navigate
+                        <a href="{{ route('admin.produk.index') }}" wire:navigate
                             class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200">
                             <span>Produk</span>
                         </a>

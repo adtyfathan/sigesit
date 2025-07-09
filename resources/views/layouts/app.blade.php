@@ -39,7 +39,6 @@
                 s0.parentNode.insertBefore(s1,s0);
                 })();
             </script>
-<!--End of Tawk.to Script-->
             <!-- Page Content -->
             <main>
                 {{ $slot }}
