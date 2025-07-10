@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Home;
 use App\Livewire\Hubungi;
 use App\Livewire\Layanan\Index as LayananIndex;
+use App\Livewire\Berita\Index as BeritaIndex;
 
 // Admin
 // Dashboard
@@ -14,6 +15,12 @@ use App\Livewire\Admin\Produk\Index as AdminProdukIndex;
 use App\Livewire\Admin\Produk\Create as AdminProdukCreate;
 use App\Livewire\Admin\Produk\Edit as AdminProdukEdit;
 use App\Livewire\Admin\Produk\Show as AdminProdukShow;
+
+// Berita
+use App\Livewire\Admin\Berita\Index as AdminBeritaIndex;
+use App\Livewire\Admin\Berita\Create as AdminBeritaCreate;
+use App\Livewire\Admin\Berita\Edit as AdminBeritaEdit;
+use App\Livewire\Admin\Berita\Show as AdminBeritaShow;
 
 Route::view('/', 'welcome');
 
@@ -30,10 +37,21 @@ Route::prefix('/admin')->name('admin')->group(function () {
         Route::get('/edit/{produkId}',AdminProdukEdit::class)->name('.edit');
         Route::get('/show/{produkId}',AdminProdukShow::class)->name('.show');
     });
+
+    Route::prefix('/berita')->name('.berita')->group(function () {
+        Route::get('',AdminBeritaIndex::class)->name('.index'); 
+        Route::get('/create',AdminBeritaCreate::class)->name('.create');
+        Route::get('/edit/{beritaId}',AdminBeritaEdit::class)->name('.edit');
+        Route::get('/show/{beritaId}',AdminBeritaShow::class)->name('.show');
+    });
 });
 
 Route::prefix('/layanan')->name('layanan')->group(function () {
     Route::get('',LayananIndex::class)->name('.index'); 
+});
+
+Route::prefix('/berita')->name('berita')->group(function () {
+    Route::get('',BeritaIndex::class)->name('.index');
 });
 
 Route::get('/hubungi', Hubungi::class)->name('hubungi');

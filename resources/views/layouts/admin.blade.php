@@ -18,7 +18,7 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100 flex flex-col">
-        <livewire:layout.navigation />
+        <livewire:layout.admin-navigation />
 
         <!-- Main Layout Container -->
         <div class="flex flex-1">
@@ -40,7 +40,7 @@
                             <span>Produk</span>
                         </a>
 
-                        <a href="#" wire:navigate
+                        <a href="{{ route('admin.berita.index') }}" wire:navigate
                             class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200">
                             <span>Berita</span>
                         </a>
@@ -48,6 +48,11 @@
                         <a href="#" wire:navigate
                             class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200">
                             <span>User</span>
+                        </a>
+
+                        <a href="#" wire:navigate
+                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                            <span>Kategori</span>
                         </a>
                     </nav>
                 </div>

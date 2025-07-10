@@ -31,26 +31,23 @@ new class extends Component {
             </div>
 
             <!-- Custom Navigation Links - Centered -->
-            <div class="hidden space-x-4 sm:flex items-center">
+            {{-- <div class="hidden space-x-4 sm:flex items-center">
                 <x-nav-link :href="route('home')" :active="request()->routeIs('home')" wire:navigate>
                     {{ __('Home') }}
                 </x-nav-link>
                 <x-nav-link :href="route('layanan.index')" :active="request()->routeIs('layanan.*')" wire:navigate>
                     {{ __('Layanan Kami') }}
                 </x-nav-link>
-                <x-nav-link :href="route('berita.index')" :active="request()->routeIs('berita.*')" wire:navigate>
-                    {{ __('Berita') }}
-                </x-nav-link>
-                {{-- <x-nav-link :href="" wire:navigate>
+                <x-nav-link :href="" wire:navigate>
                     {{ __('Peta Interaktif') }}
                 </x-nav-link>
                 <x-nav-link :href="" wire:navigate>
                     {{ __('SKM') }}
-                </x-nav-link>--}}
+                </x-nav-link>
                 <x-nav-link :href="route('hubungi')" :active="request()->routeIs('hubungi')" wire:navigate>
                     {{ __('Hubungi Kami') }}
                 </x-nav-link>
-            </div>
+            </div> --}}
 
             <!-- Settings Dropdown - Adjusted spacing to bring it closer to nav links -->
             <div class="hidden sm:flex sm:items-center -me-2">
@@ -106,7 +103,7 @@ new class extends Component {
 
     <!-- Responsive Navigation Menu - Updated with your custom links -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+        {{-- <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" wire:navigate>
                 {{ __('Beranda') }}
             </x-responsive-nav-link>
@@ -115,7 +112,7 @@ new class extends Component {
             <x-responsive-nav-link href="#">Peta Interaktif</x-responsive-nav-link>
             <x-responsive-nav-link href="#">SKM</x-responsive-nav-link>
             <x-responsive-nav-link href="#">Hubungi Kami</x-responsive-nav-link>
-        </div>
+        </div> --}}
 
         <!-- Responsive Settings Options - Remains unchanged -->
         <div class="pt-4 pb-1 border-t border-gray-200">

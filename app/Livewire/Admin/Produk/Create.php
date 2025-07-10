@@ -25,7 +25,7 @@ class Create extends Component
     }
 
     public function store(){
-        $produk = $this->validate([
+        $validated = $this->validate([
             'nama_produk' => 'required|string',
             'harga_produk' => 'required|numeric',
             'gambar_produk' => 'nullable|image|max:1024',
@@ -34,10 +34,12 @@ class Create extends Component
             'kategori_id' => 'required|exists:kategori,id',
         ]);
 
-        $path = $this->gambar_produk->store('produk', 'public');
-        $produk['gambar_produk'] = $path;
+        if($this->gambar_produk){
+            $path = $this->gambar_produk->store('produk', 'public');
+            $validated['gambar_produk'] = $path;
+        }        
 
-        Produk::create($produk);
+        Produk::create($validated);
 
         session()->flash('success', 'Produk berhasil dibuat.');
         return $this->redirect(route('admin.produk.index'), navigate: true);
