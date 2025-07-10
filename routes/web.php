@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+// User
 use App\Livewire\Home;
 use App\Livewire\Hubungi;
 use App\Livewire\Layanan\Index as LayananIndex;
 use App\Livewire\Berita\Index as BeritaIndex;
+use App\Livewire\Berita\Show as BeritaShow;
 
 // Admin
 // Dashboard
@@ -52,6 +55,7 @@ Route::prefix('/layanan')->name('layanan')->group(function () {
 
 Route::prefix('/berita')->name('berita')->group(function () {
     Route::get('',BeritaIndex::class)->name('.index');
+    Route::get('/show/{beritaId}',BeritaShow::class)->name('.show');
 });
 
 Route::get('/hubungi', Hubungi::class)->name('hubungi');
