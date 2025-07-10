@@ -57,16 +57,19 @@
                                     <td class="px-6 py-4">
                                         <div class="flex space-x-2">
                                             <a href="{{ route('admin.berita.show', $berita->id) }}"
-                                                class="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors">
+                                                class="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors"
+                                                wire:navigate>
                                                 Lihat
                                             </a>
                                             <a href="{{ route('admin.berita.edit', $berita->id) }}"
-                                                class="text-yellow-600 hover:text-yellow-900 px-3 py-1 rounded-md bg-yellow-50 hover:bg-yellow-100 transition-colors">
+                                                class="text-yellow-600 hover:text-yellow-900 px-3 py-1 rounded-md bg-yellow-50 hover:bg-yellow-100 transition-colors"
+                                                wire:navigate>
                                                 Edit
                                             </a>
                                             <button wire:click="delete({{ $berita->id }})"
                                                 class="text-red-600 hover:text-red-900"
-                                                onclick="return confirm('Anda yakin menghapus berita ini?')">
+                                                onclick="return confirm('Anda yakin menghapus berita ini?')"
+                                                wire:navigate>
                                                 Hapus
                                             </button>
                                         </div>

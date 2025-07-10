@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+// Middleware
+use App\Http\Middleware\IsUser;
+use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsOperator;
+use App\Http\Middleware\IsBendahara;
+
 // User
 use App\Livewire\Home;
 use App\Livewire\Hubungi;
@@ -30,6 +36,19 @@ Route::view('/', 'welcome');
 
 Route::get('/home', Home::class)->name('home');
 
+Route::prefix('/layanan')->name('layanan')->group(function () {
+    Route::get('',LayananIndex::class)->name('.index'); 
+});
+
+Route::prefix('/berita')->name('berita')->group(function () {
+    Route::get('',BeritaIndex::class)->name('.index');
+    Route::get('/show/{beritaId}',BeritaShow::class)->name('.show');
+});
+
+Route::get('/skm', SkmPage::class)->name('skm.index');
+
+Route::get('/hubungi', Hubungi::class)->name('hubungi');
+
 Route::prefix('/admin')->name('admin')->group(function () {
     Route::prefix('/dashboard')->name('.dashboard')->group(function () {
         Route::get('',AdminDashboardIndex::class)->name('.index'); 
@@ -48,20 +67,7 @@ Route::prefix('/admin')->name('admin')->group(function () {
         Route::get('/edit/{beritaId}',AdminBeritaEdit::class)->name('.edit');
         Route::get('/show/{beritaId}',AdminBeritaShow::class)->name('.show');
     });
-});
-
-Route::prefix('/layanan')->name('layanan')->group(function () {
-    Route::get('',LayananIndex::class)->name('.index'); 
-});
-
-Route::prefix('/berita')->name('berita')->group(function () {
-    Route::get('',BeritaIndex::class)->name('.index');
-    Route::get('/show/{beritaId}',BeritaShow::class)->name('.show');
-});
-
-Route::get('/skm', SkmPage::class)->name('skm.index');
-
-Route::get('/hubungi', Hubungi::class)->name('hubungi');
+})->middleware(IsAdmin::class);
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
