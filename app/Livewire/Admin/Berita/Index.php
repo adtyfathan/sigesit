@@ -20,7 +20,7 @@ class Index extends Component
 
         session()->flash('message', 'Berita berhasil dihapus.');
         
-        return $this->redirect(route('admin.produk.index'), navigate: true);
+        return $this->redirect(route('admin.berita.index'), navigate: true);
     }
 
     #[Layout('layouts.admin')]
