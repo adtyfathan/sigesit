@@ -6,6 +6,7 @@ use App\Livewire\Hubungi;
 use App\Livewire\Layanan\Index as LayananIndex;
 use App\Livewire\Berita\Index as BeritaIndex;
 use App\Livewire\SkmPage;
+use App\Http\Controllers\SkmResultController;
 
 // Admin
 // Dashboard
@@ -56,6 +57,9 @@ Route::prefix('/berita')->name('berita')->group(function () {
 });
 
 Route::get('/skm', SkmPage::class)->name('skm.index');
+
+// Rute POST untuk mengirimkan data survei
+Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('skm.submit_survey');
 
 Route::get('/hubungi', Hubungi::class)->name('hubungi');
 

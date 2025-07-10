@@ -1,6 +1,5 @@
 <div>
-    {{-- Konten halaman SKM --}}
-    <section class="py-16 bg-white"> {{-- Membungkus konten dalam section yang konsisten --}}
+    <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Laporan Lengkap Survei Kepuasan Masyarakat (SKM)</h1>
             <p class="text-lg text-gray-600 mb-10">
@@ -9,7 +8,6 @@
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch mb-12">
-                {{-- Kartu Ringkasan Periode Terakhir (Mirip Home) --}}
                 <div class="bg-indigo-50 p-6 rounded-lg shadow-md flex flex-col justify-center transform hover:scale-105 transition duration-300">
                     <p class="text-5xl font-bold text-indigo-700 mb-2">87.5</p>
                     <p class="text-xl font-semibold text-gray-800">Indeks Kepuasan Masyarakat (IKM)</p>
@@ -20,7 +18,6 @@
                     </p>
                 </div>
 
-                {{-- Kartu Detail Aspek Layanan (Mirip Home dengan sedikit penyesuaian) --}}
                 <div class="bg-white p-6 rounded-lg shadow-md space-y-4 col-span-2">
                     <h3 class="text-xl font-bold text-gray-800 mb-4 text-left">Penilaian Aspek Layanan (Tahun Berjalan)</h3>
                     <div class="flex items-center">
@@ -48,15 +45,22 @@
                 </div>
             </div>
 
-            {{-- Bagian Analisis Tren (Grafik Chart.js) --}}
+            {{-- TOMBOL KE FORM SURVEI --}}
+            <div class="mt-8 mb-12 flex justify-center">
+                <a href="#form-survei-section" class="inline-flex items-center px-6 py-3 border border-indigo-600 text-base font-medium rounded-md shadow-sm text-indigo-600 bg-white hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    Isi Survei Kepuasan Anda
+                </a>
+            </div>
+            {{-- END TOMBOL KE FORM SURVEI --}}
+
             <div class="bg-white p-8 rounded-lg shadow-md mb-12">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6 text-left">Analisis Tren Kepuasan Masyarakat</h3>
-                <div class="relative h-96"> {{-- Tambahkan relative dan h-96 untuk tinggi grafik --}}
+                <div class="relative h-96">
                     <canvas id="skmTrendChart"></canvas>
                 </div>
             </div>
 
-            {{-- Bagian Data Responden / Komentar (opsional, bisa Anda isi dari database) --}}
             <div class="bg-white p-8 rounded-lg shadow-md mb-12">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6 text-left">Detail Responden & Masukan</h3>
                 <div class="overflow-x-auto">
@@ -71,13 +75,14 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
+                            {{-- Anda mungkin ingin mengganti ini dengan data dari database SkmResult Anda --}}
                             @php
                                 $dummyRespondents = [
-                                    ['SKM-001', '2025-01-15', 'Pelayanan Dokumen', 88, 'Pelayanan cepat dan ramah.'],
-                                    ['SKM-002', '2025-02-20', 'Informasi Publik', 82, 'Informasi cukup jelas, perlu ditingkatkan respons.'],
-                                    ['SKM-003', '2025-03-10', 'Pengaduan', 91, 'Respon sangat baik dan solutif.'],
-                                    ['SKM-004', '2025-04-05', 'Pelayanan Online', 79, 'Website agak lambat, tapi pelayanan oke.'],
-                                    ['SKM-005', '2025-05-22', 'Konsultasi', 93, 'Konsultan sangat membantu dan berpengetahuan luas.'],
+                                    ['SKM-001', '2024-08-10', 'Pelayanan B', 78, 'Komentar dummy untuk bulan Aug 2024.'],
+                                    ['SKM-002', '2024-08-12', 'Pelayanan A', 74, 'Komentar dummy untuk bulan Aug 2024.'],
+                                    ['SKM-003', '2024-08-07', 'Pelayanan C', 80, 'Komentar dummy untuk bulan Aug 2024.'],
+                                    // ... tambahkan data dummy lain sesuai screenshot Anda
+                                    ['SKM-025', '2024-09-20', 'Pelayanan B', 78, 'Komentar dummy untuk bulan Sep 2024.'],
                                 ];
                             @endphp
 
@@ -87,18 +92,92 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $respondent[1] }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $respondent[2] }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-700 font-bold">{{ $respondent[3] }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">{{ $respondent[4] }}</td> {{-- Truncate jika komentar terlalu panjang --}}
+                                <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">{{ $respondent[4] }}</td>
                             </tr>
                             @endforeach
-                            {{-- Ganti @foreach($dummyRespondents as $respondent) dengan @foreach($this->respondentData as $respondent) jika Anda mengambil data dari komponen --}}
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            {{-- Tombol Kembali --}}
+            {{-- Form Survei Kepuasan Masyarakat --}}
+            <div id="form-survei-section" class="bg-indigo-50 p-8 rounded-lg shadow-lg mb-12 text-left">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center">Isi Survei Kepuasan Anda</h2>
+                <p class="text-lg text-gray-600 mb-8 text-center">
+                    Bantu kami meningkatkan kualitas layanan dengan memberikan masukan Anda.
+                </p>
+
+                @if (session('success'))
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        <strong class="font-bold">Sukses!</strong>
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        <strong class="font-bold">Terjadi Kesalahan!</strong>
+                        <span class="block sm:inline">Mohon periksa kembali input Anda.</span>
+                        <ul class="mt-3 list-disc list-inside text-sm">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('skm.submit_survey') }}" method="POST">
+                    @csrf {{-- CSRF Token untuk keamanan Laravel --}}
+
+                    <div class="mb-6">
+                        <label for="ikm_score" class="block text-gray-700 text-base font-semibold mb-2">
+                            1. Berapa nilai kepuasan Anda secara keseluruhan terhadap layanan kami? (Skala 0-100)
+                        </label>
+                        {{-- Menggunakan input type="number" untuk nilai 0-100 --}}
+                        <input type="number" id="ikm_score" name="ikm_score" min="0" max="100" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('ikm_score') border-red-500 @enderror" placeholder="Contoh: 85" value="{{ old('ikm_score') }}">
+                        @error('ikm_score')
+                            <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="service_aspect" class="block text-gray-700 text-base font-semibold mb-2">
+                            2. Layanan mana yang Anda gunakan atau berikan penilaian?
+                        </label>
+                        <select id="service_aspect" name="service_aspect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('service_aspect') border-red-500 @enderror">
+                            <option value="">Pilih Aspek Layanan</option>
+                            <option value="Informasi Publik" {{ old('service_aspect') == 'Informasi Publik' ? 'selected' : '' }}>Informasi Publik</option>
+                            <option value="Pengaduan" {{ old('service_aspect') == 'Pengaduan' ? 'selected' : '' }}>Pengaduan</option>
+                            <option value="Pelayanan Online" {{ old('service_aspect') == 'Pelayanan Online' ? 'selected' : '' }}>Pelayanan Online</option>
+                            <option value="Konsultasi" {{ old('service_aspect') == 'Konsultasi' ? 'selected' : '' }}>Konsultasi</option>
+                            <option value="Lainnya" {{ old('service_aspect') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                        </select>
+                        @error('service_aspect')
+                            <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-8">
+                        <label for="comment" class="block text-gray-700 text-base font-semibold mb-2">
+                            3. Berikan komentar atau saran tambahan Anda (opsional):
+                        </label>
+                        <textarea id="comment" name="comment" rows="5" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('comment') border-red-500 @enderror" placeholder="Tulis masukan Anda di sini...">{{ old('comment') }}</textarea>
+                        @error('comment')
+                            <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
+                            Kirim Survei
+                        </button>
+                    </div>
+                </form>
+            </div>
+            {{-- End Form Survei --}}
+
             <a href="{{ route('home') }}" class="mt-12 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out">
-                <svg class="ml-2 -mr-0.5 h-5 w-5 rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> {{-- Rotate icon for back --}}
+                <svg class="ml-2 -mr-0.5 h-5 w-5 rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
                 Kembali ke Beranda
@@ -107,31 +186,27 @@
     </section>
 
     @push('scripts')
-    {{-- Import Chart.js library --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        document.addEventListener('livewire:navigated', () => { // Gunakan event ini untuk Livewire 3
+        document.addEventListener('livewire:navigated', () => {
             const ctx = document.getElementById('skmTrendChart');
-
-            // Hancurkan chart sebelumnya jika ada, untuk menghindari duplikasi saat navigasi Livewire
             if (window.skmChartInstance) {
                 window.skmChartInstance.destroy();
             }
 
-            // Pastikan canvas ada sebelum inisialisasi chart
             if (ctx) {
-                window.skmChartInstance = new Chart(ctx, { // Simpan instance di window agar bisa dihancurkan
-                    type: 'line', // Jenis grafik: garis
+                window.skmChartInstance = new Chart(ctx, {
+                    type: 'line',
                     data: {
-                        labels: @json($chartLabels), // Data label dari komponen Livewire
+                        labels: @json($chartLabels),
                         datasets: [{
                             label: 'Rata-rata IKM Bulanan',
-                            data: @json($chartData), // Data nilai dari komponen Livewire
-                            borderColor: '#4f46e5', // Warna garis (indigo-600)
-                            backgroundColor: 'rgba(79, 70, 229, 0.2)', // Warna area di bawah garis
-                            tension: 0.3, // Kehalusan garis (0 = lurus, 1 = sangat halus)
-                            fill: true, // Mengisi area di bawah garis
+                            data: @json($chartData),
+                            borderColor: '#4f46e5',
+                            backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                            tension: 0.3,
+                            fill: true,
                             pointBackgroundColor: '#4f46e5',
                             pointBorderColor: '#fff',
                             pointHoverBackgroundColor: '#fff',
@@ -142,7 +217,7 @@
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: false, // Penting untuk mengontrol tinggi dengan h-96
+                        maintainAspectRatio: false,
                         plugins: {
                             legend: {
                                 display: true,
@@ -170,8 +245,8 @@
                                     display: true,
                                     text: 'Nilai IKM Rata-rata (%)'
                                 },
-                                min: 60, // Atur batas bawah yang masuk akal
-                                max: 100 // Batas atas maksimum
+                                min: 60,
+                                max: 100
                             },
                             x: {
                                 title: {

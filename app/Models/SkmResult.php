@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models; // <--- PASTIKAN NAMESPACE INI BENAR
+namespace App\Models; 
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SkmResult extends Model // <--- PASTIKAN NAMA KELAS INI BENAR
+class SkmResult extends Model 
 {
     use HasFactory;
 
@@ -13,13 +13,10 @@ class SkmResult extends Model // <--- PASTIKAN NAMA KELAS INI BENAR
         'ikm_score',
         'comment',
         'service_aspect',
-        'survey_date',
+        //'survey_date',
     ];
 
     protected $casts = [
         'survey_date' => 'datetime',
     ];
-
-    // Jika Anda ingin mengoverride nama tabel (jika bukan 'skm_results')
-    // protected $table = 'nama_tabel_anda';
 }
