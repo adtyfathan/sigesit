@@ -5,6 +5,7 @@ use App\Livewire\Home;
 use App\Livewire\Hubungi;
 use App\Livewire\Layanan\Index as LayananIndex;
 use App\Livewire\Berita\Index as BeritaIndex;
+use App\Livewire\SkmPage;
 
 // Admin
 // Dashboard
@@ -53,6 +54,8 @@ Route::prefix('/layanan')->name('layanan')->group(function () {
 Route::prefix('/berita')->name('berita')->group(function () {
     Route::get('',BeritaIndex::class)->name('.index');
 });
+
+Route::get('/skm', SkmPage::class)->name('skm.index');
 
 Route::get('/hubungi', Hubungi::class)->name('hubungi');
 
