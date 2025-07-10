@@ -41,12 +41,9 @@ new class extends Component {
                 <x-nav-link :href="route('berita.index')" :active="request()->routeIs('berita.*')" wire:navigate>
                     {{ __('Berita') }}
                 </x-nav-link>
-                {{-- <x-nav-link :href="" wire:navigate>
-                    {{ __('Peta Interaktif') }}
-                </x-nav-link>
-                <x-nav-link :href="" wire:navigate>
+                    <x-nav-link :href="route('skm.index')" :active="request()->routeIs('skm.*')" wire:navigate>
                     {{ __('SKM') }}
-                </x-nav-link>--}}
+                </x-nav-link>
                 <x-nav-link :href="route('hubungi')" :active="request()->routeIs('hubungi')" wire:navigate>
                     {{ __('Hubungi Kami') }}
                 </x-nav-link>
