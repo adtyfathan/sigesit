@@ -2,12 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Middleware
-use App\Http\Middleware\IsUser;
-use App\Http\Middleware\IsAdmin;
-use App\Http\Middleware\IsOperator;
-use App\Http\Middleware\IsBendahara;
-
 // User
 use App\Livewire\Home;
 use App\Livewire\Hubungi;
@@ -33,6 +27,10 @@ use App\Livewire\Admin\Berita\Create as AdminBeritaCreate;
 use App\Livewire\Admin\Berita\Edit as AdminBeritaEdit;
 use App\Livewire\Admin\Berita\Show as AdminBeritaShow;
 
+// Pengguna
+use App\Livewire\Admin\Akun\Index as AdminAkunIndex;
+use App\Livewire\Admin\Akun\Edit as AdminAkunEdit;
+
 Route::view('/', 'welcome');
 
 Route::get('/home', Home::class)->name('home');
@@ -52,6 +50,10 @@ Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('
 
 Route::get('/hubungi', Hubungi::class)->name('hubungi');
 
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
+
 Route::prefix('/admin')->name('admin')->group(function () {
     Route::prefix('/dashboard')->name('.dashboard')->group(function () {
         Route::get('',AdminDashboardIndex::class)->name('.index'); 
@@ -70,10 +72,11 @@ Route::prefix('/admin')->name('admin')->group(function () {
         Route::get('/edit/{beritaId}',AdminBeritaEdit::class)->name('.edit');
         Route::get('/show/{beritaId}',AdminBeritaShow::class)->name('.show');
     });
-})->middleware(IsAdmin::class);
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+    Route::prefix('/akun')->name('.akun')->group(function () {
+        Route::get('',AdminAkunIndex::class)->name('.index');
+        Route::get('/edit/{userId}',AdminAkunEdit::class)->name('.edit');
+    });
+});
 
 require __DIR__.'/auth.php';

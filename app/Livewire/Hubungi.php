@@ -4,12 +4,19 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
 
 class Hubungi extends Component
 {
     public $name;
     public $email;
     public $message;
+
+    public function mount(){
+        if (!Auth::check() || Auth::user()->role_id != 1) {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
+    }
 
     protected $rules = [
         'name' => 'required|min:3',

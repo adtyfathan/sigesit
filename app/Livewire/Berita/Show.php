@@ -19,6 +19,10 @@ class Show extends Component
     public $editingCommentText = '';
     
     public function mount($beritaId){
+        if (!Auth::check() || Auth::user()->role_id != 1) {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
+        
         $this->berita = Berita::with('komentarBerita.user')
             ->find($beritaId);
 

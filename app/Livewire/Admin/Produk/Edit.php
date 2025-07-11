@@ -8,6 +8,7 @@ use Livewire\WithFileUploads;
 use App\Models\Produk;
 use App\Models\Kategori;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class Edit extends Component
 {
@@ -21,14 +22,18 @@ class Edit extends Component
     public $deskripsi_produk;
     public $wilayah_peta;
     public $kategori_id;
-    
+
     public function mount($produkId)
     {
+        if (!Auth::check() || Auth::user()->role_id != 2) {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
+
         $this->produk = Produk::find($produkId);
         $this->kategoris = Kategori::get();
         $this->nama_produk = $this->produk->nama_produk;
         $this->harga_produk = $this->produk->harga_produk;
-        $this->deskripsi_produk = $this->produk->desskripsi_produk;
+        $this->deskripsi_produk = $this->produk->deskripsi_produk;
         $this->wilayah_peta = $this->produk->wilayah_peta;
         $this->kategori_id = $this->produk->kategori_id;
     }

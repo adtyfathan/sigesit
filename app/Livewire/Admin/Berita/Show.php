@@ -17,6 +17,10 @@ class Show extends Component
     public $editingCommentText = '';
 
     public function mount($beritaId){
+        if (!Auth::check() || Auth::user()->role_id != 2) {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
+        
         $this->berita = Berita::with('komentarBerita.user')
             ->find($beritaId);
 
@@ -117,7 +121,7 @@ class Show extends Component
         $this->dispatch('link-copied');
     }
 
-    #[Layout('layouts.app')]
+    #[Layout('layouts.admin')]
     public function render()
     {
         return view('livewire.admin.berita.show');

@@ -81,8 +81,13 @@
                 <!-- Add Comment Form -->
                 <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
                     <div class="flex items-start gap-4">
-                        <img src="{{ asset('storage/' . auth()->user()->avatar) }}"
-                            alt="Your Avatar" class="w-10 h-10 rounded-full flex-shrink-0">
+                        @if (auth()->user()->avatar)
+                            <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="Your Avatar"
+                                class="w-10 h-10 rounded-full flex-shrink-0">
+                        @else
+                            <img src="{{ asset(path: 'images/default-avatar.png') }}" alt="Your Avatar"
+                                class="w-10 h-10 rounded-full flex-shrink-0">
+                        @endif
                         <div class="flex-1">
                             <textarea wire:model="komentarBaru" placeholder="Tulis komentar Anda..." rows="3"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none">
@@ -106,7 +111,7 @@
                                     <img src="{{ asset('storage/' . $komentar->user->avatar) }}" alt="{{ $komentar->user->name }}"
                                         class="w-10 h-10 rounded-full flex-shrink-0">
                                 @else
-                                    <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $komentar->user->name }}"
+                                    <img src="{{ asset(path: 'images/default-avatar.png') }}" alt="{{ $komentar->user->name }}"
                                         class="w-10 h-10 rounded-full flex-shrink-0">
                                 @endif
 
