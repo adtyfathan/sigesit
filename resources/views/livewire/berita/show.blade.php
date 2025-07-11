@@ -74,23 +74,27 @@
                 </div>
             </div>
 
-            {{-- comments --}}
+            <!-- Comments Section -->
             <div class="border-t border-gray-200 pt-8">
                 <h3 class="text-xl font-bold text-gray-900 mb-6">Komentar ({{ count($komentars) }})</h3>
 
                 <!-- Add Comment Form -->
                 <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
                     <div class="flex items-start gap-4">
-                        <img src="{{ asset('storage/' . auth()->user()->avatar) }}"
-                            alt="Your Avatar" class="w-10 h-10 rounded-full flex-shrink-0">
+                        @if (auth()->user()->avatar)
+                            <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="Your Avatar"
+                                class="w-10 h-10 rounded-full flex-shrink-0">
+                        @else
+                            <img src="{{ asset(path: 'images/default-avatar.png') }}" alt="Your Avatar"
+                                class="w-10 h-10 rounded-full flex-shrink-0">
+                        @endif
                         <div class="flex-1">
                             <textarea wire:model="komentarBaru" placeholder="Tulis komentar Anda..." rows="3"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none">
                             </textarea>
                             <div class="flex justify-between items-center mt-4">
                                 <button wire:click="storeComment"
-                                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
+                                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
                                     Kirim Komentar
                                 </button>
                             </div>
@@ -107,7 +111,7 @@
                                     <img src="{{ asset('storage/' . $komentar->user->avatar) }}" alt="{{ $komentar->user->name }}"
                                         class="w-10 h-10 rounded-full flex-shrink-0">
                                 @else
-                                    <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $komentar->user->name }}"
+                                    <img src="{{ asset(path: 'images/default-avatar.png') }}" alt="{{ $komentar->user->name }}"
                                         class="w-10 h-10 rounded-full flex-shrink-0">
                                 @endif
 
@@ -117,29 +121,78 @@
                                         <span class="text-sm text-gray-500">
                                             {{ $komentar->created_at->diffForHumans() }}
                                         </span>
+                                        @if ($komentar->updated_at != $komentar->created_at)
+                                            <span class="text-xs text-gray-400">(diperbarui)</span>
+                                        @endif
                                     </div>
-                                    <p class="text-gray-700 mb-3">{{ $komentar->isi_komentar }}</p>
+                                    
+                                    <!-- Comment Content -->
+                                    @if ($editingCommentId === $komentar->id)
+                                        <!-- Edit Mode -->
+                                        <div class="mb-3">
+                                            <textarea wire:model="editingCommentText" rows="3"
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none">
+                                            </textarea>
+                                            <div class="flex gap-2 mt-3">
+                                                <button wire:click="updateComment"
+                                                    class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm">
+                                                    Simpan
+                                                </button>
+                                                <button wire:click="cancelEdit"
+                                                    class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors duration-200 text-sm">
+                                                    Batal
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <!-- Display Mode -->
+                                        <p class="text-gray-700 mb-3">{{ $komentar->isi_komentar }}</p>
+                                        
+                                        <!-- Action Buttons -->
+                                        @if ($komentar->user_id === auth()->user()->id)
+                                            <div class="flex gap-2">
+                                                <button wire:click="editComment({{ $komentar->id }})"
+                                                    class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                    Edit
+                                                </button>
+                                                <button wire:click="deleteComment({{ $komentar->id }})"
+                                                    class="text-red-600 hover:text-red-800 text-sm font-medium"
+                                                    onclick="return confirm('Anda yakin menghapus komentar ini?')">
+                                                    Hapus
+                                                </button>
+                                            </div>
+                                        @endif
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
 
+                @if(count($komentars) === 0)
+                    <div class="text-center py-12 text-gray-500">
+                        <p class="text-lg">Belum ada komentar.</p>
+                        <p class="text-sm">Jadilah yang pertama berkomentar!</p>
+                    </div>
+                @endif
             </div>
         </article>
     </div>
 
     <!-- Toast Notifications -->
-    <div x-data="{ show: false, message: '' }"
-        x-on:link-copied.window="show = true; message = 'Link berhasil disalin!'; setTimeout(() => show = false, 3000)"
-        x-on:comment-added.window="show = true; message = 'Komentar berhasil ditambahkan!'; setTimeout(() => show = false, 3000)"
+    <div x-data="{ show: false, message: '', type: 'success' }"
+        x-on:link-copied.window="show = true; message = 'Link berhasil disalin!'; type = 'success'; setTimeout(() => show = false, 3000)"
+        x-on:comment-added.window="show = true; message = 'Komentar berhasil ditambahkan!'; type = 'success'; setTimeout(() => show = false, 3000)"
+        x-on:comment-updated.window="show = true; message = 'Komentar berhasil diperbarui!'; type = 'success'; setTimeout(() => show = false, 3000)"
+        x-on:comment-deleted.window="show = true; message = 'Komentar berhasil dihapus!'; type = 'success'; setTimeout(() => show = false, 3000)"
         x-show="show" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 transform translate-y-2"
         x-transition:enter-end="opacity-100 transform translate-y-0"
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100 transform translate-y-0"
         x-transition:leave-end="opacity-0 transform translate-y-2"
-        class="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
+        class="fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white"
+        :class="{ 'bg-green-500': type === 'success', 'bg-red-500': type === 'error' }">
         <span x-text="message"></span>
     </div>
 </div>

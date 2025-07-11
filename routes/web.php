@@ -27,9 +27,32 @@ use App\Livewire\Admin\Berita\Create as AdminBeritaCreate;
 use App\Livewire\Admin\Berita\Edit as AdminBeritaEdit;
 use App\Livewire\Admin\Berita\Show as AdminBeritaShow;
 
+// Pengguna
+use App\Livewire\Admin\Akun\Index as AdminAkunIndex;
+use App\Livewire\Admin\Akun\Edit as AdminAkunEdit;
+
 Route::view('/', 'welcome');
 
 Route::get('/home', Home::class)->name('home');
+
+Route::prefix('/layanan')->name('layanan')->group(function () {
+    Route::get('',LayananIndex::class)->name('.index'); 
+});
+
+Route::prefix('/berita')->name('berita')->group(function () {
+    Route::get('',BeritaIndex::class)->name('.index');
+    Route::get('/show/{beritaId}',BeritaShow::class)->name('.show');
+});
+
+Route::get('/skm', SkmPage::class)->name('skm.index');
+
+Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('skm.submit_survey');
+
+Route::get('/hubungi', Hubungi::class)->name('hubungi');
+
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
 
 Route::prefix('/admin')->name('admin')->group(function () {
     Route::prefix('/dashboard')->name('.dashboard')->group(function () {
@@ -49,26 +72,11 @@ Route::prefix('/admin')->name('admin')->group(function () {
         Route::get('/edit/{beritaId}',AdminBeritaEdit::class)->name('.edit');
         Route::get('/show/{beritaId}',AdminBeritaShow::class)->name('.show');
     });
+
+    Route::prefix('/akun')->name('.akun')->group(function () {
+        Route::get('',AdminAkunIndex::class)->name('.index');
+        Route::get('/edit/{userId}',AdminAkunEdit::class)->name('.edit');
+    });
 });
-
-Route::prefix('/layanan')->name('layanan')->group(function () {
-    Route::get('',LayananIndex::class)->name('.index'); 
-});
-
-Route::prefix('/berita')->name('berita')->group(function () {
-    Route::get('',BeritaIndex::class)->name('.index');
-    Route::get('/show/{beritaId}',BeritaShow::class)->name('.show');
-});
-
-Route::get('/skm', SkmPage::class)->name('skm.index');
-
-// Rute POST untuk mengirimkan data survei
-Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('skm.submit_survey');
-
-Route::get('/hubungi', Hubungi::class)->name('hubungi');
-
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
 
 require __DIR__.'/auth.php';
