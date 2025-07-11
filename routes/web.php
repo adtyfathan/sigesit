@@ -27,9 +27,15 @@ use App\Livewire\Admin\Berita\Create as AdminBeritaCreate;
 use App\Livewire\Admin\Berita\Edit as AdminBeritaEdit;
 use App\Livewire\Admin\Berita\Show as AdminBeritaShow;
 
-// Pengguna
+// Akun
 use App\Livewire\Admin\Akun\Index as AdminAkunIndex;
 use App\Livewire\Admin\Akun\Edit as AdminAkunEdit;
+
+// Kategori
+use App\Livewire\Admin\Kategori\Index as AdminKategoriIndex;
+use App\Livewire\Admin\Kategori\Create as AdminKategoriCreate;
+use App\Livewire\Admin\Kategori\Edit as AdminKategoriEdit;
+use App\Models\Role;
 
 Route::view('/', 'welcome');
 
@@ -76,6 +82,12 @@ Route::prefix('/admin')->name('admin')->group(function () {
     Route::prefix('/akun')->name('.akun')->group(function () {
         Route::get('',AdminAkunIndex::class)->name('.index');
         Route::get('/edit/{userId}',AdminAkunEdit::class)->name('.edit');
+    });
+
+    Route::prefix('/kategori')->name('.kategori')->group(function () {
+        Route::get('',AdminKategoriIndex::class)->name('.index');
+        Route::get('/create',AdminKategoriCreate::class)->name('.create');
+        Route::get('/edit/{kategoriId}',AdminKategoriEdit::class)->name('.edit');
     });
 });
 
