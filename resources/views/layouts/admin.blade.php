@@ -50,7 +50,7 @@
                             <span>Akun</span>
                         </a>
 
-                        <a href="#" wire:navigate
+                        <a href="{{ route('admin.kategori.index') }}" wire:navigate
                             class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200">
                             <span>Kategori</span>
                         </a>
