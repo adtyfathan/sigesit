@@ -44,6 +44,9 @@ new class extends Component {
                     <x-nav-link :href="route('skm.index')" :active="request()->routeIs('skm.*')" wire:navigate>
                     {{ __('SKM') }}
                 </x-nav-link>
+                <x-nav-link :href="route('peta')" :active="request()->routeIs('peta')" wire:navigate>
+                    {{ __('Peta') }}
+                </x-nav-link>
                 <x-nav-link :href="route('hubungi')" :active="request()->routeIs('hubungi')" wire:navigate>
                     {{ __('Hubungi Kami') }}
                 </x-nav-link>

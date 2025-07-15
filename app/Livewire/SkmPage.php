@@ -3,11 +3,11 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Livewire\Attributes\Layout; // Import atribut Layout
+use Livewire\Attributes\Layout;
 use App\Models\SkmResult;
 use Carbon\Carbon;
 
-#[Layout('layouts.app')] // <-- Terapkan layout sebagai atribut di sini
+#[Layout('layouts.app')] 
 class SkmPage extends Component
 {
     public $chartData = [];
