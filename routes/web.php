@@ -9,6 +9,7 @@ use App\Livewire\Layanan\Index as LayananIndex;
 use App\Livewire\Layanan\Show as LayananShow;
 use App\Livewire\Berita\Index as BeritaIndex;
 use App\Livewire\Berita\Show as BeritaShow;
+use App\Livewire\Peta;
 use App\Livewire\SkmPage;
 use App\Http\Controllers\SkmResultController;
 
@@ -57,6 +58,8 @@ Route::get('/skm', SkmPage::class)->name('skm.index');
 Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('skm.submit_survey');
 
 Route::get('/hubungi', Hubungi::class)->name('hubungi');
+
+Route::get('/peta', Peta::class)->name('peta');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

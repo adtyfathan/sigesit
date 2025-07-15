@@ -75,26 +75,19 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- Anda mungkin ingin mengganti ini dengan data dari database SkmResult Anda --}}
-                            @php
-                                $dummyRespondents = [
-                                    ['SKM-001', '2024-08-10', 'Pelayanan B', 78, 'Komentar dummy untuk bulan Aug 2024.'],
-                                    ['SKM-002', '2024-08-12', 'Pelayanan A', 74, 'Komentar dummy untuk bulan Aug 2024.'],
-                                    ['SKM-003', '2024-08-07', 'Pelayanan C', 80, 'Komentar dummy untuk bulan Aug 2024.'],
-                                    // ... tambahkan data dummy lain sesuai screenshot Anda
-                                    ['SKM-025', '2024-09-20', 'Pelayanan B', 78, 'Komentar dummy untuk bulan Sep 2024.'],
-                                ];
-                            @endphp
-
-                            @foreach($dummyRespondents as $respondent)
+                            @forelse($recentRespondents as $respondent)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $respondent[0] }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $respondent[1] }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $respondent[2] }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-700 font-bold">{{ $respondent[3] }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">{{ $respondent[4] }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SKM-{{ str_pad($respondent->id, 3, '0', STR_PAD_LEFT) }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ \Carbon\Carbon::parse($respondent->survey_date)->translatedFormat('d F Y') }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $respondent->service_aspect }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-700 font-bold">{{ $respondent->ikm_score }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">{{ $respondent->comment ?? '-' }}</td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">Belum ada data survei.</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -174,14 +167,6 @@
                     </div>
                 </form>
             </div>
-            {{-- End Form Survei --}}
-
-            <a href="{{ route('home') }}" class="mt-12 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out">
-                <svg class="ml-2 -mr-0.5 h-5 w-5 rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-                Kembali ke Beranda
-            </a>
         </div>
     </section>
 
