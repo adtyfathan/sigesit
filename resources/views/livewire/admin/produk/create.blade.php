@@ -14,7 +14,7 @@
 
             <form wire:submit="store" class="p-8 space-y-8">
                 <!-- Product Name -->
-                <div class="space-y-2">
+                <div class="space-y-2 text-black">
                     <label for="nama_produk" class="block text-sm font-semibold text-gray-700">
                         Nama Produk
                         <span class="text-red-500">*</span>
@@ -42,7 +42,7 @@
                             Harga Produk
                             <span class="text-red-500">*</span>
                         </label>
-                        <div class="relative">
+                        <div class="relative text-black">
                             <span class="absolute left-3 top-3 text-gray-500 font-medium">Rp</span>
                             <input type="number" id="harga_produk" wire:model="harga_produk"
                                 class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 placeholder-gray-400"

@@ -1,4 +1,4 @@
-<div class="py-12">
+<div class="py-12 items-center">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
         <div class="bg-white/80 rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden">
             <div class="p-6 lg:p-8">
@@ -12,7 +12,6 @@
 
                 <div class=" overflow-x-auto relative">
                     <table class="w-full text-sm text-left text-gray-500">
-                        <!-- Table Header -->
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
                                 <th scope="col" class="py-3 px-6 text-center">
@@ -33,17 +32,16 @@
                             </tr>
                         </thead>
 
-                        <!-- Table Body -->
                         <tbody>
                             @foreach ($beritas as $berita)
-                                <tr class="bg-white border-b hover:bg-gray-50">
+                                <tr class="bg-white border-b hover:bg-gray-50 text-center">
                                     <td class="px-6 py-4">
                                         {{ $berita->judul }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="flex items-center">
-                                            <div class="h-10 w-10 bg-gray-200 rounded-md flex items-center justify-center">
-                                                <img src="{{ asset('storage/' . $berita->gambar_berita) }}">
+                                        <div class="flex items-center justify-center">
+                                            <div class="h-10 w-10 bg-gray-200 rounded-md flex items-center justify-center overflow-hidden">
+                                                <img src="{{ asset('storage/' . $berita->gambar_berita) }}" class="object-cover h-full w-full">
                                             </div>
                                         </div>
                                     </td>
@@ -55,7 +53,7 @@
                                         {{ $berita->created_at->format('d M Y H:i') }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="flex space-x-2">
+                                        <div class="flex space-x-2 justify-center">
                                             <a href="{{ route('admin.berita.show', $berita->id) }}"
                                                 class="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors"
                                                 wire:navigate>
@@ -67,7 +65,7 @@
                                                 Edit
                                             </a>
                                             <button wire:click="delete({{ $berita->id }})"
-                                                class="text-red-600 hover:text-red-900"
+                                                class="text-red-600 hover:text-red-900 px-3 py-1 rounded-md bg-red-50 hover:bg-red-100 transition-colors"
                                                 onclick="return confirm('Anda yakin menghapus berita ini?')"
                                                 wire:navigate>
                                                 Hapus

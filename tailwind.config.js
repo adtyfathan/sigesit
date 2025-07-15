@@ -20,7 +20,7 @@ export default {
 
     plugins: [
         forms,
-        daisyui,
+        //daisyui,
     ],
 
     daisyui: {

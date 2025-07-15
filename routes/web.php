@@ -57,6 +57,8 @@ Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('
 
 Route::get('/hubungi', Hubungi::class)->name('hubungi');
 
+Route::get('/peta', Peta::class)->name('peta');
+
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');

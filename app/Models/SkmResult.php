@@ -13,7 +13,7 @@ class SkmResult extends Model
         'ikm_score',
         'comment',
         'service_aspect',
-        //'survey_date',
+        'survey_date',
     ];
 
     protected $casts = [
