@@ -93,10 +93,10 @@
                         </div>
 
                         <!-- Purchase Button -->
-                        <button wire:click="purchase({{ $produk['id'] }})"
+                        <a href="{{ route('layanan.show', $produk->id) }}" wire:navigate
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2">
                             <span>Beli Sekarang</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
             @endforeach

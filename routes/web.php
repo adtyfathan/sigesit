@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Home;
 use App\Livewire\Hubungi;
 use App\Livewire\Layanan\Index as LayananIndex;
+use App\Livewire\Layanan\Show as LayananShow;
 use App\Livewire\Berita\Index as BeritaIndex;
 use App\Livewire\Berita\Show as BeritaShow;
 use App\Livewire\SkmPage;
@@ -43,6 +44,7 @@ Route::get('/home', Home::class)->name('home');
 
 Route::prefix('/layanan')->name('layanan')->group(function () {
     Route::get('',LayananIndex::class)->name('.index'); 
+    Route::get('/show/{produkId}',LayananShow::class)->name('.show');
 });
 
 Route::prefix('/berita')->name('berita')->group(function () {
