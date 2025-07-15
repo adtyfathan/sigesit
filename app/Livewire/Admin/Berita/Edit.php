@@ -7,6 +7,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class Edit extends Component
 {
@@ -18,6 +19,10 @@ class Edit extends Component
     public $isi_berita;
 
     public function mount($beritaId){
+        if (!Auth::check() || Auth::user()->role_id != 2) {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
+        
         $this->berita = Berita::find($beritaId);
         $this->judul = $this->berita->judul;
         $this->isi_berita = $this->berita->isi_berita;

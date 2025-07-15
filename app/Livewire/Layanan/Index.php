@@ -5,6 +5,7 @@ namespace App\Livewire\Layanan;
 use App\Models\Produk;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
@@ -12,6 +13,10 @@ class Index extends Component
     public $search = '';
 
     public function mount(){
+        if (!Auth::check() || Auth::user()->role_id != 1) {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
+        
         $this->produks = Produk::get();
     }
 

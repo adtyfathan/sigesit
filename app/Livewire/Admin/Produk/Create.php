@@ -7,6 +7,7 @@ use Livewire\Attributes\Layout;
 use App\Models\Kategori;
 use App\Models\Produk;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
 
 class Create extends Component
 {
@@ -21,6 +22,10 @@ class Create extends Component
     public $kategori_id;
     
     public function mount(){
+        if (!Auth::check() || Auth::user()->role_id != 2) {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
+  
         $this->kategoris = Kategori::get();
     }
 

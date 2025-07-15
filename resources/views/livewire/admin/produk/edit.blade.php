@@ -70,7 +70,7 @@
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white">
                             <option value="">Pilih Kategori</option>
                             @foreach($kategoris as $kategori)
-                                <option value="{{ $kategori->id }}" {{ $produk->kategori_id === $kategori_id ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
+                                <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
                             @endforeach
                         </select>
                         @error('kategori_id')

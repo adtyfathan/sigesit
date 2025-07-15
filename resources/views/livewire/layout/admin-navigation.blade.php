@@ -31,23 +31,11 @@ new class extends Component {
             </div>
 
             <!-- Custom Navigation Links - Centered -->
-            {{-- <div class="hidden space-x-4 sm:flex items-center">
-                <x-nav-link :href="route('home')" :active="request()->routeIs('home')" wire:navigate>
-                    {{ __('Home') }}
+            <div class="hidden space-x-4 sm:flex items-center">
+                <x-nav-link :href="route('admin.dashboard.index')" wire:navigate>
+                    {{ __('Dashboard Admin') }}
                 </x-nav-link>
-                <x-nav-link :href="route('layanan.index')" :active="request()->routeIs('layanan.*')" wire:navigate>
-                    {{ __('Layanan Kami') }}
-                </x-nav-link>
-                <x-nav-link :href="" wire:navigate>
-                    {{ __('Peta Interaktif') }}
-                </x-nav-link>
-                <x-nav-link :href="" wire:navigate>
-                    {{ __('SKM') }}
-                </x-nav-link>
-                <x-nav-link :href="route('hubungi')" :active="request()->routeIs('hubungi')" wire:navigate>
-                    {{ __('Hubungi Kami') }}
-                </x-nav-link>
-            </div> --}}
+            </div>
 
             <!-- Settings Dropdown - Adjusted spacing to bring it closer to nav links -->
             <div class="hidden sm:flex sm:items-center -me-2">
@@ -55,7 +43,17 @@ new class extends Component {
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            class="inline-flex items-center gap-3 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            @if (Auth::user()->avatar)
+                                <img class="h-8 w-8 object-cover rounded-full border-2 border-gray-300" src="{{ Storage::url(Auth::user()->avatar) }}"
+                                    alt="Current avatar">
+                            @else
+                                <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
+                                    <img class="h-8 w-8 object-cover rounded-full border-2 border-gray-300"
+                                        src="{{ asset('images/default-avatar.png') }}" alt="Current avatar">
+                                </div>
+                            @endif
+
                             <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
                                 x-on:profile-updated.window="name = $event.detail.name"></div>
 

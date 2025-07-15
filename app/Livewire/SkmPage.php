@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Models\SkmResult;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.app')] 
 class SkmPage extends Component
@@ -15,6 +16,10 @@ class SkmPage extends Component
 
     public function mount()
     {
+        if (!Auth::check() || Auth::user()->role_id != 1) {
+            abort(403, 'Anda tidak memiliki akses.');
+        }
+        
         $this->loadTrendData();
     }
 
