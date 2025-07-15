@@ -78,7 +78,7 @@
                                 <!-- Action Buttons -->
                                 <div class="space-y-4">
                                     <!-- Main Buy Button -->
-                                    <button wire:click="beli({{ $produk->id }})"
+                                    <button wire:click="goToCheckout({{ $produk->id }})"
                                         class="w-full relative group overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl">
                                         <div
                                             class="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 group-hover:from-white/20 group-hover:to-white/10 transition-all duration-300">

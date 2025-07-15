@@ -46,6 +46,11 @@ class Show extends Component
         $this->dispatch('link-copied');
     }
 
+    public function goToCheckout($produkId)
+    {
+        $this->redirect(route('checkout', $produkId), true);
+    }
+
     #[Layout('layouts.app')]
     public function render()
     {

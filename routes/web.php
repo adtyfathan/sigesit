@@ -12,6 +12,7 @@ use App\Livewire\Berita\Show as BeritaShow;
 use App\Livewire\Peta;
 use App\Livewire\SkmPage;
 use App\Http\Controllers\SkmResultController;
+use App\Livewire\Checkout;
 
 // Admin
 // Dashboard
@@ -37,7 +38,6 @@ use App\Livewire\Admin\Akun\Edit as AdminAkunEdit;
 use App\Livewire\Admin\Kategori\Index as AdminKategoriIndex;
 use App\Livewire\Admin\Kategori\Create as AdminKategoriCreate;
 use App\Livewire\Admin\Kategori\Edit as AdminKategoriEdit;
-use App\Models\Role;
 
 Route::view('/', 'welcome');
 
@@ -60,6 +60,8 @@ Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('
 Route::get('/hubungi', Hubungi::class)->name('hubungi');
 
 Route::get('/peta', Peta::class)->name('peta');
+
+Route::get('/checkout/{produkId}', Checkout::class)->name('checkout');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

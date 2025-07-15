@@ -14,7 +14,10 @@ class Transaksi extends Model
         'tanggal_transaksi',
         'status',
         'user_id',
-        'produk_id'
+        'produk_id',
+        'order_id',
+        'transaction_id',
+        'payment_type'
     ];
 
     public function user()
@@ -25,5 +28,21 @@ class Transaksi extends Model
     public function produk()
     {
         return $this->belongsTo(Produk::class, 'produk_id');
+    }
+
+    // Scope for different payment statuses
+    public function scopeSuccess($query)
+    {
+        return $query->where('status', 'success');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    public function scopeFailed($query)
+    {
+        return $query->where('status', 'failed');
     }
 }
