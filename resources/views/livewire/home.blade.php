@@ -15,53 +15,36 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Berita Terbaru</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
-                    <img class="w-full h-56 object-cover" src="{{ asset('images/berita1.jpg') }}" alt="Judul Berita 1">
-                    <div class="p-6">
-                        <p class="text-sm text-gray-500 mb-2">05 Juli 2025</p>
-                        <h3 class="font-bold text-xl text-gray-900 mb-2 truncate">Peningkatan Akurasi Data Geospasial Nasional</h3>
-                        <p class="text-gray-700 text-sm leading-relaxed line-clamp-3">
-                            BIG meluncurkan program baru untuk meningkatkan akurasi dan cakupan data geospasial di seluruh wilayah Indonesia, melibatkan teknologi terbaru dan partisipasi masyarakat.
-                        </p>
-                        <a href="#" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
-                            Baca Selengkapnya
-                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                        </a>
+                @forelse($latestBeritas as $berita)
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
+                        @if($berita->gambar_berita)
+                            <img class="w-full h-56 object-cover" src="{{ asset('storage/' . $berita->gambar_berita) }}" alt="{{ $berita->judul }}">
+                        @else
+                            <div class="w-full h-56 bg-gray-200 flex items-center justify-center text-gray-500">
+                                Tidak Ada Gambar
+                            </div>
+                        @endif
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-2">{{ \Carbon\Carbon::parse($berita->created_at)->translatedFormat('d F Y') }}</p>
+                            <h3 class="font-bold text-xl text-gray-900 mb-2 truncate">{{ $berita->judul }}</h3>
+                            <p class="text-gray-700 text-sm leading-relaxed line-clamp-3">
+                                {{ Str::limit(strip_tags($berita->isi_berita), 150) }}
+                            </p>
+                            <a href="{{ route('berita.show', $berita->id) }}" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium" wire:navigate>
+                                Baca Selengkapnya
+                                <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </a>
+                        </div>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
-                    <img class="w-full h-56 object-cover" src="{{ asset('images/berita2.jpg') }}" alt="Judul Berita 2">
-                    <div class="p-6">
-                        <p class="text-sm text-gray-500 mb-2">01 Juli 2025</p>
-                        <h3 class="font-bold text-xl text-gray-900 mb-2 truncate">Kerja Sama Lintas Sektor untuk Satu Data Indonesia</h3>
-                        <p class="text-gray-700 text-sm leading-relaxed line-clamp-3">
-                            Kolaborasi antara BIG dan berbagai kementerian/lembaga terus diperkuat guna mewujudkan visi Satu Data Indonesia yang terintegrasi dan akurat.
-                        </p>
-                        <a href="#" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
-                            Baca Selengkapnya
-                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                        </a>
+                @empty
+                    {{-- Pesan jika tidak ada berita --}}
+                    <div class="col-span-full text-center py-8 text-gray-500">
+                        <p class="text-lg">Belum ada berita terbaru saat ini.</p>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
-                    <img class="w-full h-56 object-cover" src="{{ asset('images/berita3.jpg') }}" alt="Judul Berita 3">
-                    <div class="p-6">
-                        <p class="text-sm text-gray-500 mb-2">28 Juni 2025</p>
-                        <h3 class="font-bold text-xl text-gray-900 mb-2 truncate">Workshop Pemanfaatan Informasi Geospasial untuk Pembangunan Daerah</h3>
-                        <p class="text-gray-700 text-sm leading-relaxed line-clamp-3">
-                            Ratusan perwakilan pemerintah daerah mengikuti workshop yang diselenggarakan BIG untuk meningkatkan pemahaman dan pemanfaatan informasi geospasial dalam perencanaan pembangunan.
-                        </p>
-                        <a href="#" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
-                            Baca Selengkapnya
-                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                        </a>
-                    </div>
-                </div>
+                @endforelse
             </div>
             <div class="text-center mt-12">
-                <a href="/berita" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                <a href="{{ route('berita.index') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out" wire:navigate>
                     Lihat Semua Berita
                     <svg class="ml-2 -mr-0.5 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />

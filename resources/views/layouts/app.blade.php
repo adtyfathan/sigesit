@@ -18,6 +18,12 @@
         @stack('styles') 
     </head>
     <body class="font-sans antialiased">
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+        moment.locale('id'); 
+        </script>
+        <script src="{{ asset('js/app.js') }}"></script>
         <div class="min-h-screen bg-gray-100">
             @if (auth()->user()->role_id === 1)
                 <livewire:layout.navigation />
