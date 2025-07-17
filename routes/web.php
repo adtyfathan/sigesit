@@ -39,6 +39,10 @@ use App\Livewire\Admin\Kategori\Index as AdminKategoriIndex;
 use App\Livewire\Admin\Kategori\Create as AdminKategoriCreate;
 use App\Livewire\Admin\Kategori\Edit as AdminKategoriEdit;
 
+// Midtrans
+use App\Http\Controllers\MidtransController;
+use Illuminate\Support\Facades\Artisan;
+
 Route::view('/', 'welcome');
 
 Route::get('/home', Home::class)->name('home');
@@ -87,7 +91,7 @@ Route::prefix('/admin')->name('admin')->group(function () {
     });
 
     Route::prefix('/akun')->name('.akun')->group(function () {
-        Route::get('',AdminAkunIndex::class)->name('.index');
+    Route::get('',AdminAkunIndex::class)->name('.index');
         Route::get('/edit/{userId}',AdminAkunEdit::class)->name('.edit');
     });
 
@@ -97,5 +101,7 @@ Route::prefix('/admin')->name('admin')->group(function () {
         Route::get('/edit/{kategoriId}',AdminKategoriEdit::class)->name('.edit');
     });
 });
+
+Route::post('/midtrans/webhook', [MidtransController::class, 'handle'])->name('midtrans.webhook')->withoutMiddleware(['web', 'auth']);
 
 require __DIR__.'/auth.php';

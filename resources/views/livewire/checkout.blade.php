@@ -2,6 +2,33 @@
     <div class="max-w-2xl mx-auto">
         <h1 class="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
 
+        <!-- Payment Status Indicator -->
+        @if($paymentStatus)
+            <div class="mb-6 p-4 rounded-lg border-l-4 
+                    {{ $paymentStatus === 'sukses' ? 'bg-green-50 border-green-400' :
+            ($paymentStatus === 'pending' ? 'bg-yellow-50 border-yellow-400' : 'bg-red-50 border-red-400') }}">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        @if($paymentStatus === 'sukses')
+                            <i class="fas fa-check-circle text-green-400"></i>
+                        @elseif($paymentStatus === 'pending')
+                            <i class="fas fa-clock text-yellow-400"></i>
+                        @else
+                            <i class="fas fa-exclamation-circle text-red-400"></i>
+                        @endif
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium 
+                                {{ $paymentStatus === 'sukses' ? 'text-green-800' :
+            ($paymentStatus === 'pending' ? 'text-yellow-800' : 'text-red-800') }}">
+                            Status Pembayaran:
+                            <span class="capitalize">{{ $paymentStatus }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <!-- Product Details -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 class="text-xl font-semibold mb-4">Detail Produk</h2>
@@ -14,7 +41,8 @@
                     <p class="text-sm text-gray-500 mt-1">{{ $produk->deskripsi_produk }}</p>
                 </div>
                 <div class="text-right">
-                    <p class="text-2xl font-bold text-blue-600">Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</p>
+                    <p class="text-2xl font-bold text-blue-600">Rp
+                        {{ number_format($produk->harga_produk, 0, ',', '.') }}</p>
                 </div>
             </div>
         </div>
@@ -56,21 +84,32 @@
             </button>
         </div>
 
+        <!-- Status Check Loading -->
+        <div id="status-checking" class="hidden mt-4 text-center">
+            <div class="inline-flex items-center px-4 py-2 bg-blue-50 rounded-lg">
+                <i class="fas fa-sync-alt fa-spin text-blue-600 mr-2"></i>
+                <span class="text-blue-600">Memeriksa status pembayaran...</span>
+            </div>
+        </div>
+
         <!-- Flash Messages -->
         @if (session()->has('success'))
             <div class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+                <i class="fas fa-check-circle mr-2"></i>
                 {{ session('success') }}
             </div>
         @endif
 
         @if (session()->has('error'))
             <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+                <i class="fas fa-exclamation-circle mr-2"></i>
                 {{ session('error') }}
             </div>
         @endif
 
         @if (session()->has('info'))
             <div class="mt-4 bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative">
+                <i class="fas fa-info-circle mr-2"></i>
                 {{ session('info') }}
             </div>
         @endif
@@ -78,46 +117,86 @@
 </div>
 
 <!-- Midtrans Snap Script -->
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js"
+    data-client-key="{{ config('midtrans.client_key') }}"></script>
 
 <script>
+    let statusCheckInterval;
+
     document.addEventListener('livewire:initialized', function () {
         // Listen for payment modal event
         Livewire.on('show-payment-modal', function (data) {
             const snapToken = data[0].snapToken;
+            const orderId = data[0].orderId;
             console.log('Snap Token:', snapToken);
 
             snap.pay(snapToken, {
-                // Optional: Payment success callback
                 onSuccess: function (result) {
                     console.log('Payment success:', result);
-                    // Call Livewire method to handle success
                     @this.call('handlePaymentSuccess', result);
                 },
 
-                // Optional: Payment pending callback
                 onPending: function (result) {
                     console.log('Payment pending:', result);
-                    // Call Livewire method to handle pending
                     @this.call('handlePaymentPending', result);
                 },
 
-                // Optional: Payment error callback
                 onError: function (result) {
                     console.log('Payment error:', result);
-                    // Call Livewire method to handle error
                     @this.call('handlePaymentError', result);
                 },
 
-                // Optional: Payment close callback
                 onClose: function () {
                     console.log('Payment popup closed');
-                    // Reset processing state
                     @this.set('isProcessing', false);
                 }
             });
         });
+
+        // Listen for status polling start event
+        Livewire.on('start-status-polling', function (data) {
+            const orderId = data[0].orderId;
+            startStatusPolling(orderId);
+        });
+
+        // Listen for payment confirmation
+        Livewire.on('payment-confirmed', function (data) {
+            const status = data[0].status;
+            stopStatusPolling();
+
+            if (status === 'success') {
+                // Optionally redirect to success page
+                setTimeout(() => {
+                    window.location.href = '/dashboard'; // Adjust route as needed
+                }, 2000);
+            }
+        });
     });
+
+    function startStatusPolling(orderId) {
+        document.getElementById('status-checking').classList.remove('hidden');
+
+        statusCheckInterval = setInterval(() => {
+            @this.call('checkPaymentStatus', orderId).then(result => {
+                if (result) {
+                    stopStatusPolling();
+                }
+            });
+        }, 3000); // Check every 3 seconds
+
+        // Stop polling after 5 minutes
+        setTimeout(() => {
+            stopStatusPolling();
+        }, 300000);
+    }
+
+    function stopStatusPolling() {
+        if (statusCheckInterval) {
+            clearInterval(statusCheckInterval);
+            statusCheckInterval = null;
+        }
+        document.getElementById('status-checking').classList.add('hidden');
+    }
 </script>
 
 @push('styles')
@@ -126,7 +205,6 @@
             min-height: 100vh;
         }
 
-        /* Custom styles for payment button */
         .payment-button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             box-shadow: 0 4px 15px 0 rgba(116, 79, 168, 0.75);
@@ -136,7 +214,6 @@
             box-shadow: 0 6px 20px 0 rgba(116, 79, 168, 0.90);
         }
 
-        /* Loading animation */
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
@@ -149,6 +226,23 @@
 
         .fa-spin {
             animation: spin 2s linear infinite;
+        }
+
+        /* Status indicator animation */
+        .status-indicator {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 @endpush

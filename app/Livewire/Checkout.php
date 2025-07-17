@@ -14,6 +14,8 @@ class Checkout extends Component
     public $produk;
     public $snapToken;
     public $isProcessing = false;
+    public $currentTransaction;
+    public $paymentStatus = null;
     
     public function mount($produkId){
         if (!Auth::check() || Auth::user()->role_id != 1) {
@@ -29,6 +31,7 @@ class Checkout extends Component
     public function createPayment()
     {
         $this->isProcessing = true;
+        $this->paymentStatus = null;
         
         try {
             // Create transaction record
@@ -39,6 +42,8 @@ class Checkout extends Component
                 'user_id' => Auth::id(),
                 'produk_id' => $this->produk->id
             ]);
+
+            $this->currentTransaction = $transaction;
 
             // Generate unique order ID
             $orderId = 'ORDER-' . $transaction->id . '-' . time();
@@ -67,6 +72,13 @@ class Checkout extends Component
                 'customer_details' => [
                     'first_name' => Auth::user()->name,
                     'email' => Auth::user()->email,
+                ],
+                'callbacks' => [
+                    // 
+                    'finish' => route('checkout.success', ['orderId' => $orderId]),
+                    'error' => route('checkout.error', ['orderId' => $orderId]),
+                    'pending' => route('checkout.pending', ['orderId' => $orderId])
+                    // 
                 ]
             ];
 
@@ -80,12 +92,48 @@ class Checkout extends Component
             $this->isProcessing = false;
             
             // Dispatch browser event to show payment modal
-            $this->dispatch('show-payment-modal', ['snapToken' => $snapToken]);
+            $this->dispatch('show-payment-modal', ['snapToken' => $snapToken, 'orderId' => $orderId]);
             
         } catch (\Exception $e) {
             $this->isProcessing = false;
             session()->flash('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
+
+    public function checkPaymentStatus($orderId){
+         // Check if status has been updated via webhook
+        $cachedStatus = cache()->get("transaction_status_{$orderId}");
+        
+        if ($cachedStatus) {
+            $this->paymentStatus = $cachedStatus['status'];
+            
+            // Update local transaction record
+            if ($this->currentTransaction) {
+                $this->currentTransaction->refresh();
+            }
+            
+            // Clear cache after reading
+            cache()->forget("transaction_status_{$orderId}");
+            
+            // Show appropriate message based on status
+            switch ($cachedStatus['status']) {
+                case 'sukses':
+                    session()->flash('success', 'Pembayaran berhasil dikonfirmasi!');
+                    $this->dispatch('payment-confirmed', ['status' => 'success']);
+                    break;
+                case 'pending':
+                    session()->flash('info', 'Pembayaran sedang diproses. Mohon tunggu konfirmasi.');
+                    break;
+                case 'gagal':
+                    session()->flash('error', 'Pembayaran gagal. Silakan coba lagi.');
+                    $this->dispatch('payment-confirmed', ['status' => 'failed']);
+                    break;
+            }
+            
+            return true;
+         }
+        
+         return false;
     }
 
     public function handlePaymentSuccess($result)
@@ -94,29 +142,22 @@ class Checkout extends Component
         $transaction = Transaksi::where('order_id', $result['order_id'])->first();
         
         if ($transaction) {
-            $transaction->update([
-                'status' => 'sukses',
-                'payment_type' => $result['payment_type'] ?? null,
-                'transaction_id' => $result['transaction_id'] ?? null,
-            ]);
+            // Don't update status immediately, let webhook handle it
+            // Just show temporary success message
+            session()->flash('info', 'Pembayaran sedang diproses. Mohon tunggu konfirmasi.');
             
-            session()->flash('success', 'Pembayaran berhasil!');
-            return redirect()->route('dashboard'); // Adjust route as needed
+            // Start polling for status update
+            $this->dispatch('start-status-polling', ['orderId' => $result['order_id']]);
         }
     }
 
     public function handlePaymentPending($result)
     {
-        $transaction = Transaksi::where('order_id', $result['order_id'])->first();
+         $transaction = Transaksi::where('order_id', $result['order_id'])->first();
         
         if ($transaction) {
-            $transaction->update([
-                'status' => 'pending',
-                'payment_type' => $result['payment_type'] ?? null,
-                'transaction_id' => $result['transaction_id'] ?? null,
-            ]);
-            
             session()->flash('info', 'Pembayaran sedang diproses. Silakan selesaikan pembayaran Anda.');
+            $this->dispatch('start-status-polling', ['orderId' => $result['order_id']]);
         }
     }
 
@@ -125,13 +166,8 @@ class Checkout extends Component
         $transaction = Transaksi::where('order_id', $result['order_id'])->first();
         
         if ($transaction) {
-            $transaction->update([
-                'status' => 'gagal',
-                'payment_type' => $result['payment_type'] ?? null,
-                'transaction_id' => $result['transaction_id'] ?? null,
-            ]);
-            
             session()->flash('error', 'Pembayaran gagal. Silakan coba lagi.');
+
         }
     }
 
@@ -139,5 +175,5 @@ class Checkout extends Component
     public function render()
     {
         return view('livewire.checkout');
-    }
+    }   
 }

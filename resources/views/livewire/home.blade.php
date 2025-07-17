@@ -15,28 +15,36 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Berita Terbaru</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach ($beritasTerbaru as $berita)
+                @forelse($latestBeritas as $berita)
                     <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
-                        <img class="w-full h-56 object-cover" src="{{ asset('storage/' . $berita->gambar_berita) }}" alt="Berita {{ $berita->judul }}">
+                        @if($berita->gambar_berita)
+                            <img class="w-full h-56 object-cover" src="{{ asset('storage/' . $berita->gambar_berita) }}" alt="{{ $berita->judul }}">
+                        @else
+                            <div class="w-full h-56 bg-gray-200 flex items-center justify-center text-gray-500">
+                                Tidak Ada Gambar
+                            </div>
+                        @endif
                         <div class="p-6">
-                            <p class="text-sm text-gray-500 mb-2">{{ $berita->created_at->translatedFormat('l, d F Y H:i') }}</p>
+                            <p class="text-sm text-gray-500 mb-2">{{ \Carbon\Carbon::parse($berita->created_at)->translatedFormat('d F Y') }}</p>
                             <h3 class="font-bold text-xl text-gray-900 mb-2 truncate">{{ $berita->judul }}</h3>
                             <p class="text-gray-700 text-sm leading-relaxed line-clamp-3">
-                                {{ $berita->isi_berita }}
+                                {{ Str::limit(strip_tags($berita->isi_berita), 150) }}
                             </p>
-                            <a href="{{ route('berita.show', $berita->id) }}" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            <a href="{{ route('berita.show', $berita->id) }}" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium" wire:navigate>
                                 Baca Selengkapnya
-                                <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
+                                <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                             </a>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    {{-- Pesan jika tidak ada berita --}}
+                    <div class="col-span-full text-center py-8 text-gray-500">
+                        <p class="text-lg">Belum ada berita terbaru saat ini.</p>
+                    </div>
+                @endforelse
             </div>
             <div class="text-center mt-12">
-                <a href="/berita" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                <a href="{{ route('berita.index') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out" wire:navigate>
                     Lihat Semua Berita
                     <svg class="ml-2 -mr-0.5 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
