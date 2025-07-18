@@ -54,6 +54,12 @@
                             class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200">
                             <span>Kategori</span>
                         </a>
+
+                        <a href="{{ route('admin.pesan.index') }}" wire:navigate
+                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200
+                            {{ request()->routeIs('admin.pesan.index') ? 'bg-gray-100' : '' }}">
+                            <span>Pesan</span>
+                        </a>
                     </nav>
                 </div>
             </aside>

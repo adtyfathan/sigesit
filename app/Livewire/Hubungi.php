@@ -5,11 +5,15 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Contact; 
+use Illuminate\Validation\ValidationException;  
+use Illuminate\Support\Facades\Log; 
 
 class Hubungi extends Component
 {
     public $name;
     public $email;
+    public $subject; // <<< MENAMBAHKAN PROPERTI SUBJECT
     public $message;
 
     public function mount(){
@@ -19,23 +23,38 @@ class Hubungi extends Component
     }
 
     protected $rules = [
-        'name' => 'required|min:3',
-        'email' => 'required|email',
-        'message' => 'required|min:10',
+        'name' => 'required|string|max:255', // Lebih spesifik: string, max length
+        'email' => 'required|email|max:255', // Lebih spesifik: email, max length
+        'subject' => 'nullable|string|max:255', // <<< ATURAN UNTUK SUBJECT (opsional)
+        'message' => 'required|string|min:10', // Lebih spesifik: string
     ];
 
     public function submitForm()
     {
-        $this->validate();
+        try {
+            $this->validate(); // Lakukan validasi sesuai rules di atas
 
-        // Di sini Anda bisa menambahkan logika untuk mengirim email atau menyimpan pesan ke database
-        // Contoh sederhana:
-        // Mail::to('admin@websiteanda.com')->send(new ContactFormMail($this->name, $this->email, $this->message));
+            // --- LOGIKA PENYIMPANAN DATA KE DATABASE ---
+            Contact::create([ // Menggunakan model Contact untuk menyimpan ke tabel 'contacts'
+                'name' => $this->name,
+                'email' => $this->email,
+                'subject' => $this->subject, // <<< SIMPAN JUGA SUBJECT
+                'message' => $this->message,
+                'is_read' => false, // Default: pesan belum dibaca
+            ]);
 
-        session()->flash('message', 'Terima kasih! Pesan Anda telah terkirim.');
+            session()->flash('message', 'Pesan Anda telah berhasil dikirim!');
 
-        // Reset form
-        $this->reset(['name', 'email', 'message']);
+            // Reset form
+            $this->reset(['name', 'email', 'subject', 'message']); 
+
+        } catch (ValidationException $e) {
+            Log::error('Validation failed for Hubungi form: ' . json_encode($e->errors()));
+            throw $e;
+        } catch (\Exception $e) {
+            session()->flash('error', 'Maaf, terjadi kesalahan saat mengirim pesan Anda. Silakan coba lagi nanti.');
+            Log::error('General error submitting Hubungi form: ' . $e->getMessage() . ' - Trace: ' . $e->getTraceAsString());
+        }
     }
 
     #[Layout('layouts.app')]
