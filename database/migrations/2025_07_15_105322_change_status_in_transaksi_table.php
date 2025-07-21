@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transaksi', function (Blueprint $table) {
-            $table->enum('status', ['failure', 'expire', 'cancel', 'deny', 'settlement', 'capture', 'pending', 'sukses', 'verfikasi operator', 'verifikasi bendahara', 'selesai'])->change();
+            $table->enum('status', ['failure', 'expire', 'cancel', 'deny', 'settlement', 'capture', 'pending', 'success', 'verfikasi operator', 'verifikasi bendahara', 'selesai'])->change();
             $table->string('order_id')->nullable()->after('status');
             $table->string('transaction_id')->nullable()->after('order_id');
             $table->string('payment_type')->nullable()->after('transaction_id');

@@ -102,8 +102,10 @@ class Checkout extends Component
 
     public function checkPaymentStatus($orderId){
          // Check if status has been updated via webhook
-        $cachedStatus = cache()->get("transaction_status_{$orderId}");
-        
+        $cachedStatus = cache()->get(key: "transaction_status_{$orderId}");
+        // dd($orderId);
+        // dd($cachedStatus);
+
         if ($cachedStatus) {
             $this->paymentStatus = $cachedStatus['status'];
             
@@ -117,14 +119,14 @@ class Checkout extends Component
             
             // Show appropriate message based on status
             switch ($cachedStatus['status']) {
-                case 'sukses':
+                case 'success':
                     session()->flash('success', 'Pembayaran berhasil dikonfirmasi!');
                     $this->dispatch('payment-confirmed', ['status' => 'success']);
                     break;
                 case 'pending':
                     session()->flash('info', 'Pembayaran sedang diproses. Mohon tunggu konfirmasi.');
                     break;
-                case 'gagal':
+                case 'failed':
                     session()->flash('error', 'Pembayaran gagal. Silakan coba lagi.');
                     $this->dispatch('payment-confirmed', ['status' => 'failed']);
                     break;
@@ -140,7 +142,6 @@ class Checkout extends Component
     {
         // Find transaction by order_id
         $transaction = Transaksi::where('order_id', $result['order_id'])->first();
-        
         if ($transaction) {
             // Don't update status immediately, let webhook handle it
             // Just show temporary success message
@@ -168,6 +169,12 @@ class Checkout extends Component
         if ($transaction) {
             session()->flash('error', 'Pembayaran gagal. Silakan coba lagi.');
 
+        }
+    }
+
+    public function redirectToReview(){
+        if ($this->currentTransaction) {
+            return $this->redirect(route('transaksi.show', $this->currentTransaction->id), navigate: true);
         }
     }
 

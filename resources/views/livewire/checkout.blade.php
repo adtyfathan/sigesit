@@ -4,29 +4,29 @@
 
         <!-- Payment Status Indicator -->
         @if($paymentStatus)
-            <div class="mb-6 p-4 rounded-lg border-l-4 
-                    {{ $paymentStatus === 'sukses' ? 'bg-green-50 border-green-400' :
-            ($paymentStatus === 'pending' ? 'bg-yellow-50 border-yellow-400' : 'bg-red-50 border-red-400') }}">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        @if($paymentStatus === 'sukses')
-                            <i class="fas fa-check-circle text-green-400"></i>
-                        @elseif($paymentStatus === 'pending')
-                            <i class="fas fa-clock text-yellow-400"></i>
-                        @else
-                            <i class="fas fa-exclamation-circle text-red-400"></i>
-                        @endif
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm font-medium 
-                                {{ $paymentStatus === 'sukses' ? 'text-green-800' :
-            ($paymentStatus === 'pending' ? 'text-yellow-800' : 'text-red-800') }}">
-                            Status Pembayaran:
-                            <span class="capitalize">{{ $paymentStatus }}</span>
-                        </p>
+                <div class="mb-6 p-4 rounded-lg border-l-4 
+                        {{ $paymentStatus === 'success' ? 'bg-green-50 border-green-400' :
+        ($paymentStatus === 'pending' ? 'bg-yellow-50 border-yellow-400' : 'bg-red-50 border-red-400') }}">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            @if($paymentStatus === 'success')
+                                <i class="fas fa-check-circle text-green-400"></i>
+                            @elseif($paymentStatus === 'pending')
+                                <i class="fas fa-clock text-yellow-400"></i>
+                            @else
+                                <i class="fas fa-exclamation-circle text-red-400"></i>
+                            @endif
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium 
+                                    {{ $paymentStatus === 'success' ? 'text-green-800' :
+        ($paymentStatus === 'pending' ? 'text-yellow-800' : 'text-red-800') }}">
+                                Status Pembayaran:
+                                <span class="capitalize">{{ $paymentStatus }}</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
         @endif
 
         <!-- Product Details -->
@@ -128,26 +128,26 @@
         Livewire.on('show-payment-modal', function (data) {
             const snapToken = data[0].snapToken;
             const orderId = data[0].orderId;
-            console.log('Snap Token:', snapToken);
+            // console.log('Snap Token:', snapToken);
 
             snap.pay(snapToken, {
                 onSuccess: function (result) {
-                    console.log('Payment success:', result);
+                    // console.log('Payment success:', result);
                     @this.call('handlePaymentSuccess', result);
                 },
 
                 onPending: function (result) {
-                    console.log('Payment pending:', result);
+                    // console.log('Payment pending:', result);
                     @this.call('handlePaymentPending', result);
                 },
 
                 onError: function (result) {
-                    console.log('Payment error:', result);
+                    // console.log('Payment error:', result);
                     @this.call('handlePaymentError', result);
                 },
 
                 onClose: function () {
-                    console.log('Payment popup closed');
+                    // console.log('Payment popup closed');
                     @this.set('isProcessing', false);
                 }
             });
@@ -167,7 +167,7 @@
             if (status === 'success') {
                 // Optionally redirect to success page
                 setTimeout(() => {
-                    window.location.href = '/dashboard'; // Adjust route as needed
+                    @this.call('redirectToReview')
                 }, 2000);
             }
         });
@@ -175,19 +175,19 @@
 
     function startStatusPolling(orderId) {
         document.getElementById('status-checking').classList.remove('hidden');
+        @this.call('checkPaymentStatus', orderId)
+        // statusCheckInterval = setInterval(() => {
+        //     @this.call('checkPaymentStatus', orderId).then(result => {
+        //         if (result) {
+        //             stopStatusPolling();
+        //         }
+        //     });
+        // }, 3000); // Check every 3 seconds
 
-        statusCheckInterval = setInterval(() => {
-            @this.call('checkPaymentStatus', orderId).then(result => {
-                if (result) {
-                    stopStatusPolling();
-                }
-            });
-        }, 3000); // Check every 3 seconds
-
-        // Stop polling after 5 minutes
-        setTimeout(() => {
-            stopStatusPolling();
-        }, 300000);
+        // // Stop polling after 5 minutes
+        // setTimeout(() => {
+        //     stopStatusPolling();
+        // }, 300000);
     }
 
     function stopStatusPolling() {

@@ -13,6 +13,7 @@ use App\Livewire\Peta;
 use App\Livewire\SkmPage;
 use App\Http\Controllers\SkmResultController;
 use App\Livewire\Checkout;
+use App\Livewire\Transaksi;
 
 // Admin
 // Dashboard
@@ -41,7 +42,7 @@ use App\Livewire\Admin\Kategori\Edit as AdminKategoriEdit;
 
 // Midtrans
 use App\Http\Controllers\MidtransController;
-use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\PaymentCallbackController;
 
 Route::view('/', 'welcome');
 
@@ -66,6 +67,8 @@ Route::get('/hubungi', Hubungi::class)->name('hubungi');
 Route::get('/peta', Peta::class)->name('peta');
 
 Route::get('/checkout/{produkId}', Checkout::class)->name('checkout');
+
+Route::get('/transaksi/{transaksiId}', Transaksi::class)->name('transaksi.show');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
@@ -102,6 +105,17 @@ Route::prefix('/admin')->name('admin')->group(function () {
     });
 });
 
-Route::post('/midtrans/webhook', [MidtransController::class, 'handle'])->name('midtrans.webhook')->withoutMiddleware(['web', 'auth']);
+Route::post('/midtrans/webhook', [MidtransController::class, 'handle'])->name('midtrans.webhook')->withoutMiddleware(['auth', 'web']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/payment/success/{orderId}', [PaymentCallbackController::class, 'success'])
+        ->name('checkout.success');
+    
+    Route::get('/payment/error/{orderId}', [PaymentCallbackController::class, 'error'])
+        ->name('checkout.error');
+    
+    Route::get('/payment/pending/{orderId}', [PaymentCallbackController::class, 'pending'])
+        ->name('checkout.pending');
+});
 
 require __DIR__.'/auth.php';
