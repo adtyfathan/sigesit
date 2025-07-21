@@ -34,7 +34,7 @@
                     </p>
                     <p class="flex items-center text-gray-600">
                         <svg class="flex-shrink-0 h-6 w-6 text-indigo-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <rect x="5" y="6" width="14" height="15" rx="2" ry="2" stroke-width="1.5" /> <path d="M17 6L17 5.5C17 4.94772 16.5523 4.5 16 4.5H8C7.44772 4.5 7 4.94772 7 5.5V6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /> <path d="M12 2C9.79086 2 8 3.79086 8 6H16C16 3.79086 14.2091 2 12 2Z" fill="currentColor" /> <text x="12" y="15" font-family="Arial, Helvetica, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" fill="currentColor">FAX</text> 
+                            <rect x="5" y="6" width="14" height="15" rx="2" ry="2" stroke-width="1.5" /> <path d="M17 6L17 5.5C17 4.94772 16.5523 4.5 16 4.5H8C7.44772 4.5 7 4.94772 7 5.5V6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /> <path d="M12 2C9.79086 2 8 3.79086 8 6H16C16 3.79086 14.2091 2 12 2Z" fill="currentColor" /> <text x="12" y="15" font-family="Arial, Helvetica, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" fill="currentColor">FAX</text>
                         </svg>
                         <span>021-87908988</span>
                     </p>
@@ -68,7 +68,9 @@
                     <div>
                         <label for="subject" class="block text-sm font-medium text-gray-700">Subjek Pesan (Opsional)</label>
                         <input type="text" id="subject" wire:model.defer="subject" placeholder="Perihal pesan Anda"
-                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('subject') border-red-500 @enderror">
+                        {{-- TAMBAHKAN BARIS INI UNTUK NOTIFIKASI ERROR SUBJECT --}}
+                        @error('subject') <span class="text-xs text-red-600 mt-1">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
@@ -82,6 +84,14 @@
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
                         Kirim Pesan
                     </button>
+
+                    {{-- TAMBAHKAN BLOK INI UNTUK MENAMPILKAN PESAN ERROR UMUM --}}
+                    @if (session()->has('error'))
+                        <div class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-md text-center" role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    {{-- AKHIR BLOK ERROR UMUM --}}
 
                     @if (session()->has('message'))
                         <div class="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-md text-center" role="alert">

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 // User
 use App\Livewire\Home;
-use App\Livewire\Hubungi;
+use App\Livewire\Hubungi; // Ini adalah Livewire component untuk halaman Hubungi Kami
 use App\Livewire\Layanan\Index as LayananIndex;
 use App\Livewire\Layanan\Show as LayananShow;
 use App\Livewire\Berita\Index as BeritaIndex;
@@ -43,6 +43,10 @@ use App\Livewire\Admin\Kategori\Edit as AdminKategoriEdit;
 // Midtrans
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\PaymentCallbackController;
+use App\Models\Role;
+
+// Pesan
+use App\Livewire\Admin\Pesan\Pesan; 
 
 Route::view('/', 'welcome');
 
@@ -62,7 +66,7 @@ Route::get('/skm', SkmPage::class)->name('skm.index');
 
 Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('skm.submit_survey');
 
-Route::get('/hubungi', Hubungi::class)->name('hubungi');
+Route::get('/hubungi', Hubungi::class)->name('hubungi'); // Ini adalah route untuk halaman kontak
 
 Route::get('/peta', Peta::class)->name('peta');
 
@@ -74,34 +78,38 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::prefix('/admin')->name('admin')->group(function () {
-    Route::prefix('/dashboard')->name('.dashboard')->group(function () {
-        Route::get('',AdminDashboardIndex::class)->name('.index'); 
+Route::prefix('/admin')->name('admin.')->group(function () { // Perhatikan '.admin.' pada name()
+    Route::prefix('/dashboard')->name('dashboard.')->group(function () {
+        Route::get('',AdminDashboardIndex::class)->name('index');
     });
 
-    Route::prefix('/produk')->name('.produk')->group(function () {
-        Route::get('',AdminProdukIndex::class)->name('.index'); 
-        Route::get('/create',AdminProdukCreate::class)->name('.create');
-        Route::get('/edit/{produkId}',AdminProdukEdit::class)->name('.edit');
-        Route::get('/show/{produkId}',AdminProdukShow::class)->name('.show');
+    Route::prefix('/produk')->name('produk.')->group(function () {
+        Route::get('',AdminProdukIndex::class)->name('index');
+        Route::get('/create',AdminProdukCreate::class)->name('create');
+        Route::get('/edit/{produkId}',AdminProdukEdit::class)->name('edit');
+        Route::get('/show/{produkId}',AdminProdukShow::class)->name('show');
     });
 
-    Route::prefix('/berita')->name('.berita')->group(function () {
-        Route::get('',AdminBeritaIndex::class)->name('.index'); 
-        Route::get('/create',AdminBeritaCreate::class)->name('.create');
-        Route::get('/edit/{beritaId}',AdminBeritaEdit::class)->name('.edit');
-        Route::get('/show/{beritaId}',AdminBeritaShow::class)->name('.show');
+    Route::prefix('/berita')->name('berita.')->group(function () {
+        Route::get('',AdminBeritaIndex::class)->name('index');
+        Route::get('/create',AdminBeritaCreate::class)->name('create');
+        Route::get('/edit/{beritaId}',AdminBeritaEdit::class)->name('edit');
+        Route::get('/show/{beritaId}',AdminBeritaShow::class)->name('show');
     });
 
-    Route::prefix('/akun')->name('.akun')->group(function () {
-    Route::get('',AdminAkunIndex::class)->name('.index');
+    Route::prefix('/akun')->name('akun')->group(function () {
+        Route::get('',AdminAkunIndex::class)->name('.index');
         Route::get('/edit/{userId}',AdminAkunEdit::class)->name('.edit');
     });
 
-    Route::prefix('/kategori')->name('.kategori')->group(function () {
-        Route::get('',AdminKategoriIndex::class)->name('.index');
-        Route::get('/create',AdminKategoriCreate::class)->name('.create');
-        Route::get('/edit/{kategoriId}',AdminKategoriEdit::class)->name('.edit');
+    Route::prefix('/kategori')->name('kategori.')->group(function () {
+        Route::get('',AdminKategoriIndex::class)->name('index');
+        Route::get('/create',AdminKategoriCreate::class)->name('create');
+        Route::get('/edit/{kategoriId}',AdminKategoriEdit::class)->name('edit');
+    });
+
+    Route::prefix('/pesan')->name('pesan.')->group(function () {
+        Route::get('', Pesan::class)->name('index'); 
     });
 });
 
