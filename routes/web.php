@@ -14,6 +14,7 @@ use App\Livewire\SkmPage;
 use App\Http\Controllers\SkmResultController;
 use App\Livewire\Checkout;
 use App\Livewire\Transaksi;
+use App\Livewire\RiwayatTransaksi;
 
 // Admin
 // Dashboard
@@ -73,6 +74,8 @@ Route::get('/peta', Peta::class)->name('peta');
 Route::get('/checkout/{produkId}', Checkout::class)->name('checkout');
 
 Route::get('/transaksi/{transaksiId}', Transaksi::class)->name('transaksi.show');
+
+Route::get('/riwayat-transaksi', RiwayatTransaksi::class)->name('riwayat');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

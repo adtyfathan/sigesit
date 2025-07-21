@@ -87,6 +87,10 @@ new class extends Component {
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        <x-dropdown-link :href="route('riwayat')" wire:navigate>
+                            {{ __('Riwayat Transaksi') }}
+                        </x-dropdown-link>
+
                         <!-- Authentication -->
                         <button wire:click="logout" class="w-full text-start">
                             <x-dropdown-link>
@@ -139,6 +143,10 @@ new class extends Component {
                 <x-responsive-nav-link :href="route('profile')" wire:navigate>
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
+
+                <x-dropdown-link :href="route('riwayat')" wire:navigate>
+                    {{ __('Riwayat Transaksi') }}
+                </x-dropdown-link>
 
                 <!-- Authentication -->
                 <button wire:click="logout" class="w-full text-start">
