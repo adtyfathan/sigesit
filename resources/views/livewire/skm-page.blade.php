@@ -123,36 +123,63 @@
                     @csrf {{-- CSRF Token untuk keamanan Laravel --}}
 
                     <div class="mb-6">
-                        <label for="ikm_score" class="block text-gray-700 text-base font-semibold mb-2">
-                            1. Berapa nilai kepuasan Anda secara keseluruhan terhadap layanan kami? (Skala 0-100)
+                        <label for="service_used" class="block text-gray-700 text-base font-semibold mb-2">
+                            1. Layanan apa yang Anda gunakan?
                         </label>
-                        {{-- Menggunakan input type="number" untuk nilai 0-100 --}}
-                        <input type="number" id="ikm_score" name="ikm_score" min="0" max="100" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('ikm_score') border-red-500 @enderror" placeholder="Contoh: 85" value="{{ old('ikm_score') }}">
-                        @error('ikm_score')
+                        <select id="service_used" name="service_used" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('service_used') border-red-500 @enderror">
+                            <option value="Produk Geospasial" {{ old('service_used') == 'Produk Geospasial' ? 'selected' : '' }}>Produk Geospasial</option>
+                            <option value="Produk Nol Rupiah" {{ old('service_used') == 'Produk Nol Rupiah' ? 'selected' : '' }}>Produk Nol Rupiah</option>
+                            <option value="Jasa dan Konsultasi" {{ old('service_used') == 'Jasa dan Konsultasi' ? 'selected' : '' }}>Jasa dan Konsultasi</option>
+                            <option value="Produk Daring" {{ old('service_used') == 'Produk Daring' ? 'selected' : '' }}>Produk Daring</option>
+                        </select>
+                        @error('service_used')
                             <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="mb-6">
-                        <label for="service_aspect" class="block text-gray-700 text-base font-semibold mb-2">
-                            2. Layanan mana yang Anda gunakan atau berikan penilaian?
+                        <label for="satisfaction_service" class="block text-gray-700 text-base font-semibold mb-2">
+                            2. Seberapa puas Anda dengan pelayanan yang kami berikan? (Skala 1-10)
                         </label>
-                        <select id="service_aspect" name="service_aspect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('service_aspect') border-red-500 @enderror">
-                            <option value="">Pilih Aspek Layanan</option>
-                            <option value="Informasi Publik" {{ old('service_aspect') == 'Informasi Publik' ? 'selected' : '' }}>Informasi Publik</option>
-                            <option value="Pengaduan" {{ old('service_aspect') == 'Pengaduan' ? 'selected' : '' }}>Pengaduan</option>
-                            <option value="Pelayanan Online" {{ old('service_aspect') == 'Pelayanan Online' ? 'selected' : '' }}>Pelayanan Online</option>
-                            <option value="Konsultasi" {{ old('service_aspect') == 'Konsultasi' ? 'selected' : '' }}>Konsultasi</option>
-                            <option value="Lainnya" {{ old('service_aspect') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
-                        </select>
-                        @error('service_aspect')
+                        <input type="number" id="satisfaction_service" name="satisfaction_service" min="1" max="10" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('satisfaction_service') border-red-500 @enderror" placeholder="Contoh: 8" value="{{ old('satisfaction_service') }}">
+                        @error('satisfaction_service')
+                            <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="satisfaction_facility" class="block text-gray-700 text-base font-semibold mb-2">
+                            3. Seberapa puas Anda dengan fasilitas yang tersedia? (Skala 1-10)
+                        </label>
+                        <input type="number" id="satisfaction_facility" name="satisfaction_facility" min="1" max="10" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('satisfaction_facility') border-red-500 @enderror" placeholder="Contoh: 9" value="{{ old('satisfaction_facility') }}">
+                        @error('satisfaction_facility')
+                            <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="satisfaction_officer" class="block text-gray-700 text-base font-semibold mb-2">
+                            4. Seberapa puas Anda dengan petugas yang melayani? (Skala 1-10)
+                        </label>
+                        <input type="number" id="satisfaction_officer" name="satisfaction_officer" min="1" max="10" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('satisfaction_officer') border-red-500 @enderror" placeholder="Contoh: 10" value="{{ old('satisfaction_officer') }}">
+                        @error('satisfaction_officer')
+                            <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="satisfaction_accessibility" class="block text-gray-700 text-base font-semibold mb-2">
+                            5. Seberapa puas Anda dengan aksesibilitas layanan kami (misalnya kemudahan akses lokasi/platform)? (Skala 1-10)
+                        </label>
+                        <input type="number" id="satisfaction_accessibility" name="satisfaction_accessibility" min="1" max="10" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('satisfaction_accessibility') border-red-500 @enderror" placeholder="Contoh: 7" value="{{ old('satisfaction_accessibility') }}">
+                        @error('satisfaction_accessibility')
                             <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="mb-8">
                         <label for="comment" class="block text-gray-700 text-base font-semibold mb-2">
-                            3. Berikan komentar atau saran tambahan Anda (opsional):
+                            Berikan komentar atau saran tambahan Anda (opsional):
                         </label>
                         <textarea id="comment" name="comment" rows="5" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('comment') border-red-500 @enderror" placeholder="Tulis masukan Anda di sini...">{{ old('comment') }}</textarea>
                         @error('comment')
