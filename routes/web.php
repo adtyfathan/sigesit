@@ -10,11 +10,13 @@ use App\Livewire\Layanan\Show as LayananShow;
 use App\Livewire\Berita\Index as BeritaIndex;
 use App\Livewire\Berita\Show as BeritaShow;
 use App\Livewire\Peta;
-use App\Livewire\SkmPage;
-use App\Http\Controllers\SkmResultController;
+// use App\Livewire\SkmPage;
+// use App\Http\Controllers\SkmResultController;
 use App\Livewire\Checkout;
 use App\Livewire\Transaksi;
 use App\Livewire\RiwayatTransaksi;
+use App\Livewire\Skm\Index as SkmIndex;
+use App\Livewire\Skm\Create as SkmCreate;
 
 // Admin
 // Dashboard
@@ -63,9 +65,14 @@ Route::prefix('/berita')->name('berita')->group(function () {
     Route::get('/show/{beritaId}',BeritaShow::class)->name('.show');
 });
 
-Route::get('/skm', SkmPage::class)->name('skm.index');
+Route::prefix('/skm')->name('skm')->group(function () {
+    Route::get('', SkmIndex::class)->name('.index');
+    Route::get('/create/{transaksiId}', SkmCreate::class)->name('.create');
+});
 
-Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('skm.submit_survey');
+// Route::get('/skm', SkmPage::class)->name('skm.index');
+
+// Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('skm.submit_survey');
 
 Route::get('/hubungi', Hubungi::class)->name('hubungi'); // Ini adalah route untuk halaman kontak
 

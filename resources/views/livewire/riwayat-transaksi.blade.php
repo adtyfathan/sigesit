@@ -75,7 +75,7 @@
                                                 wire:navigate>
                                                 Detail Transaksi
                                             </a>
-                                            <a href=""
+                                            <a href="{{ route('skm.create', $transaksi->id) }}"
                                                 class="text-green-600 hover:text-green-900 px-3 py-1 rounded-md bg-green-50 hover:bg-green-100 transition-colors"
                                                 wire:navigate>
                                                 Isi SKM

@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Role;
 use App\Models\KomentarBerita;
 use App\Models\Transaksi;
+use App\Models\Skm;
 
 class User extends Authenticatable
 {
@@ -63,8 +64,14 @@ class User extends Authenticatable
         return $this->hasMany(KomentarBerita::class, 'user_id');
     }
 
+    
     public function transaksi()
     {
         return $this->hasMany(Transaksi::class, 'user_id');
+    }
+
+    public function skm()
+    {
+        return $this->hasMany(Skm::class, 'user_id');
     }
 }

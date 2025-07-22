@@ -4,8 +4,9 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-use App\Models\SkmResult;
+use App\Models\Skm;
 use Carbon\Carbon;
+// use Database\Seeders\SkmResultSeeder;
 use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.app')]
@@ -43,7 +44,7 @@ class SkmPage extends Component
 
     public function loadReportData()
     {
-        $allResults = SkmResult::all(); // Fetch all results from the database
+        $allResults = SkmResultSeeder::all(); // Fetch all results from the database
 
         $this->totalRespondents = $allResults->count();
         $this->averageIkmScore = $this->totalRespondents > 0 ? round($allResults->avg('ikm_score'), 2) : 0;

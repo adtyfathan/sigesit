@@ -29,7 +29,9 @@ class MidtransController extends Controller
 
             Log::info('Looking for transaction', ['order_id' => $orderId]);
 
-            $transaction = Transaksi::where('order_id', $orderId)->first();
+            $transaction = Transaksi::with('produk')->where('order_id', $orderId)->first();
+
+            $produk = $transaction->produk;
 
             if (!$transaction) {
                 Log::error('Transaction not found', ['order_id' => $orderId]);
@@ -73,6 +75,14 @@ class MidtransController extends Controller
                 'payment_type' => $request->payment_type,
                 'transaction_id' => $request->transaction_id,
             ]);
+
+            $jumlahTerjual = $produk->jumlah_terjual;
+
+            if($status === 'capture' || $status === 'settlement') {
+                $produk->update([
+                    'jumlah_terjual' => $jumlahTerjual + 1,
+                ]);
+            }
 
             $this->broadcastStatusUpdate($transaction);
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Produk;
+use App\Models\Skm;
 
 class Transaksi extends Model
 {
@@ -28,6 +29,11 @@ class Transaksi extends Model
     public function produk()
     {
         return $this->belongsTo(Produk::class, 'produk_id');
+    }
+
+    public function skm()
+    {
+        return $this->hasMany(Skm::class, 'transaksi_id');
     }
 
     // Scope for different payment statuses
