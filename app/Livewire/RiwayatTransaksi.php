@@ -6,10 +6,11 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use App\Models\Transaksi;
+use App\Models\Skm;
 
 class RiwayatTransaksi extends Component
 {
-    public $transaksis;    
+    public $transaksis;
 
     public function mount()
     {
@@ -19,7 +20,15 @@ class RiwayatTransaksi extends Component
 
         $this->transaksis = Transaksi::with('produk.kategori')
             ->where('user_id', Auth::user()->id)
-            ->get();     
+            ->get();
+    }
+
+    public function submittedSkm($transaksiId){
+        $isSubmittedSkm = Skm::where('transaksi_id', $transaksiId)
+            ->where('user_id', Auth::user()->id)
+            ->exists();
+
+        return $isSubmittedSkm;
     }
 
     public function getStatusColorClass($transaksiStatus)

@@ -11,7 +11,7 @@
     </div>
 
     {{-- Berita Terbaru Section --}}
-    <section class="py-16 bg-white">
+    {{-- <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Berita Terbaru</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -37,7 +37,6 @@
                         </div>
                     </div>
                 @empty
-                    {{-- Pesan jika tidak ada berita --}}
                     <div class="col-span-full text-center py-8 text-gray-500">
                         <p class="text-lg">Belum ada berita terbaru saat ini.</p>
                     </div>
@@ -52,7 +51,7 @@
                 </a>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     {{-- TERPOPULER Section --}}
     <section class="py-16 bg-gray-50">

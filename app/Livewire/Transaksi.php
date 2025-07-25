@@ -6,11 +6,13 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use App\Models\Transaksi as TransaksiModel;
+use App\Models\Skm;
 
 class Transaksi extends Component
 {
     public $transaksi;
     public $produk;
+    public $submittedSkm;
     
     public function mount($transaksiId)
     {
@@ -33,6 +35,10 @@ class Transaksi extends Component
         }
 
         $this->produk = $this->transaksi->produk;
+
+        $this->submittedSkm = Skm::where('transaksi_id', $this->transaksi->id)
+            ->where('user_id', Auth::user()->id)
+            ->exists();
     }
 
     public function getStatusColorClass()

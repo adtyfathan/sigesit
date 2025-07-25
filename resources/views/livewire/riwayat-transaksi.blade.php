@@ -71,15 +71,27 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex space-x-2 justify-center">
-                                            <a href="{{ route('transaksi.show', $transaksi->id) }}" class="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors"
+                                            <a href="{{ route('transaksi.show', $transaksi->id) }}" class="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors flex-1 flex items-center justify-center"
                                                 wire:navigate>
                                                 Detail Transaksi
                                             </a>
-                                            <a href="{{ route('skm.create', $transaksi->id) }}"
-                                                class="text-green-600 hover:text-green-900 px-3 py-1 rounded-md bg-green-50 hover:bg-green-100 transition-colors"
-                                                wire:navigate>
-                                                Isi SKM
-                                            </a>
+                                            @if (!$this->submittedSkm($transaksi->id))
+                                                <a href="{{ route('skm.create', $transaksi->id) }}"
+                                                    class="text-green-600 hover:text-green-900 px-3 py-1 rounded-md bg-green-50 hover:bg-green-100 transition-colors flex-1 flex items-center justify-center"
+                                                    wire:navigate>
+                                                    Isi SKM
+                                                </a>
+                                            @elseif ($this->submittedSkm($transaksi->id))
+                                                <button disabled
+                                                    class="text-white px-3 py-1 rounded-md bg-gray-500 flex-1 flex items-center justify-center">
+                                                    SKM Terkirim
+                                                </button>
+                                            @elseif ($transaksi->status !== "success")
+                                                <button disabled class="text-white px-3 py-1 rounded-md bg-gray-500 flex-1 flex items-center justify-center">
+                                                    Isi SKM
+                                                </button>
+                                            @endif
+
                                         </div>
                                     </td>
                                 </tr>

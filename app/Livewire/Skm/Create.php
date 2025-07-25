@@ -29,7 +29,7 @@ class Create extends Component
             abort(404, 'Transaksi tidak ditemukan.');
         }
 
-        $isSubmitted = Transaksi::where('id', $this->transaksi->id)
+        $isSubmitted = Skm::where('transaksi_id', $this->transaksi->id)
             ->where('user_id', Auth::user()->id)
             ->exists();
 

@@ -67,7 +67,7 @@
             </div>
 
             <!-- News Card -->
-            <div
+            {{-- <div
                 class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-blue-100">
                 <div class="flex items-center justify-between">
                     <div>
@@ -90,7 +90,7 @@
                     </svg>
                     <span>Terpublish</span>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Categories Card -->
             <div

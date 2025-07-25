@@ -209,6 +209,20 @@
                         </div>
                     </div>
                 </div>
+
+                @if ($transaksi->status === "success")
+                    @if (!$submittedSkm)
+                    <a href="{{ route('skm.create', $transaksi->id) }}" wire:navigate
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2">
+                        <span>Isi SKM</span>
+                    </a>
+                    @else
+                        <button disabled 
+                            class="w-full bg-gray-600 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center space-x-2">
+                            Sudah Mengisi SKM
+                        </button>
+                    @endif
+                @endif
             </div>
         </div>
     </div>

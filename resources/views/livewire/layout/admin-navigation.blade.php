@@ -32,7 +32,7 @@ new class extends Component {
 
             <!-- Custom Navigation Links - Centered -->
             <div class="hidden space-x-4 sm:flex items-center">
-                <x-nav-link :href="route('admin.dashboard.index')" wire:navigate>
+                <x-nav-link :href="route('admin.dashboard.index')" :active="request()->routeIs('admin.*')" wire:navigate>
                     {{ __('Dashboard Admin') }}
                 </x-nav-link>
             </div>
@@ -101,16 +101,11 @@ new class extends Component {
 
     <!-- Responsive Navigation Menu - Updated with your custom links -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        {{-- <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" wire:navigate>
-                {{ __('Beranda') }}
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('admin.dashboard.index')" :active="request()->routeIs('admin')" wire:navigate>
+                {{ __('Dashboard Admin') }}
             </x-responsive-nav-link>
-            <!-- Your custom responsive navigation links -->
-            <x-responsive-nav-link href="#">Layanan Kami</x-responsive-nav-link>
-            <x-responsive-nav-link href="#">Peta Interaktif</x-responsive-nav-link>
-            <x-responsive-nav-link href="#">SKM</x-responsive-nav-link>
-            <x-responsive-nav-link href="#">Hubungi Kami</x-responsive-nav-link>
-        </div> --}}
+        </div>
 
         <!-- Responsive Settings Options - Remains unchanged -->
         <div class="pt-4 pb-1 border-t border-gray-200">

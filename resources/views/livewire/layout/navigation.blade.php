@@ -38,15 +38,15 @@ new class extends Component {
                 <x-nav-link :href="route('layanan.index')" :active="request()->routeIs('layanan.*')" wire:navigate>
                     {{ __('Layanan Kami') }}
                 </x-nav-link>
-                <x-nav-link :href="route('berita.index')" :active="request()->routeIs('berita.*')" wire:navigate>
+                {{-- <x-nav-link :href="route('berita.index')" :active="request()->routeIs('berita.*')" wire:navigate>
                     {{ __('Berita') }}
-                </x-nav-link>
+                </x-nav-link> --}}
                     <x-nav-link :href="route('skm.index')" :active="request()->routeIs('skm.*')" wire:navigate>
                     {{ __('SKM') }}
                 </x-nav-link>
-                <x-nav-link :href="route('peta')" :active="request()->routeIs('peta')" wire:navigate>
+                {{-- <x-nav-link :href="route('peta')" :active="request()->routeIs('peta')" wire:navigate>
                     {{ __('Peta') }}
-                </x-nav-link>
+                </x-nav-link> --}}
                 <x-nav-link :href="route('hubungi')" :active="request()->routeIs('hubungi')" wire:navigate>
                     {{ __('Hubungi Kami') }}
                 </x-nav-link>
@@ -124,10 +124,15 @@ new class extends Component {
                 {{ __('Beranda') }}
             </x-responsive-nav-link>
             <!-- Your custom responsive navigation links -->
-            <x-responsive-nav-link href="#">Layanan Kami</x-responsive-nav-link>
-            <x-responsive-nav-link href="#">Peta Interaktif</x-responsive-nav-link>
-            <x-responsive-nav-link href="#">SKM</x-responsive-nav-link>
-            <x-responsive-nav-link href="#">Hubungi Kami</x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('layanan.index') }}" :active="request()->routeIs('layanan')" wire:navigate>
+                {{ __('Layanan Kami') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('skm.index') }}" :active="request()->routeIs('skm')" wire:navigate>
+                {{ __('SKM') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('hubungi') }}" :active="request()->routeIs('skm')" wire:navigate>
+                {{ __('Hubungi Kami') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options - Remains unchanged -->

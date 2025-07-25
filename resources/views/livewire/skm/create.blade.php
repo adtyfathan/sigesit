@@ -14,9 +14,6 @@
                     <span class="text-sm font-medium">Survey</span>
                     <span class="text-sm font-medium">4 pertanyaan</span>
                 </div>
-                <div class="mt-2 bg-blue-800 rounded-full h-2">
-                    <div class="bg-white rounded-full h-2 transition-all duration-300" style="width: 100%"></div>
-                </div>
             </div>
 
             <form wire:submit="store" class="p-6 sm:p-8">
@@ -82,7 +79,6 @@
                         </label>
                     
                         <select wire:model="skorLayanan" name="skorLayanan" id="skorLayanan" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
-                            <option value="">Pilih Nilai</option>
                             <option value="kurang">Kurang</option>
                             <option value="cukup">Cukup</option>
                             <option value="puas">Puas</option>
@@ -157,16 +153,7 @@
 
                 <!-- Submit Section -->
                 <div class="mt-10 pt-6 border-t border-gray-200">
-                    <div class="flex flex-col sm:flex-row gap-4 sm:justify-between sm:items-center">
-                        <div class="flex items-center space-x-2 text-sm text-gray-600">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                                </path>
-                            </svg>
-                            <span>Data Anda akan dijaga kerahasiaan</span>
-                        </div>
-
+                    <div class="flex justify-end flex-col sm:flex-row gap-4">
                         <button type="submit"
                             class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105 transition-all duration-200 shadow-lg">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,11 +165,6 @@
                     </div>
                 </div>
             </form>
-        </div>
-
-        <!-- Footer Note -->
-        <div class="text-center mt-8 text-sm text-gray-500">
-            <p>Terima kasih atas partisipasi Anda dalam survey kepuasan masyarakat ini.</p>
         </div>
     </div>
 </div>
