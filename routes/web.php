@@ -6,11 +6,17 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Home;
 use App\Livewire\Hubungi; // Ini adalah Livewire component untuk halaman Hubungi Kami
 use App\Livewire\Layanan\Index as LayananIndex;
+use App\Livewire\Layanan\Show as LayananShow;
 use App\Livewire\Berita\Index as BeritaIndex;
 use App\Livewire\Berita\Show as BeritaShow;
 use App\Livewire\Peta;
-use App\Livewire\SkmPage;
-use App\Http\Controllers\SkmResultController;
+// use App\Livewire\SkmPage;
+// use App\Http\Controllers\SkmResultController;
+use App\Livewire\Checkout;
+use App\Livewire\Transaksi;
+use App\Livewire\RiwayatTransaksi;
+use App\Livewire\Skm\Index as SkmIndex;
+use App\Livewire\Skm\Create as SkmCreate;
 
 // Admin
 // Dashboard
@@ -36,7 +42,11 @@ use App\Livewire\Admin\Akun\Edit as AdminAkunEdit;
 use App\Livewire\Admin\Kategori\Index as AdminKategoriIndex;
 use App\Livewire\Admin\Kategori\Create as AdminKategoriCreate;
 use App\Livewire\Admin\Kategori\Edit as AdminKategoriEdit;
-// use App\Models\Role; // Ini tidak diperlukan di sini
+
+// Midtrans
+use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\PaymentCallbackController;
+use App\Models\Role;
 
 // Pesan
 use App\Livewire\Admin\Pesan\Pesan; 
@@ -46,7 +56,8 @@ Route::view('/', 'welcome');
 Route::get('/home', Home::class)->name('home');
 
 Route::prefix('/layanan')->name('layanan')->group(function () {
-    Route::get('',LayananIndex::class)->name('.index');
+    Route::get('',LayananIndex::class)->name('.index'); 
+    Route::get('/show/{produkId}',LayananShow::class)->name('.show');
 });
 
 Route::prefix('/berita')->name('berita')->group(function () {
@@ -54,13 +65,24 @@ Route::prefix('/berita')->name('berita')->group(function () {
     Route::get('/show/{beritaId}',BeritaShow::class)->name('.show');
 });
 
-Route::get('/skm', SkmPage::class)->name('skm.index');
+Route::prefix('/skm')->name('skm')->group(function () {
+    Route::get('', SkmIndex::class)->name('.index');
+    Route::get('/create/{transaksiId}', SkmCreate::class)->name('.create');
+});
 
-Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('skm.submit_survey');
+// Route::get('/skm', SkmPage::class)->name('skm.index');
+
+// Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('skm.submit_survey');
 
 Route::get('/hubungi', Hubungi::class)->name('hubungi'); // Ini adalah route untuk halaman kontak
 
 Route::get('/peta', Peta::class)->name('peta');
+
+Route::get('/checkout/{produkId}', Checkout::class)->name('checkout');
+
+Route::get('/transaksi/{transaksiId}', Transaksi::class)->name('transaksi.show');
+
+Route::get('/riwayat-transaksi', RiwayatTransaksi::class)->name('riwayat');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
@@ -85,9 +107,9 @@ Route::prefix('/admin')->name('admin.')->group(function () { // Perhatikan '.adm
         Route::get('/show/{beritaId}',AdminBeritaShow::class)->name('show');
     });
 
-    Route::prefix('/akun')->name('akun.')->group(function () {
-        Route::get('',AdminAkunIndex::class)->name('index');
-        Route::get('/edit/{userId}',AdminAkunEdit::class)->name('edit');
+    Route::prefix('/akun')->name('akun')->group(function () {
+        Route::get('',AdminAkunIndex::class)->name('.index');
+        Route::get('/edit/{userId}',AdminAkunEdit::class)->name('.edit');
     });
 
     Route::prefix('/kategori')->name('kategori.')->group(function () {
@@ -99,6 +121,19 @@ Route::prefix('/admin')->name('admin.')->group(function () { // Perhatikan '.adm
     Route::prefix('/pesan')->name('pesan.')->group(function () {
         Route::get('', Pesan::class)->name('index'); 
     });
+});
+
+Route::post('/midtrans/webhook', [MidtransController::class, 'handle'])->name('midtrans.webhook')->withoutMiddleware(['auth', 'web']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/payment/success/{orderId}', [PaymentCallbackController::class, 'success'])
+        ->name('checkout.success');
+    
+    Route::get('/payment/error/{orderId}', [PaymentCallbackController::class, 'error'])
+        ->name('checkout.error');
+    
+    Route::get('/payment/pending/{orderId}', [PaymentCallbackController::class, 'pending'])
+        ->name('checkout.pending');
 });
 
 require __DIR__.'/auth.php';
