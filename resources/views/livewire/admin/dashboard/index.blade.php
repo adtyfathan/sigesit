@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-10">
     <!-- Header Section -->
     <div class="bg-white shadow-sm border-b border-blue-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -145,62 +145,20 @@
             </div>
         </div>
 
-        <div class="py-16 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-                    <div
-                        class="bg-indigo-50 p-6 rounded-lg shadow-md flex flex-col justify-center transform hover:scale-105 transition duration-300">
-                        <p class="text-5xl font-bold text-indigo-700 mb-2">87.5</p>
-                        <p class="text-xl font-semibold text-gray-800">Indeks Kepuasan Masyarakat (IKM)</p>
-                        <p class="text-md text-gray-600 mt-2">Kategori: <span class="font-bold text-green-700">Sangat
-                                Baik</span></p>
-                    </div>
-        
-                    <div class="bg-white p-6 rounded-lg shadow-md space-y-4 col-span-2">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4 text-left">Penilaian Aspek Layanan (Tahun Berjalan)</h3>
-                        <div class="flex items-center">
-                            <span class="w-1/3 text-left font-medium text-gray-700">Kualitas Pelayanan</span>
-                            <div class="w-2/3 bg-gray-200 rounded-full h-3">
-                                <div class="bg-blue-600 h-3 rounded-full" style="width: 90%;"></div>
-                            </div>
-                            <span class="ml-4 font-semibold text-blue-700">90%</span>
-                        </div>
-                        <div class="flex items-center mt-4">
-                            <span class="w-1/3 text-left font-medium text-gray-700">Kecepatan Respon</span>
-                            <div class="w-2/3 bg-gray-200 rounded-full h-3">
-                                <div class="bg-blue-600 h-3 rounded-full" style="width: 85%;"></div>
-                            </div>
-                            <span class="ml-4 font-semibold text-blue-700">85%</span>
-                        </div>
-                        <div class="flex items-center mt-4">
-                            <span class="w-1/3 text-left font-medium text-gray-700">Keramahan Staf</span>
-                            <div class="w-2/3 bg-gray-200 rounded-full h-3">
-                                <div class="bg-blue-600 h-3 rounded-full" style="width: 92%;"></div>
-                            </div>
-                            <span class="ml-4 font-semibold text-blue-700">92%</span>
-                        </div>
-                        <p class="text-sm text-gray-500 mt-6 text-left">Berdasarkan <span class="font-medium">1.500</span>
-                            responden pada periode Januari - Juni 2025.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- User Roles Section -->
         <div class="bg-white rounded-xl shadow-sm p-8 border border-blue-100 mb-8 mt-8">
             <div class="mb-6">
                 <h2 class="text-2xl font-bold text-gray-900">Sebaran Pengguna</h2>
                 <p class="text-gray-600 mt-2">Data pengguna berdasarkan role</p>
             </div>
-
+        
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- General Users -->
                 <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-blue-100 text-sm font-medium">Pengguna Umum</p>
-                            <p class="text-3xl font-bold  -mt-2">{{ count($umums) }}</p>
+                            <p class="text-3xl font-bold mt-2">{{ count($umums) }}</p>
                         </div>
                         <div class="bg-blue-400 bg-opacity-30 p-3 rounded-full">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
@@ -210,7 +168,7 @@
                         </div>
                     </div>
                 </div>
-
+        
                 <!-- Administrators -->
                 <div class="bg-gradient-to-r from-red-500 to-red-600 rounded-lg p-6 text-white">
                     <div class="flex items-center justify-between">
@@ -219,16 +177,15 @@
                             <p class="text-3xl font-bold mt-2">{{ count($admins) }}</p>
                         </div>
                         <div class="bg-red-400 bg-opacity-30 p-3 rounded-full">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" />
+                            <svg class="w-6 h-6" fill="currentColor" stroke="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L4 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6l-8-4z" />
                             </svg>
-
-
+        
+        
                         </div>
                     </div>
                 </div>
-
+        
                 <!-- Operators -->
                 <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-6 text-white">
                     <div class="flex items-center justify-between">
@@ -245,7 +202,7 @@
                         </div>
                     </div>
                 </div>
-
+        
                 <!-- Treasurers -->
                 <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg p-6 text-white">
                     <div class="flex items-center justify-between">
@@ -265,5 +222,220 @@
                 </div>
             </div>
         </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8 border border-blue-100 mb-8 mt-8">
+            <h2 class="text-2xl font-bold text-gray-900">Visualisasi SKM</h2>
+            <p class="text-gray-600 mt-2">Grafik Visualisasi Hasil Survey Kepuasan Masyarakat</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                <div class="min-w-[300px] max-w-full">
+                    <h3 class="text-lg font-semibold mb-2">Nilai Rata-rata per Bidang</h3>
+                    <canvas id="barChart"   ></canvas>
+                </div>
+                <div class="min-w-[300px] max-w-full">
+                    <h3 class="text-lg font-semibold mb-2">Kepuasan Layanan</h3>
+                    <canvas id="pieChart"></canvas>
+                </div>
+                <div class="min-w-[300px] max-w-full">
+                    <h3 class="text-lg font-semibold mb-2">Tren Kepuasan Masyarakat</h3>
+                    <canvas id="trenChart"></canvas>
+                </div>
+                <div class="min-w-[300px] max-w-full">
+                    <h3 class="text-lg font-semibold mb-2">Distribusi Responden per Layanan</h3>
+                    <canvas id="distribusiChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8 border border-blue-100 mb-8 mt-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Data SKM</h2>
+                <p class="text-gray-600 mt-2">Data Pengisian Survey Kepuasan Masyarakat</p>
+
+                <div class="mt-4 overflow-x-auto relative">
+                    <table class="w-full text-sm text-center text-gray-500">
+                        <!-- Table Header -->
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="py-3 px-6 text-center">
+                                    Nama Pengguna
+                                </th>
+                                <th scope="col" class="py-3 px-6 text-center">
+                                    Layanan
+                                </th>
+                                <th scope="col" class="py-3 px-6 text-center">
+                                    Tanggal Pengisian
+                                </th>
+                                <th scope="col" class="py-3 px-6 text-center">
+                                    Nilai Layanan
+                                </th>
+                                <th scope="col" class="py-3 px-6 text-center">
+                                    Nilai Fasilitas
+                                </th>
+                                <th scope="col" class="py-3 px-6 text-center">
+                                    Nilai Petugas
+                                </th>
+                                <th scope="col" class="py-3 px-6 text-center">
+                                    Nilai Aksesibilitas
+                                </th>
+                                <th scope="col" class="py-3 px-6 text-center">
+                                    Nilai Total
+                                </th>
+                                <th scope="col" class="py-3 px-6 text-center">
+                                    Komentar
+                                </th>
+                            </tr>
+                        </thead>
+                
+                        <!-- Table Body -->
+                        <tbody>
+                            @foreach ($skms as $skm)
+                                <tr class="bg-white border-b hover:bg-gray-50">
+                                    <td class="px-6 py-4">
+                                        {{ $skm->user->name }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $skm->transaksi->produk->nama_produk }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $skm->created_at->translatedFormat('l, d F Y H:i') }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $skm->skor_layanan }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $skm->skor_fasilitas }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $skm->skor_petugas }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{$skm->skor_aksesibilitas }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{$skm->total_skor }}
+                                    </td>
+                                    <td>
+                                        {{ $skm->komentar ?? '-' }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                    {{ $skms->links() }}
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctxBar = document.getElementById('barChart');
+
+            new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['Fasilitas', 'Petugas', 'Aksesibilitas'],
+                    datasets: [{
+                        label: 'Grafik Hasil Survey per Bidang',
+                        data: @json($bidangDatas),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(153, 102, 255)',
+                            'rgb(255, 205, 86)'
+                        ],
+                        borderWidth: 1  
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            const ctxPie = document.getElementById('pieChart');
+
+            new Chart(ctxPie, {
+                type: 'pie',
+                data: {
+                    labels: ['Kurang', 'Cukup', 'Puas', 'Sangat Puas'],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: @json($layananDatas),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            const ctxTren = document.getElementById('trenChart');
+
+            const stackedLine = new Chart(ctxTren, {
+                type: 'line',
+                data : {
+                    labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+                    datasets: [{
+                        label: 'Grafik Tren Kepuasan Masyarakat',
+                        data: @json($trenDatas),
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            stacked: true
+                        }
+                    }
+                }
+            });
+
+            const ctxDistribusi = document.getElementById('distribusiChart');
+
+            new Chart(ctxDistribusi, {
+                type: 'bar',
+                data: {
+                    labels: @json($distribusiLabels),
+                    datasets: [{
+                        label: 'Grafik Distribusi Responden per Layanan',
+                        data: @json($distribusiDatas),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(153, 102, 255)',
+                            'rgb(255, 205, 86)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+    </script>
+@endpush

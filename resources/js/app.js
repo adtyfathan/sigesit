@@ -1,8 +1,10 @@
 import './bootstrap';
 import 'leaflet';
+import Chart from 'chart.js/auto';
 import moment from 'moment';
 
-console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
+window.Chart = Chart;
+
 //SKM
 window.toggleFAQ = function(id) {
     const answer = document.getElementById(id);
