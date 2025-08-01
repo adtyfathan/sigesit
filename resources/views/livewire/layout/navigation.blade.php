@@ -27,7 +27,7 @@ new class extends Component {
                     </a>
                 </div>
                 <!-- Text "Badan Informasi Geospasial" moved here, next to the logo -->
-                <span class="ml-2 text-gray-800 font-semibold text-sm">Badan Informasi Geospasial</span>
+                <span class="ml-2 text-gray-800 font-semibold text-sm">Sistem Informasi Geospasial Terpadu</span>
             </div>
 
             <!-- Custom Navigation Links - Centered -->

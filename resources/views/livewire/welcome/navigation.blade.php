@@ -1,11 +1,16 @@
 <nav class="-mx-3 flex flex-1 justify-end">
     @auth
-        <a
-            href="{{ url('/home') }}"
-            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-        >
-            Home
-        </a>
+        @if (Auth::user()->role_id === 1)
+            <a href="{{ url('/home') }}"
+                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                Home
+            </a>
+        @elseif (Auth::user()->role_id === 2)
+            <a href="{{ url('/admin/dashboard') }}"
+                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                Dashboard
+            </a>
+        @endif
     @else
         <a
             href="{{ route('login') }}"

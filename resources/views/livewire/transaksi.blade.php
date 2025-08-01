@@ -192,12 +192,6 @@
                                 <span class="text-gray-600">Harga Produk:</span>
                                 <span class="font-medium text-gray-900">{{ $this->formatCurrency($produk->harga_produk) }}</span>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Biaya Admin:</span>
-                                <span class="font-medium text-gray-900">
-                                    {{ $this->formatCurrency($transaksi->jumlah_transaksi - $produk->harga_produk) }}
-                                </span>
-                            </div>
                             <div class="border-t border-gray-200 pt-3">
                                 <div class="flex justify-between">
                                     <span class="font-semibold text-gray-900">Total:</span>
