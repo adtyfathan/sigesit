@@ -1,12 +1,5 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-white py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto">
-        <!-- Header Section -->
-        <div class="text-center mb-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Survey Kepuasan Masyarakat</h1>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Bantu kami meningkatkan pelayanan dengan memberikan
-                penilaian anda</p>
-        </div>
-
         <!-- Survey Form Card -->
         <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
             <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
