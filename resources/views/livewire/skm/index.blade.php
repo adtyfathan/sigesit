@@ -1,5 +1,4 @@
 <div class="min-h-screen bg-gray-50">
-    <!-- Header Section -->
     <div class="bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div class="flex items-center justify-between flex-wrap gap-4">
@@ -17,16 +16,85 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            @php
-                $avgTotal = count($skmDatas) > 0 ? round(collect($skmDatas)->avg('total_skor'), 1) : 0;
-                $avgFasilitas = count($skmDatas) > 0 ? round(collect($skmDatas)->avg('skor_fasilitas'), 1) : 0;
-                $avgPetugas = count($skmDatas) > 0 ? round(collect($skmDatas)->avg('skor_petugas'), 1) : 0;
-                $avgAksesibilitas = count($skmDatas) > 0 ? round(collect($skmDatas)->avg('skor_aksesibilitas'), 1) : 0;
-            @endphp
+        @php
+            $skmDatasCollection = collect($skmDatas);
 
-            <!-- Total Score Card -->
+            $avgTotal = $skmDatasCollection->count() > 0 ? round($skmDatasCollection->avg('total_skor'), 1) : 0;
+            $avgFasilitas = $skmDatasCollection->count() > 0 ? round($skmDatasCollection->avg('skor_fasilitas'), 1) : 0;
+            $avgPetugas = $skmDatasCollection->count() > 0 ? round($skmDatasCollection->avg('skor_petugas'), 1) : 0;
+            $avgAksesibilitas = $skmDatasCollection->count() > 0 ? round($skmDatasCollection->avg('skor_aksesibilitas'), 1) : 0;
+
+            $kepuasanOverall = [
+                'kurang' => 0,
+                'cukup' => 0,
+                'puas' => 0,
+                'sangat_puas' => 0,
+            ];
+
+            foreach ($skmDatasCollection as $data) {
+                $skorLayanan = isset($data->skor_layanan) ? strtolower($data->skor_layanan) : '';
+                switch ($skorLayanan) {
+                    case 'kurang': $kepuasanOverall['kurang']++; break;
+                    case 'cukup': $kepuasanOverall['cukup']++; break;
+                    case 'puas': $kepuasanOverall['puas']++; break;
+                    case 'sangat_puas': $kepuasanOverall['sangat_puas']++; break;
+                }
+            }
+
+            // Hitung rata-rata bulanan hanya untuk bulan-bulan yang memiliki data
+            $getMonthlyAverages = function($scoreColumn) use ($skmDatasCollection) {
+                return $skmDatasCollection->groupBy(function($data) {
+                    if (isset($data->tanggal_survey) && !empty($data->tanggal_survey)) {
+                        try {
+                            return \Carbon\Carbon::parse($data->tanggal_survey)->format('Y-m');
+                        } catch (\Exception $e) {
+                            return 'invalid-date';
+                        }
+                    }
+                    return 'no-date';
+                })->filter(function($group, $key) {
+                    return $key !== 'invalid-date' && $key !== 'no-date';
+                })->map(function ($group) use ($scoreColumn) {
+                    $validScores = $group->filter(function($item) use ($scoreColumn) {
+                        return isset($item->$scoreColumn) && is_numeric($item->$scoreColumn);
+                    })->pluck($scoreColumn);
+                    return $validScores->count() > 0 ? round($validScores->avg(), 1) : null;
+                })->filter(); // Filter out months that resulted in null average (no valid scores)
+            };
+
+            $rawMonthlyTotalScores = $getMonthlyAverages('total_skor');
+            $rawMonthlyFasilitasScores = $getMonthlyAverages('skor_fasilitas');
+            $rawMonthlyPetugasScores = $getMonthlyAverages('skor_petugas');
+            $rawMonthlyAksesibilitasScores = $getMonthlyAverages('skor_aksesibilitas');
+
+
+            $trendLabels = [];
+            $trendTotalData = []; // Ubah nama variabel untuk menghindari konflik
+            $trendFasilitasData = [];
+            $trendPetugasData = [];
+            $trendAksesibilitasData = [];
+
+            // --- LOGIKA UTAMA UNTUK MENAMPILKAN JANUARI 2025 SAMPAI DESEMBER 2025 ---
+            $startDateForChart = \Carbon\Carbon::create(2025, 1, 1)->startOfMonth(); // Januari 2025
+            $endDateForChart = \Carbon\Carbon::create(2025, 12, 1)->endOfMonth();  // Desember 2025
+            // --- AKHIR LOGIKA KHUSUS ---
+
+            // Generate semua bulan dalam rentang yang ditentukan
+            $currentMonth = $startDateForChart->copy();
+            while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
+                $monthKey = $currentMonth->format('Y-m');
+                $trendLabels[] = $currentMonth->format('M Y');
+
+                $trendTotalData[] = $rawMonthlyTotalScores->get($monthKey);
+                $trendFasilitasData[] = $rawMonthlyFasilitasScores->get($monthKey);
+                $trendPetugasData[] = $rawMonthlyPetugasScores->get($monthKey);
+                $trendAksesibilitasData[] = $rawMonthlyAksesibilitasScores->get($monthKey);
+
+                $currentMonth->addMonth();
+            }
+        @endphp
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div
                 class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
                 <div class="flex items-center">
@@ -52,7 +120,6 @@
                 </div>
             </div>
 
-            <!-- Fasilitas Card -->
             <div
                 class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
                 <div class="flex items-center">
@@ -78,7 +145,6 @@
                 </div>
             </div>
 
-            <!-- Petugas Card -->
             <div
                 class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
                 <div class="flex items-center">
@@ -104,7 +170,6 @@
                 </div>
             </div>
 
-            <!-- Aksesibilitas Card -->
             <div
                 class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
                 <div class="flex items-center">
@@ -130,5 +195,45 @@
                 </div>
             </div>
         </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Seberapa Puas Anda dengan Layanan Kami?</h2>
+                <div class="relative h-64">
+                    <canvas id="overallSatisfactionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Perbandingan Rata-rata Skor Aspek Layanan</h2>
+                <div class="relative h-64">
+                    <canvas id="aspectsComparisonChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        {{-- NEW: Trend Visualization Section --}}
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Tren Rata-rata Skor Kepuasan (Total dan Aspek)</h2>
+            <div class="relative h-96"> {{-- Increased height for better line chart visibility --}}
+                <canvas id="satisfactionTrendChart"></canvas>
+            </div>
+        </div>
+
     </div>
 </div>
+
+{{-- Inject data into a global JavaScript variable before app.js is loaded --}}
+<script>
+    window.skmData = {
+        kepuasanOverall: @json($kepuasanOverall),
+        avgFasilitas: {{ $avgFasilitas }},
+        avgPetugas: {{ $avgPetugas }},
+        avgAksesibilitas: {{ $avgAksesibilitas }},
+        trendLabels: @json($trendLabels),
+        trendTotalData: @json($trendTotalData), // Menggunakan nama variabel baru
+        trendFasilitasData: @json($trendFasilitasData),
+        trendPetugasData: @json($trendPetugasData),
+        trendAksesibilitasData: @json($trendAksesibilitasData)
+    };
+</script>
