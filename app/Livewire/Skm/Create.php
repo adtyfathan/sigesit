@@ -65,6 +65,7 @@ class Create extends Component
             'tanggal_survey' => now(),
         ]);
 
+        // dd($skm);
         session()->flash('success', 'Survey berhasil disimapan.');
         return $this->redirect(route('transaksi.show', $this->transaksi->id), navigate: true);
     }

@@ -64,6 +64,10 @@ class Index extends Component
     }
 
     public function calcBidangDatas(){
+        if (empty($this->skmDatas) || count($this->skmDatas) === 0) {
+            return [0, 0, 0]; // Return zeros if no data
+        }
+
         $fasilitasValue = 0;
         $petugasValue = 0;
         $aksesibilitasValue = 0;
@@ -84,6 +88,10 @@ class Index extends Component
     }
 
     public function calcLayananData(){
+        if (empty($this->skmDatas) || count($this->skmDatas) === 0) {
+            return [0, 0, 0, 0]; // Return zeros if no data
+        }
+        
         $kurang = 0;
         $cukup = 0;
         $puas = 0;
@@ -108,6 +116,12 @@ class Index extends Component
         $this->currentYear = Carbon::now()->year;
     
         $monthlyData = array_fill(0, 12, 0);
+
+        // Check if there's any SKM data before querying
+        $skmCount = Skm::count();
+        if ($skmCount === 0) {
+            return $monthlyData; // Return array of zeros
+        }
         
         $surveyCounts = Skm::select(
                 DB::raw('MONTH(tanggal_survey) as month'),
@@ -126,6 +140,13 @@ class Index extends Component
     }
 
     public function calcDistribusiData(){
+         $this->distribusiLabels = []; // Reset labels
+        
+        // Check if there are products
+        if (empty($this->produks) || count($this->produks) === 0) {
+            return []; // Return empty array if no products
+        }
+        
         $counts = Skm::join('transaksi', 'skm.transaksi_id', '=', 'transaksi.id')
             ->join('produk', 'transaksi.produk_id', '=', 'produk.id')
             ->select('produk.id', DB::raw('count(skm.id) as jumlah_survey'))

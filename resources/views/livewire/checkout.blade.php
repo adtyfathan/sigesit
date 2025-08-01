@@ -55,10 +55,6 @@
                     <span>Subtotal</span>
                     <span>Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
                 </div>
-                <div class="flex justify-between">
-                    <span>Pajak</span>
-                    <span>Rp 0</span>
-                </div>
                 <div class="border-t pt-2">
                     <div class="flex justify-between text-lg font-semibold">
                         <span>Total</span>
@@ -73,13 +69,9 @@
             <button wire:click="createPayment" wire:loading.attr="disabled"
                 class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-8 rounded-lg transition duration-200 transform hover:scale-105"
                 {{ $isProcessing ? 'disabled' : '' }}>
-                <span wire:loading.remove>
+                <span>
                     <i class="fas fa-credit-card mr-2"></i>
                     Bayar Sekarang
-                </span>
-                <span wire:loading>
-                    <i class="fas fa-spinner fa-spin mr-2"></i>
-                    Memproses...
                 </span>
             </button>
         </div>

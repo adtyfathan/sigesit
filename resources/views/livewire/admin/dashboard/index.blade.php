@@ -323,7 +323,7 @@
                         </tbody>
                     </table>
 
-                    {{ $skms->links() }}
+                    {{-- {{ $skms->links() }} --}}
                 </div>
             </div>
         </div>
