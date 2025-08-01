@@ -41,7 +41,7 @@
                 }
             }
 
-            // Hitung rata-rata bulanan hanya untuk bulan-bulan yang memiliki data
+            // Hitung rata-rata bulanan
             $getMonthlyAverages = function($scoreColumn) use ($skmDatasCollection) {
                 return $skmDatasCollection->groupBy(function($data) {
                     if (isset($data->tanggal_survey) && !empty($data->tanggal_survey)) {
@@ -59,7 +59,7 @@
                         return isset($item->$scoreColumn) && is_numeric($item->$scoreColumn);
                     })->pluck($scoreColumn);
                     return $validScores->count() > 0 ? round($validScores->avg(), 1) : null;
-                })->filter(); // Filter out months that resulted in null average (no valid scores)
+                })->filter();
             };
 
             $rawMonthlyTotalScores = $getMonthlyAverages('total_skor');
@@ -67,19 +67,15 @@
             $rawMonthlyPetugasScores = $getMonthlyAverages('skor_petugas');
             $rawMonthlyAksesibilitasScores = $getMonthlyAverages('skor_aksesibilitas');
 
-
             $trendLabels = [];
-            $trendTotalData = []; // Ubah nama variabel untuk menghindari konflik
+            $trendTotalData = [];
             $trendFasilitasData = [];
             $trendPetugasData = [];
             $trendAksesibilitasData = [];
 
-            // --- LOGIKA UTAMA UNTUK MENAMPILKAN JANUARI 2025 SAMPAI DESEMBER 2025 ---
-            $startDateForChart = \Carbon\Carbon::create(2025, 1, 1)->startOfMonth(); // Januari 2025
-            $endDateForChart = \Carbon\Carbon::create(2025, 12, 1)->endOfMonth();  // Desember 2025
-            // --- AKHIR LOGIKA KHUSUS ---
-
             // Generate semua bulan dalam rentang yang ditentukan
+            $startDateForChart = \Carbon\Carbon::create(2025, 1, 1)->startOfMonth();
+            $endDateForChart = \Carbon\Carbon::create(2025, 12, 1)->endOfMonth();
             $currentMonth = $startDateForChart->copy();
             while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
                 $monthKey = $currentMonth->format('Y-m');
@@ -212,10 +208,9 @@
             </div>
         </div>
 
-        {{-- NEW: Trend Visualization Section --}}
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Tren Rata-rata Skor Kepuasan (Total dan Aspek)</h2>
-            <div class="relative h-96"> {{-- Increased height for better line chart visibility --}}
+            <div class="relative h-96">
                 <canvas id="satisfactionTrendChart"></canvas>
             </div>
         </div>
@@ -223,17 +218,202 @@
     </div>
 </div>
 
-{{-- Inject data into a global JavaScript variable before app.js is loaded --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-    window.skmData = {
-        kepuasanOverall: @json($kepuasanOverall),
-        avgFasilitas: {{ $avgFasilitas }},
-        avgPetugas: {{ $avgPetugas }},
-        avgAksesibilitas: {{ $avgAksesibilitas }},
-        trendLabels: @json($trendLabels),
-        trendTotalData: @json($trendTotalData), // Menggunakan nama variabel baru
-        trendFasilitasData: @json($trendFasilitasData),
-        trendPetugasData: @json($trendPetugasData),
-        trendAksesibilitasData: @json($trendAksesibilitasData)
-    };
+    document.addEventListener('DOMContentLoaded', function() {
+        const skmData = {
+            kepuasanOverall: @json($kepuasanOverall),
+            avgFasilitas: {{ $avgFasilitas }},
+            avgPetugas: {{ $avgPetugas }},
+            avgAksesibilitas: {{ $avgAksesibilitas }},
+            trendLabels: @json($trendLabels),
+            trendTotalData: @json($trendTotalData),
+            trendFasilitasData: @json($trendFasilitasData),
+            trendPetugasData: @json($trendPetugasData),
+            trendAksesibilitasData: @json($trendAksesibilitasData)
+        };
+
+        // 1. Overall Satisfaction Donut Chart
+        const overallSatisfactionCtx = document.getElementById('overallSatisfactionChart');
+        if (overallSatisfactionCtx) {
+            new Chart(overallSatisfactionCtx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Kurang', 'Cukup', 'Puas', 'Sangat Puas'],
+                    datasets: [{
+                        data: [
+                            skmData.kepuasanOverall.kurang,
+                            skmData.kepuasanOverall.cukup,
+                            skmData.kepuasanOverall.puas,
+                            skmData.kepuasanOverall.sangat_puas
+                        ],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(251, 191, 36, 0.8)',
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(59, 130, 246, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(251, 191, 36, 1)',
+                            'rgba(34, 197, 94, 1)',
+                            'rgba(59, 130, 246, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    const total = tooltipItem.dataset.data.reduce((sum, val) => sum + val, 0);
+                                    const currentValue = tooltipItem.raw;
+                                    const percentage = parseFloat((currentValue / total * 100).toFixed(1));
+                                    return `${tooltipItem.label}: ${currentValue} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 2. Bar Chart for Specific Aspects
+        const aspectsComparisonCtx = document.getElementById('aspectsComparisonChart');
+        if (aspectsComparisonCtx) {
+            new Chart(aspectsComparisonCtx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Fasilitas', 'Petugas', 'Aksesibilitas'],
+                    datasets: [{
+                        label: 'Rata-rata Skor /10',
+                        data: [skmData.avgFasilitas, skmData.avgPetugas, skmData.avgAksesibilitas],
+                        backgroundColor: [
+                            'rgba(34, 197, 94, 0.7)',
+                            'rgba(168, 85, 247, 0.7)',
+                            'rgba(249, 115, 22, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(34, 197, 94, 1)',
+                            'rgba(168, 85, 247, 1)',
+                            'rgba(249, 115, 22, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            title: {
+                                display: true,
+                                text: 'Skor'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // 3. Satisfaction Trend Line Chart
+        const satisfactionTrendCtx = document.getElementById('satisfactionTrendChart');
+        if (satisfactionTrendCtx) {
+            new Chart(satisfactionTrendCtx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: skmData.trendLabels,
+                    datasets: [{
+                            label: 'Rata-rata Skor Total',
+                            data: skmData.trendTotalData,
+                            borderColor: 'rgb(75, 192, 192)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            tension: 0.1,
+                            fill: false,
+                            pointRadius: 5,
+                            pointHoverRadius: 8
+                        },
+                        {
+                            label: 'Rata-rata Fasilitas',
+                            data: skmData.trendFasilitasData,
+                            borderColor: 'rgb(34, 197, 94)',
+                            backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                            tension: 0.1,
+                            fill: false,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'Rata-rata Petugas',
+                            data: skmData.trendPetugasData,
+                            borderColor: 'rgb(168, 85, 247)',
+                            backgroundColor: 'rgba(168, 85, 247, 0.2)',
+                            tension: 0.1,
+                            fill: false,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'Rata-rata Aksesibilitas',
+                            data: skmData.trendAksesibilitasData,
+                            borderColor: 'rgb(249, 115, 22)',
+                            backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                            tension: 0.1,
+                            fill: false,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            title: {
+                                display: true,
+                                text: 'Rata-rata Skor'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Bulan'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    }
+                }
+            });
+        }
+    });
 </script>
