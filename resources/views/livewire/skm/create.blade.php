@@ -72,6 +72,7 @@
                         </label>
                     
                         <select wire:model="skorLayanan" name="skorLayanan" id="skorLayanan" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
+                            <option value="">Pilih Kepuasan</option>
                             <option value="kurang">Kurang</option>
                             <option value="cukup">Cukup</option>
                             <option value="puas">Puas</option>

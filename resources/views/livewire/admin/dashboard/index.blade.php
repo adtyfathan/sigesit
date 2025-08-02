@@ -232,17 +232,17 @@
                     <h3 class="text-lg font-semibold mb-2">Nilai Rata-rata per Bidang</h3>
                     <canvas id="barChart"   ></canvas>
                 </div>
-                <div class="min-w-[300px] max-w-full">
-                    <h3 class="text-lg font-semibold mb-2">Kepuasan Layanan</h3>
-                    <canvas id="pieChart"></canvas>
-                </div>
-                <div class="min-w-[300px] max-w-full">
+                {{-- <div class="min-w-[300px] max-w-full">
                     <h3 class="text-lg font-semibold mb-2">Tren Kepuasan Masyarakat</h3>
                     <canvas id="trenChart"></canvas>
-                </div>
+                </div> --}}
                 <div class="min-w-[300px] max-w-full">
                     <h3 class="text-lg font-semibold mb-2">Distribusi Responden per Layanan</h3>
                     <canvas id="distribusiChart"></canvas>
+                </div>
+                <div class="min-w-[300px] max-w-full">
+                    <h3 class="text-lg font-semibold mb-2">Kepuasan Layanan</h3>
+                    <canvas id="pieChart"></canvas>
                 </div>
             </div>
         </div>
@@ -253,7 +253,7 @@
                 <p class="text-gray-600 mt-2">Data Pengisian Survey Kepuasan Masyarakat</p>
 
                 <div class="mt-4 overflow-x-auto relative">
-                    <table class="w-full text-sm text-center text-gray-500">
+                    <table class="w-full text-sm text-center text-gray-500 mb-4">
                         <!-- Table Header -->
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
@@ -323,7 +323,7 @@
                         </tbody>
                     </table>
 
-                    {{-- {{ $skms->links() }} --}}
+                    {{ $skms->links() }}
                 </div>
             </div>
         </div>
