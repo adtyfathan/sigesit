@@ -5,7 +5,7 @@
                  style="background-image: url('{{ asset('images/banner4.jpg') }}');"> {{-- ADDED THIS LINE --}}
         <div class="absolute inset-0 bg-black opacity-30"></div>
         <div class="relative z-10 text-white px-4 sm:px-6 lg:px-8">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Badan Informasi Geospasial</h1>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Sistem Informasi Geospasial Terpadu</h1>
             <p class="text-lg md:text-xl">Satu Data, Satu Peta, Untuk Indonesia Maju</p>
         </div>
     </div>

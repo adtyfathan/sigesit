@@ -51,6 +51,11 @@ use App\Models\Role;
 // Pesan
 use App\Livewire\Admin\Pesan\Pesan; 
 
+// demo postman
+// use App\Http\Controllers\SkmController;
+
+// Route::post('/skm', [SkmController::class, 'store'])->withoutMiddleware(['auth', 'web']);
+
 Route::view('/', 'welcome');
 
 Route::get('/home', Home::class)->name('home');
@@ -69,10 +74,6 @@ Route::prefix('/skm')->name('skm')->group(function () {
     Route::get('', SkmIndex::class)->name('.index');
     Route::get('/create/{transaksiId}', SkmCreate::class)->name('.create');
 });
-
-// Route::get('/skm', SkmPage::class)->name('skm.index');
-
-// Route::post('/skm/submit-survey', [SkmResultController::class, 'store'])->name('skm.submit_survey');
 
 Route::get('/hubungi', Hubungi::class)->name('hubungi'); // Ini adalah route untuk halaman kontak
 

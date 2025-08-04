@@ -19,10 +19,12 @@
         @php
             $skmDatasCollection = collect($skmDatas);
 
-            $avgTotal = $skmDatasCollection->count() > 0 ? round($skmDatasCollection->avg('total_skor'), 1) : 0;
-            $avgFasilitas = $skmDatasCollection->count() > 0 ? round($skmDatasCollection->avg('skor_fasilitas'), 1) : 0;
-            $avgPetugas = $skmDatasCollection->count() > 0 ? round($skmDatasCollection->avg('skor_petugas'), 1) : 0;
-            $avgAksesibilitas = $skmDatasCollection->count() > 0 ? round($skmDatasCollection->avg('skor_aksesibilitas'), 1) : 0;
+            // Menghitung rata-rata dari 4 skor aspek
+            $avgFasilitas = round($skmDatasCollection->avg('skor_fasilitas'), 1);
+            $avgPetugas = round($skmDatasCollection->avg('skor_petugas'), 1);
+            $avgAksesibilitas = round($skmDatasCollection->avg('skor_aksesibilitas'), 1);
+            $avgPengiriman = round($skmDatasCollection->avg('skor_pengiriman'), 1);
+
 
             $kepuasanOverall = [
                 'kurang' => 0,
@@ -32,18 +34,41 @@
             ];
 
             foreach ($skmDatasCollection as $data) {
-                $skorLayanan = isset($data->skor_layanan) ? strtolower($data->skor_layanan) : '';
-                switch ($skorLayanan) {
-                    case 'kurang': $kepuasanOverall['kurang']++; break;
-                    case 'cukup': $kepuasanOverall['cukup']++; break;
-                    case 'puas': $kepuasanOverall['puas']++; break;
-                    case 'sangat puas': $kepuasanOverall['sangat_puas']++; break;
+                // Perbarui logika untuk menghitung skor_layanan
+                $calculatedLayanan = (isset($data->skor_fasilitas) && isset($data->skor_petugas) && isset($data->skor_aksesibilitas) && isset($data->skor_pengiriman))
+                    ? ($data->skor_fasilitas + $data->skor_petugas + $data->skor_aksesibilitas + $data->skor_pengiriman) / 4
+                    : 0;
+
+                $kepuasanLayanan = '';
+                if ($calculatedLayanan > 8) {
+                    $kepuasanLayanan = 'sangat puas';
+                } elseif ($calculatedLayanan > 6) {
+                    $kepuasanLayanan = 'puas';
+                } elseif ($calculatedLayanan > 4) {
+                    $kepuasanLayanan = 'cukup';
+                } else {
+                    $kepuasanLayanan = 'kurang';
+                }
+
+                switch ($kepuasanLayanan) {
+                    case 'kurang':
+                        $kepuasanOverall['kurang']++;
+                        break;
+                    case 'cukup':
+                        $kepuasanOverall['cukup']++;
+                        break;
+                    case 'puas':
+                        $kepuasanOverall['puas']++;
+                        break;
+                    case 'sangat puas':
+                        $kepuasanOverall['sangat_puas']++;
+                        break;
                 }
             }
 
             // Hitung rata-rata bulanan
-            $getMonthlyAverages = function($scoreColumn) use ($skmDatasCollection) {
-                return $skmDatasCollection->groupBy(function($data) {
+            $getMonthlyAverages = function ($scoreColumn) use ($skmDatasCollection) {
+                return $skmDatasCollection->groupBy(function ($data) {
                     if (isset($data->tanggal_survey) && !empty($data->tanggal_survey)) {
                         try {
                             return \Carbon\Carbon::parse($data->tanggal_survey)->format('Y-m');
@@ -52,26 +77,27 @@
                         }
                     }
                     return 'no-date';
-                })->filter(function($group, $key) {
+                })->filter(function ($group, $key) {
                     return $key !== 'invalid-date' && $key !== 'no-date';
                 })->map(function ($group) use ($scoreColumn) {
-                    $validScores = $group->filter(function($item) use ($scoreColumn) {
+                    $validScores = $group->filter(function ($item) use ($scoreColumn) {
                         return isset($item->$scoreColumn) && is_numeric($item->$scoreColumn);
                     })->pluck($scoreColumn);
                     return $validScores->count() > 0 ? round($validScores->avg(), 1) : null;
                 })->filter();
             };
 
-            $rawMonthlyTotalScores = $getMonthlyAverages('total_skor');
             $rawMonthlyFasilitasScores = $getMonthlyAverages('skor_fasilitas');
             $rawMonthlyPetugasScores = $getMonthlyAverages('skor_petugas');
             $rawMonthlyAksesibilitasScores = $getMonthlyAverages('skor_aksesibilitas');
+            $rawMonthlyPengirimanScores = $getMonthlyAverages('skor_pengiriman');
 
             $trendLabels = [];
-            $trendTotalData = [];
             $trendFasilitasData = [];
             $trendPetugasData = [];
             $trendAksesibilitasData = [];
+            $trendPengirimanData = [];
+
 
             // Generate semua bulan dalam rentang yang ditentukan
             $startDateForChart = \Carbon\Carbon::create(2025, 1, 1)->startOfMonth();
@@ -81,41 +107,17 @@
                 $monthKey = $currentMonth->format('Y-m');
                 $trendLabels[] = $currentMonth->format('M Y');
 
-                $trendTotalData[] = $rawMonthlyTotalScores->get($monthKey);
                 $trendFasilitasData[] = $rawMonthlyFasilitasScores->get($monthKey);
                 $trendPetugasData[] = $rawMonthlyPetugasScores->get($monthKey);
                 $trendAksesibilitasData[] = $rawMonthlyAksesibilitasScores->get($monthKey);
+                $trendPengirimanData[] = $rawMonthlyPengirimanScores->get($monthKey);
+
 
                 $currentMonth->addMonth();
             }
         @endphp
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div
-                class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div
-                            class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Rata-rata Total</p>
-                        <p class="text-3xl font-bold text-gray-900">{{ $avgTotal }}<span
-                                class="text-lg text-gray-500">/10</span></p>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-                            <div class="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                                style="width: {{ ($avgTotal / 10) * 100 }}%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div
                 class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
                 <div class="flex items-center">
@@ -190,6 +192,29 @@
                     </div>
                 </div>
             </div>
+
+            <div
+                class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-red-100 to-red-200 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15.828 10 10l-4.243 4.242a2 2 0 11-2.828-2.828L10 10l4.243-4.242a2 2 0 112.828 2.828L11.828 15.828 10 10l-4.243 4.242a2 2 0 11-2.828-2.828L10 10l4.243-4.242z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Pengiriman</p>
+                        <p class="text-3xl font-bold text-gray-900">{{ $avgPengiriman }}<span
+                                class="text-lg text-gray-500">/10</span></p>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                            <div class="bg-red-600 h-2 rounded-full transition-all duration-300"
+                                style="width: {{ ($avgPengiriman / 10) * 100 }}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
@@ -209,7 +234,7 @@
         </div>
 
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Tren Rata-rata Skor Kepuasan (Total dan Aspek)</h2>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Tren Rata-rata Skor Kepuasan (Aspek)</h2>
             <div class="relative h-96">
                 <canvas id="satisfactionTrendChart"></canvas>
             </div>
@@ -227,11 +252,12 @@
             avgFasilitas: {{ $avgFasilitas }},
             avgPetugas: {{ $avgPetugas }},
             avgAksesibilitas: {{ $avgAksesibilitas }},
+            avgPengiriman: {{ $avgPengiriman }},
             trendLabels: @json($trendLabels),
-            trendTotalData: @json($trendTotalData),
             trendFasilitasData: @json($trendFasilitasData),
             trendPetugasData: @json($trendPetugasData),
-            trendAksesibilitasData: @json($trendAksesibilitasData)
+            trendAksesibilitasData: @json($trendAksesibilitasData),
+            trendPengirimanData: @json($trendPengirimanData)
         };
 
         // 1. Overall Satisfaction Donut Chart
@@ -291,19 +317,21 @@
             new Chart(aspectsComparisonCtx.getContext('2d'), {
                 type: 'bar',
                 data: {
-                    labels: ['Fasilitas', 'Petugas', 'Aksesibilitas'],
+                    labels: ['Fasilitas', 'Petugas', 'Aksesibilitas', 'Pengiriman'],
                     datasets: [{
                         label: 'Rata-rata Skor /10',
-                        data: [skmData.avgFasilitas, skmData.avgPetugas, skmData.avgAksesibilitas],
+                        data: [skmData.avgFasilitas, skmData.avgPetugas, skmData.avgAksesibilitas, skmData.avgPengiriman],
                         backgroundColor: [
                             'rgba(34, 197, 94, 0.7)',
                             'rgba(168, 85, 247, 0.7)',
-                            'rgba(249, 115, 22, 0.7)'
+                            'rgba(249, 115, 22, 0.7)',
+                            'rgba(239, 68, 68, 0.7)'
                         ],
                         borderColor: [
                             'rgba(34, 197, 94, 1)',
                             'rgba(168, 85, 247, 1)',
-                            'rgba(249, 115, 22, 1)'
+                            'rgba(249, 115, 22, 1)',
+                            'rgba(239, 68, 68, 1)'
                         ],
                         borderWidth: 1
                     }]
@@ -337,16 +365,7 @@
                 type: 'line',
                 data: {
                     labels: skmData.trendLabels,
-                    datasets: [{
-                            label: 'Rata-rata Skor Total',
-                            data: skmData.trendTotalData,
-                            borderColor: 'rgb(75, 192, 192)',
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            tension: 0.1,
-                            fill: false,
-                            pointRadius: 5,
-                            pointHoverRadius: 8
-                        },
+                    datasets: [
                         {
                             label: 'Rata-rata Fasilitas',
                             data: skmData.trendFasilitasData,
@@ -372,6 +391,16 @@
                             data: skmData.trendAksesibilitasData,
                             borderColor: 'rgb(249, 115, 22)',
                             backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                            tension: 0.1,
+                            fill: false,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'Rata-rata Pengiriman',
+                            data: skmData.trendPengirimanData,
+                            borderColor: 'rgb(239, 68, 68)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.2)',
                             tension: 0.1,
                             fill: false,
                             pointRadius: 4,

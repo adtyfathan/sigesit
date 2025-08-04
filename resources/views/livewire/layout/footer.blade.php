@@ -8,7 +8,7 @@
                 <div class="">
                     <div class="flex items-center mb-4">
                         <img src="{{ asset('images/logo.png') }}" alt="Logo Perusahaan" class="h-10 w-10 mr-3">
-                        <h3 class="text-xl font-bold">Badan Informasi Geospasial</h3>
+                        <h3 class="text-xl font-bold">Sistem Informasi Geospasial Terpadu</h3>
                     </div>
                     <p class="text-gray-300 text-sm mb-4">
                         Integritas, Visioner, Tanggung Jawab, Kerja Sama.
@@ -33,7 +33,7 @@
                 </div>
                 <div>
                     <p class="text-gray-300 text-sm mt-4">
-                        © {{ date('Y') }} Badan Informasi Geospasial. All rights reserved.
+                        © {{ date('Y') }} Sistem Informasi Geospasial Terpadu. All rights reserved.
                     </p>
                 </div>
 
