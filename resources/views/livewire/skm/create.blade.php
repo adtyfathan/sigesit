@@ -65,23 +65,6 @@
                     </div>
                 @endif
 
-                <div class="space-y-8">
-                    <div class="space-y-3">
-                        <label class="block text-lg font-semibold text-gray-900">
-                            Seberapa puas Anda dengan layanan yang kami berikan?
-                        </label>
-                    
-                        <select wire:model="skorLayanan" name="skorLayanan" id="skorLayanan" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
-                            <option value="kurang">Kurang</option>
-                            <option value="cukup">Cukup</option>
-                            <option value="puas">Puas</option>
-                            <option value="sangat puas">Sangat Puas</option>
-                        </select>
-                        @error('skorLayanan')
-                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
                     <!-- Fasilitas Rating -->
                     <div class="space-y-3">
                         <label class="block text-lg font-semibold text-gray-900">

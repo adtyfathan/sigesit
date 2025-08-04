@@ -37,7 +37,7 @@
                     case 'kurang': $kepuasanOverall['kurang']++; break;
                     case 'cukup': $kepuasanOverall['cukup']++; break;
                     case 'puas': $kepuasanOverall['puas']++; break;
-                    case 'sangat_puas': $kepuasanOverall['sangat_puas']++; break;
+                    case 'sangat puas': $kepuasanOverall['sangat_puas']++; break;
                 }
             }
 
