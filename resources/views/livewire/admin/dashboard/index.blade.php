@@ -1,5 +1,4 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-10">
-    <!-- Header Section -->
     <div class="bg-white shadow-sm border-b border-blue-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="py-6">
@@ -9,11 +8,8 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-            <!-- Total Users Card -->
             <div
                 class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-blue-100">
                 <div class="flex items-center justify-between">
@@ -27,7 +23,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-3.31 0-6 2.24-6 5v1h12v-1c0-2.76-2.69-5-6-5z" />
                         </svg>
-
                     </div>
                 </div>
                 <div class="mt-4 flex items-center text-sm text-green-600">
@@ -40,7 +35,6 @@
                 </div>
             </div>
 
-            <!-- Products Card -->
             <div
                 class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-blue-100">
                 <div class="flex items-center justify-between">
@@ -66,33 +60,6 @@
                 </div>
             </div>
 
-            <!-- News Card -->
-            {{-- <div
-                class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-blue-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Berita</p>
-                        <p class="text-3xl font-bold text-gray-900 mt-2">{{ count($beritas) }}</p>
-                    </div>
-                    <div class="bg-purple-100 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
-                            </path>
-                        </svg>
-                    </div>
-                </div>
-                <div class="mt-4 flex items-center text-sm text-purple-600">
-                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                    <span>Terpublish</span>
-                </div>
-            </div> --}}
-
-            <!-- Categories Card -->
             <div
                 class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-blue-100">
                 <div class="flex items-center justify-between">
@@ -118,7 +85,6 @@
                 </div>
             </div>
 
-            <!-- Transactions Card -->
             <div
                 class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-blue-100">
                 <div class="flex items-center justify-between">
@@ -145,106 +111,34 @@
             </div>
         </div>
 
-        <!-- User Roles Section -->
-        <div class="bg-white rounded-xl shadow-sm p-8 border border-blue-100 mb-8 mt-8">
-            <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900">Sebaran Pengguna</h2>
-                <p class="text-gray-600 mt-2">Data pengguna berdasarkan role</p>
-            </div>
-        
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- General Users -->
-                <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 text-white">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-blue-100 text-sm font-medium">Pengguna Umum</p>
-                            <p class="text-3xl font-bold mt-2">{{ count($umums) }}</p>
-                        </div>
-                        <div class="bg-blue-400 bg-opacity-30 p-3 rounded-full">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Administrators -->
-                <div class="bg-gradient-to-r from-red-500 to-red-600 rounded-lg p-6 text-white">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-red-100 text-sm font-medium">Administrator</p>
-                            <p class="text-3xl font-bold mt-2">{{ count($admins) }}</p>
-                        </div>
-                        <div class="bg-red-400 bg-opacity-30 p-3 rounded-full">
-                            <svg class="w-6 h-6" fill="currentColor" stroke="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L4 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6l-8-4z" />
-                            </svg>
-        
-        
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Operators -->
-                <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-6 text-white">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-green-100 text-sm font-medium">Operator</p>
-                            <p class="text-3xl font-bold mt-2">{{ count($operators) }}</p>
-                        </div>
-                        <div class="bg-green-400 bg-opacity-30 p-3 rounded-full">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Treasurers -->
-                <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg p-6 text-white">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-purple-100 text-sm font-medium">Bendahara</p>
-                            <p class="text-3xl font-bold mt-2">{{ count($bendaharas) }}</p>
-                        </div>
-                        <div class="bg-purple-400 bg-opacity-30 p-3 rounded-full">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path>
-                                <path fill-rule="evenodd"
-                                    d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="bg-white rounded-xl shadow-sm p-8 border border-blue-100 mb-8 mt-8">
             <h2 class="text-2xl font-bold text-gray-900">Visualisasi SKM</h2>
             <p class="text-gray-600 mt-2">Grafik Visualisasi Hasil Survey Kepuasan Masyarakat</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                <div class="min-w-[300px] max-w-full">
-                    <h3 class="text-lg font-semibold mb-2">Nilai Rata-rata per Bidang</h3>
-                    <canvas id="barChart"   ></canvas>
+            @if ($chartData && count($chartData['kepuasanOverall']) > 0 && array_sum($chartData['kepuasanOverall']) > 0)
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    <div class="min-w-[300px] max-w-full h-96 relative">
+                        <h3 class="text-lg font-semibold mb-2">Nilai Rata-rata per Bidang</h3>
+                        <canvas id="barChart"></canvas>
+                    </div>
+                    <div class="min-w-[300px] max-w-full h-96 relative">
+                        <h3 class="text-lg font-semibold mb-2">Tren Kepuasan Masyarakat</h3>
+                        <canvas id="trenChart"></canvas>
+                    </div>
+                    <div class="min-w-[300px] max-w-full h-96 relative">
+                        <h3 class="text-lg font-semibold mb-2">Distribusi Responden per Layanan</h3>
+                        <canvas id="distribusiChart"></canvas>
+                    </div>
+                    <div class="min-w-[300px] max-w-full h-96 relative">
+                        <h3 class="text-lg font-semibold mb-2">Kepuasan Layanan</h3>
+                        <canvas id="pieChart"></canvas>
+                    </div>
                 </div>
-                {{-- <div class="min-w-[300px] max-w-full">
-                    <h3 class="text-lg font-semibold mb-2">Tren Kepuasan Masyarakat</h3>
-                    <canvas id="trenChart"></canvas>
-                </div> --}}
-                <div class="min-w-[300px] max-w-full">
-                    <h3 class="text-lg font-semibold mb-2">Distribusi Responden per Layanan</h3>
-                    <canvas id="distribusiChart"></canvas>
+            @else
+                <div class="flex items-center justify-center h-96">
+                    <p class="text-xl text-gray-500">Belum ada data survey untuk ditampilkan.</p>
                 </div>
-                <div class="min-w-[300px] max-w-full">
-                    <h3 class="text-lg font-semibold mb-2">Kepuasan Layanan</h3>
-                    <canvas id="pieChart"></canvas>
-                </div>
-            </div>
+            @endif
         </div>
 
         <div class="bg-white rounded-xl shadow-sm p-8 border border-blue-100 mb-8 mt-8">
@@ -254,7 +148,6 @@
 
                 <div class="mt-4 overflow-x-auto relative">
                     <table class="w-full text-sm text-center text-gray-500 mb-4">
-                        <!-- Table Header -->
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
                                 <th scope="col" class="py-3 px-6 text-center">
@@ -279,15 +172,14 @@
                                     Nilai Aksesibilitas
                                 </th>
                                 <th scope="col" class="py-3 px-6 text-center">
-                                    Nilai Total
+                                    Nilai Pengiriman
                                 </th>
                                 <th scope="col" class="py-3 px-6 text-center">
                                     Komentar
                                 </th>
                             </tr>
                         </thead>
-                
-                        <!-- Table Body -->
+        
                         <tbody>
                             @foreach ($skms as $skm)
                                 <tr class="bg-white border-b hover:bg-gray-50">
@@ -301,7 +193,7 @@
                                         {{ $skm->created_at->translatedFormat('l, d F Y H:i') }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $skm->skor_layanan }}
+                                        {{ round((($skm->skor_fasilitas ?? 0) + ($skm->skor_petugas ?? 0) + ($skm->skor_aksesibilitas ?? 0) + ($skm->skor_pengiriman ?? 0)) / 4, 1) }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ $skm->skor_fasilitas }}
@@ -310,10 +202,10 @@
                                         {{ $skm->skor_petugas }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{$skm->skor_aksesibilitas }}
+                                        {{ $skm->skor_aksesibilitas }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{$skm->total_skor }}
+                                        {{ $skm->skor_pengiriman }}
                                     </td>
                                     <td>
                                         {{ $skm->komentar ?? '-' }}
@@ -322,120 +214,241 @@
                             @endforeach
                         </tbody>
                     </table>
-
+        
                     {{ $skms->links() }}
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const ctxBar = document.getElementById('barChart');
+        document.addEventListener('livewire:initialized', () => {
+            const chartData = @json($chartData);
 
-            new Chart(ctxBar, {
-                type: 'bar',
-                data: {
-                    labels: ['Fasilitas', 'Petugas', 'Aksesibilitas'],
-                    datasets: [{
-                        label: 'Grafik Hasil Survey per Bidang',
-                        data: @json($bidangDatas),
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(153, 102, 255)',
-                            'rgb(255, 205, 86)'
-                        ],
-                        borderWidth: 1  
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+            if (chartData && Object.keys(chartData.kepuasanOverall).length > 0 && Object.values(chartData.kepuasanOverall).reduce((sum, val) => sum + val, 0) > 0) {
+                // Bar Chart (Nilai Rata-rata per Bidang)
+                const ctxBar = document.getElementById('barChart');
+                new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Fasilitas', 'Petugas', 'Aksesibilitas', 'Pengiriman'],
+                        datasets: [{
+                            label: 'Grafik Hasil Survey per Bidang',
+                            data: [chartData.avgFasilitas, chartData.avgPetugas, chartData.avgAksesibilitas, chartData.avgPengiriman],
+                            backgroundColor: [
+                                'rgba(34, 197, 94, 0.7)',
+                                'rgba(168, 85, 247, 0.7)',
+                                'rgba(249, 115, 22, 0.7)',
+                                'rgba(239, 68, 68, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgb(34, 197, 94)',
+                                'rgb(168, 85, 247)',
+                                'rgb(249, 115, 22)',
+                                'rgb(239, 68, 68)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 10
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
                         }
                     }
-                }
-            });
+                });
 
-            const ctxPie = document.getElementById('pieChart');
-
-            new Chart(ctxPie, {
-                type: 'pie',
-                data: {
-                    labels: ['Kurang', 'Cukup', 'Puas', 'Sangat Puas'],
-                    datasets: [{
-                        label: '# of Votes',
-                        data: @json($layananDatas),
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                // Pie Chart (Kepuasan Layanan)
+                const ctxPie = document.getElementById('pieChart');
+                new Chart(ctxPie, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Kurang', 'Cukup', 'Puas', 'Sangat Puas'],
+                        datasets: [{
+                            label: 'Kepuasan Layanan',
+                            data: Object.values(chartData.kepuasanOverall),
+                            backgroundColor: [
+                                'rgba(239, 68, 68, 0.8)',
+                                'rgba(251, 191, 36, 0.8)',
+                                'rgba(34, 197, 94, 0.8)',
+                                'rgba(59, 130, 246, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(251, 191, 36, 1)',
+                                'rgba(34, 197, 94, 1)',
+                                'rgba(59, 130, 246, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        const total = tooltipItem.dataset.data.reduce((sum, val) => sum + val, 0);
+                                        const currentValue = tooltipItem.raw;
+                                        const percentage = parseFloat((currentValue / total * 100).toFixed(1));
+                                        return `${tooltipItem.label}: ${currentValue} (${percentage}%)`;
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-            });
+                });
 
-            const ctxTren = document.getElementById('trenChart');
-
-            const stackedLine = new Chart(ctxTren, {
-                type: 'line',
-                data : {
-                    labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-                    datasets: [{
-                        label: 'Grafik Tren Kepuasan Masyarakat',
-                        data: @json($trenDatas),
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            stacked: true
+                // Line Chart (Tren Kepuasan Masyarakat)
+                const ctxTren = document.getElementById('trenChart');
+                new Chart(ctxTren, {
+                    type: 'line',
+                    data: {
+                        labels: chartData.trendLabels,
+                        datasets: [{
+                            label: 'Fasilitas',
+                            data: chartData.trendFasilitasData,
+                            borderColor: 'rgb(34, 197, 94)',
+                            backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                            tension: 0.1,
+                            fill: false,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        }, {
+                            label: 'Petugas',
+                            data: chartData.trendPetugasData,
+                            borderColor: 'rgb(168, 85, 247)',
+                            backgroundColor: 'rgba(168, 85, 247, 0.2)',
+                            tension: 0.1,
+                            fill: false,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        }, {
+                            label: 'Aksesibilitas',
+                            data: chartData.trendAksesibilitasData,
+                            borderColor: 'rgb(249, 115, 22)',
+                            backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                            tension: 0.1,
+                            fill: false,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        }, {
+                            label: 'Pengiriman',
+                            data: chartData.trendPengirimanData,
+                            borderColor: 'rgb(239, 68, 68)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                            tension: 0.1,
+                            fill: false,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 10,
+                                title: {
+                                    display: true,
+                                    text: 'Rata-rata Skor'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Bulan'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                            }
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
                         }
                     }
-                }
-            });
+                });
 
-            const ctxDistribusi = document.getElementById('distribusiChart');
-
-            new Chart(ctxDistribusi, {
-                type: 'bar',
-                data: {
-                    labels: @json($distribusiLabels),
-                    datasets: [{
-                        label: 'Grafik Distribusi Responden per Layanan',
-                        data: @json($distribusiDatas),
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(153, 102, 255)',
-                            'rgb(255, 205, 86)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                // Bar Chart (Distribusi Responden per Layanan)
+                const ctxDistribusi = document.getElementById('distribusiChart');
+                new Chart(ctxDistribusi, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.distribusiLabels,
+                        datasets: [{
+                            label: 'Grafik Distribusi Responden per Layanan',
+                            data: chartData.distribusiDatas,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.7)',
+                                'rgba(54, 162, 235, 0.7)',
+                                'rgba(255, 206, 86, 0.7)',
+                                'rgba(75, 192, 192, 0.7)',
+                                'rgba(153, 102, 255, 0.7)',
+                                'rgba(255, 159, 64, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 206, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(153, 102, 255)',
+                                'rgb(255, 159, 64)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Jumlah Survey'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Nama Layanan'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
                         }
                     }
-                }
-            });
-        })
+                });
+            }
+        });
     </script>
 @endpush
