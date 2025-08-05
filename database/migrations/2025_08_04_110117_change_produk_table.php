@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('produk', function (Blueprint $table) {
             $table->dropColumn('jumlah_terjual');
+            $table->dropColumn('wilayah_peta');
             $table->renameColumn('harga_produk', 'harga_per_jam');
         });
     }

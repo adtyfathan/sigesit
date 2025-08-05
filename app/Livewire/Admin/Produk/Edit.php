@@ -17,10 +17,9 @@ class Edit extends Component
     public $produk;
     public $kategoris = [];
     public $nama_produk;
-    public $harga_produk;
+    public $harga_per_jam;
     public $gambar_produk;
     public $deskripsi_produk;
-    public $wilayah_peta;
     public $kategori_id;
 
     public function mount($produkId)
@@ -32,19 +31,17 @@ class Edit extends Component
         $this->produk = Produk::find($produkId);
         $this->kategoris = Kategori::get();
         $this->nama_produk = $this->produk->nama_produk;
-        $this->harga_produk = $this->produk->harga_produk;
+        $this->harga_per_jam = $this->produk->harga_per_jam;
         $this->deskripsi_produk = $this->produk->deskripsi_produk;
-        $this->wilayah_peta = $this->produk->wilayah_peta;
         $this->kategori_id = $this->produk->kategori_id;
     }
 
     public function update(){
         $validated = $this->validate([
             'nama_produk' => 'required|string',
-            'harga_produk' => 'required|numeric',
+            'harga_per_jam' => 'required|numeric',
             'gambar_produk' => 'nullable|image|max:1024',
             'deskripsi_produk' => 'nullable|string',
-            'wilayah_peta' => 'nullable|string',
             'kategori_id' => 'required|exists:kategori,id',
         ]);
         

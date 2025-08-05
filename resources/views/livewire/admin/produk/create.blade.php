@@ -38,17 +38,17 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Price -->
                     <div class="space-y-2">
-                        <label for="harga_produk" class="block text-sm font-semibold text-gray-700">
-                            Harga Produk
+                        <label for="harga_per_jam" class="block text-sm font-semibold text-gray-700">
+                            Harga Produk per Jam
                             <span class="text-red-500">*</span>
                         </label>
                         <div class="relative text-black">
                             <span class="absolute left-3 top-3 text-gray-500 font-medium">Rp</span>
-                            <input type="number" id="harga_produk" wire:model="harga_produk"
+                            <input type="number" id="harga_per_jam" wire:model="harga_per_jam"
                                 class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 placeholder-gray-400"
                                 placeholder="0" min="0" step="0.01">
                         </div>
-                        @error('harga_produk')
+                        @error('harga_per_jam')
                             <p class="text-red-500 text-sm mt-1 flex items-center">
                                 <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
@@ -142,27 +142,6 @@
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 placeholder-gray-400 resize-none"
                         placeholder="Jelaskan detail produk, fitur, dan keunggulan..."></textarea>
                     @error('deskripsi_produk')
-                        <p class="text-red-500 text-sm mt-1 flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-
-                <!-- Region/Area -->
-                <div class="space-y-2">
-                    <label for="wilayah_peta" class="block text-sm font-semibold text-gray-700">
-                        Wilayah/Area
-                        <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="wilayah_peta" wire:model="wilayah_peta"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 placeholder-gray-400"
-                        placeholder="Masukkan wilayah atau area produk">
-                    @error('wilayah_peta')
                         <p class="text-red-500 text-sm mt-1 flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"

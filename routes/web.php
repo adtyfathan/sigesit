@@ -77,9 +77,9 @@ Route::prefix('/skm')->name('skm')->group(function () {
 
 Route::get('/hubungi', Hubungi::class)->name('hubungi'); // Ini adalah route untuk halaman kontak
 
-Route::get('/peta', Peta::class)->name('peta');
+// Route::get('/peta', Peta::class)->name('peta');
 
-Route::get('/checkout/{produkId}', Checkout::class)->name('checkout');
+Route::get('/checkout/{transaksiId}', Checkout::class)->name('checkout');
 
 Route::get('/transaksi/{transaksiId}', Transaksi::class)->name('transaksi.show');
 

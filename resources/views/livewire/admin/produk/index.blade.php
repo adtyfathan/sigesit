@@ -11,7 +11,7 @@
                 </div>
 
                 <div class=" overflow-x-auto relative">
-                    <table class="w-full text-sm text-left text-gray-500">
+                    <table class="w-full text-sm text-center text-gray-500">
                         <!-- Table Header -->
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
@@ -23,12 +23,6 @@
                                 </th>
                                 <th scope="col" class="py-3 px-6 text-center">
                                     Gambar
-                                </th>
-                                <th scope="col" class="py-3 px-6 text-center">
-                                    Jumlah Terjual
-                                </th>
-                                <th scope="col" class="py-3 px-6 text-center">
-                                    Wilayah Peta
                                 </th>
                                 <th scope="col" class="py-3 px-6 text-center">
                                     Kategori
@@ -50,7 +44,7 @@
                                         {{ $produk->nama_produk }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}
+                                        Rp {{ number_format($produk->harga_per_jam, 0, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
@@ -60,25 +54,13 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            {{ $produk->jumlah_terjual }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                            {{ $produk->wilayah_peta }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4">
                                         {{ $produk->kategori->nama_kategori }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ $produk->created_at->format('d M Y H:i') }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="flex space-x-2">
+                                        <div class="flex justify-center space-x-2">
                                             <a href="{{ route('admin.produk.show', $produk->id) }}"
                                                 class="text-blue-600 hover:text-blue-900 px-3 py-1 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors"
                                                 wire:navigate>

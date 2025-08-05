@@ -36,7 +36,7 @@
                             <div class="md:col-span-2 space-y-3">
                                 <div>
                                     <h4 class="text-base font-semibold text-gray-900 mb-1">{{ $transaksi->produk->nama_produk }}</h4>
-                                    <p class="text-sm text-gray-600">Rp {{ number_format($transaksi->jumlah_transaksi, 0, ',', '.') }}</p>
+                                    <p class="text-sm text-gray-600">Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</p>
                                 </div>
 
                                 <div class="flex gap-4 text-sm">

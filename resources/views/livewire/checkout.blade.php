@@ -33,16 +33,39 @@
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 class="text-xl font-semibold mb-4">Detail Produk</h2>
             <div class="flex items-center space-x-4">
-                <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="{{ $produk->nama_produk }}"
+                <img src="{{ asset('storage/' . $transaksi->produk->gambar_produk) }}" alt="{{ $transaksi->produk->nama_produk }}"
                     class="w-20 h-20 object-cover rounded">
                 <div class="flex-1">
-                    <h3 class="text-lg font-medium text-gray-900">{{ $produk->nama_produk }}</h3>
-                    <p class="text-gray-600">{{ $produk->kategori->nama_kategori ?? 'General' }}</p>
-                    <p class="text-sm text-gray-500 mt-1">{{ $produk->deskripsi_produk }}</p>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $transaksi->produk->nama_produk }}</h3>
+                    <div class="flex items-center text-gray-600 mb-2">
+                        <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM12 11.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
+                        </svg>
+                        <p>{{ $transaksi->stasiun->kode_stasiun }} - {{ $transaksi->stasiun->nama_stasiun }}</p>
+                    </div>
+
+                    <div>
+                        <p class="mb-1 flex items-center">
+                            <i class="fas fa-calendar-alt mr-2 text-blue-500"></i>
+                            Durasi Data Pemesanan
+                        </p>
+                        <div class="flex items-center text-sm text-gray-800 shadow-inner">
+                            <i class="fas fa-clock mr-2 text-blue-400"></i>
+                            <span>
+                                {{ \Carbon\Carbon::parse($transaksi->waktu_awal_pemesanan)->format('d M Y, H:i') }}
+                                &mdash;
+                                {{ \Carbon\Carbon::parse($transaksi->waktu_akhir_pemesanan)->format('d M Y, H:i') }}
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="text-right">
+
+                <div class="text-right text-xs text-gray-700">
+                    <p class="mb-2">Harga per Jam</p>
                     <p class="text-2xl font-bold text-blue-600">Rp
-                        {{ number_format($produk->harga_produk, 0, ',', '.') }}</p>
+                        {{ number_format($transaksi->produk->harga_per_jam, 0, ',', '.') }}</p>
                 </div>
             </div>
         </div>
@@ -52,13 +75,21 @@
             <h2 class="text-xl font-semibold mb-4">Ringkasan Pesanan</h2>
             <div class="space-y-2">
                 <div class="flex justify-between">
+                    <span>Harga Data per Jam</span>
+                    <span>Rp {{ number_format($transaksi->produk->harga_per_jam, 0, ',', '.') }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Durasi Data Pemesanan (dalam jam)</span>
+                    <span>{{ $jamDifference }} Jam</span>
+                </div>
+                <div class="flex justify-between">
                     <span>Subtotal</span>
-                    <span>Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
+                    <span>Rp {{ number_format($transaksi->produk->harga_per_jam, 0, ',', '.') }} x {{ $jamDifference }}</span>
                 </div>
                 <div class="border-t pt-2">
                     <div class="flex justify-between text-lg font-semibold">
                         <span>Total</span>
-                        <span class="text-blue-600">Rp {{ number_format($produk->harga_produk, 0, ',', '.') }}</span>
+                        <span class="text-blue-600">Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</span>
                     </div>
                 </div>
             </div>

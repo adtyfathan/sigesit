@@ -4,28 +4,38 @@ namespace App\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
-use App\Models\Produk;
 use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Transaksi;
+use Carbon\Carbon;
 
 class Checkout extends Component
 {
-    public $produk;
+    public $transaksi;
     public $snapToken;
     public $isProcessing = false;
-    public $currentTransaction;
     public $paymentStatus = null;
+    public $jamDifference;
     
-    public function mount($produkId){
+    public function mount($transaksiId){
         if (!Auth::check() || Auth::user()->role_id != 1) {
             abort(403, 'Anda tidak memiliki akses.');
         }
-        $this->produk = Produk::with('kategori')->find($produkId);
+
+        $this->transaksi = Transaksi::with(
+            'produk.kategori',
+            'stasiun'
+        )
+        ->find($transaksiId);
         
-        if (!$this->produk) {
-            abort(404, 'Produk tidak ditemukan.');
+        if (!$this->transaksi) {
+            abort(404, 'Transaksi tidak ditemukan.');
         }
+
+        $start = Carbon::parse($this->transaksi->waktu_awal_pemesanan);
+        $end = Carbon::parse($this->transaksi->waktu_akhir_pemesanan);
+
+        $this->jamDifference = $start->diffInHours($end);
     }
 
     public function createPayment()
@@ -34,19 +44,8 @@ class Checkout extends Component
         $this->paymentStatus = null;
         
         try {
-            // Create transaction record
-            $transaction = Transaksi::create([
-                'jumlah_transaksi' => $this->produk->harga_produk,
-                'tanggal_transaksi' => now(),
-                'status' => 'pending',
-                'user_id' => Auth::id(),
-                'produk_id' => $this->produk->id
-            ]);
-
-            $this->currentTransaction = $transaction;
-
             // Generate unique order ID
-            $orderId = 'ORDER-' . $transaction->id . '-' . time();
+            $orderId = 'ORDER-' . $this->transaksi->id . '-' . time();
 
             // Set Midtrans configuration
             Config::$serverKey = config('midtrans.server_key');
@@ -58,15 +57,15 @@ class Checkout extends Component
             $params = [
                 'transaction_details' => [
                     'order_id' => $orderId,
-                    'gross_amount' => (int) $this->produk->harga_produk,
+                    'gross_amount' => (int) $this->transaksi->total_harga,
                 ],
                 'item_details' => [
                     [
-                        'id' => $this->produk->id,
-                        'price' => (int) $this->produk->harga_produk,
-                        'quantity' => 1,
-                        'name' => $this->produk->nama_produk,
-                        'category' => $this->produk->kategori->nama_kategori
+                        'id' => $this->transaksi->produk->id,
+                        'price' => (int) $this->transaksi->produk->harga_per_jam,
+                        'quantity' => $this->jamDifference,
+                        'name' => $this->transaksi->produk->nama_produk,
+                        'category' => $this->transaksi->produk->kategori->nama_kategori
                     ]
                 ],
                 'customer_details' => [
@@ -86,7 +85,7 @@ class Checkout extends Component
             $snapToken = Snap::getSnapToken($params);
             
             // Update transaction with order_id
-            $transaction->update(['order_id' => $orderId]);
+            $this->transaksi->update(['order_id' => $orderId]);
             
             $this->snapToken = $snapToken;
             $this->isProcessing = false;
@@ -103,15 +102,13 @@ class Checkout extends Component
     public function checkPaymentStatus($orderId){
          // Check if status has been updated via webhook
         $cachedStatus = cache()->get(key: "transaction_status_{$orderId}");
-        // dd($orderId);
-        // dd($cachedStatus);
 
         if ($cachedStatus) {
             $this->paymentStatus = $cachedStatus['status'];
             
             // Update local transaction record
-            if ($this->currentTransaction) {
-                $this->currentTransaction->refresh();
+            if ($this->transaksi) {
+                $this->transaksi->refresh();
             }
             
             // Clear cache after reading
@@ -143,7 +140,6 @@ class Checkout extends Component
         // Find transaction by order_id
         $transaction = Transaksi::where('order_id', $result['order_id'])->first();
         if ($transaction) {
-            // Don't update status immediately, let webhook handle it
             // Just show temporary success message
             session()->flash('info', 'Pembayaran sedang diproses. Mohon tunggu konfirmasi.');
             
@@ -173,9 +169,9 @@ class Checkout extends Component
     }
 
     public function redirectToReview(){
-        if ($this->currentTransaction) {
-            return $this->redirect(route('transaksi.show', $this->currentTransaction->id), navigate: true);
-        }
+
+            return $this->redirect(route('transaksi.show', $this->transaksi->id), navigate: true);
+        
     }
 
     #[Layout('layouts.app')]

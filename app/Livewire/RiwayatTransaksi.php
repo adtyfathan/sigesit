@@ -18,7 +18,10 @@ class RiwayatTransaksi extends Component
             abort(403, 'Anda tidak memiliki akses.');
         }
 
-        $this->transaksis = Transaksi::with('produk.kategori')
+        $this->transaksis = Transaksi::with(
+            'produk.kategori',
+                'stasiun'
+            )
             ->where('user_id', Auth::user()->id)
             ->get();
     }

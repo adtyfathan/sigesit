@@ -11,19 +11,19 @@
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
                                 <th scope="col" class="py-3 px-6 text-center">
-                                    Id Pesanan
-                                </th>
-                                <th scope="col" class="py-3 px-6 text-center">
-                                    Gambar Produk
-                                </th>
-                                <th scope="col" class="py-3 px-6 text-center">
                                     Nama Produk
                                 </th>
                                 <th scope="col" class="py-3 px-6 text-center">
-                                    Kategori
+                                    Stasiun
                                 </th>
                                 <th scope="col" class="py-3 px-6 text-center">
-                                    Jumlah Harga
+                                    Waktu Awal
+                                </th>
+                                <th scope="col" class="py-3 px-6 text-center">
+                                    Waktu Akhir
+                                </th>
+                                <th scope="col" class="py-3 px-6 text-center">
+                                    Total Harga
                                 </th>
                                 <th scope="col" class="py-3 px-6 text-center">
                                     Tanggal Transaksi
@@ -41,25 +41,23 @@
                             @foreach ($transaksis as $transaksi)
                                 <tr class="bg-white border-b hover:bg-gray-50 text-center">
                                     <td class="px-6 py-4">
-                                        {{ $transaksi->order_id }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center justify-center">
-                                            <div
-                                                class="h-10 w-10 bg-gray-200 rounded-md flex items-center justify-center overflow-hidden">
-                                                <img src="{{ asset('storage/' . $transaksi->produk->gambar_produk) }}"
-                                                    class="object-cover h-full w-full">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
                                         {{ $transaksi->produk->nama_produk }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $transaksi->produk->kategori->nama_kategori }}
+                                        {{ $transaksi->stasiun->nama_stasiun }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        Rp {{ number_format($transaksi->jumlah_transaksi, 0, ',', '.') }}
+                                        <span>
+                                            {{ \Carbon\Carbon::parse($transaksi->waktu_awal_pemesanan)->format('d M Y, H:i') }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span>
+                                            {{ \Carbon\Carbon::parse($transaksi->waktu_akhir_pemesanan)->format('d M Y, H:i') }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ $transaksi->created_at->format('d M Y H:i') }}

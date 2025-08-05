@@ -32,7 +32,6 @@ class Index extends Component
         } else {
             $this->produks = Produk::where('nama_produk', 'like', '%' . $this->search . '%')
                 ->orWhere('deskripsi_produk', 'like', '%' . $this->search . '%')
-                ->orWhere('wilayah_peta', 'like', '%' . $this->search . '%')
                 ->get();
         }
     }

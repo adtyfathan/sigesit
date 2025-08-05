@@ -15,10 +15,9 @@ class Create extends Component
 
     public $kategoris = [];
     public $nama_produk;
-    public $harga_produk;
+    public $harga_per_jam;
     public $gambar_produk;
     public $deskripsi_produk;
-    public $wilayah_peta;
     public $kategori_id;
     
     public function mount(){
@@ -32,10 +31,9 @@ class Create extends Component
     public function store(){
         $validated = $this->validate([
             'nama_produk' => 'required|string',
-            'harga_produk' => 'required|numeric',
+            'harga_per_jam' => 'required|numeric',
             'gambar_produk' => 'nullable|image|max:1024',
             'deskripsi_produk' => 'nullable|string',
-            'wilayah_peta' => 'nullable|string',
             'kategori_id' => 'required|exists:kategori,id',
         ]);
 

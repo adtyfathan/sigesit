@@ -58,14 +58,6 @@ class MidtransController extends Controller
                 'payment_type' => $request->payment_type,
                 'transaction_id' => $request->transaction_id,
             ]);
-
-            $jumlahTerjual = $produk->jumlah_terjual;
-
-            if($status === 'capture' || $status === 'settlement' || $status === 'success') {
-                $produk->update([
-                    'jumlah_terjual' => $jumlahTerjual + 1,
-                ]);
-            }
             
             $this->broadcastStatusUpdate($transaction);
 

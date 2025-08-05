@@ -48,7 +48,7 @@
                             <div class="flex-1">
                                 <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ $produk->nama_produk }}</h3>
                                 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                                     <div>
                                         <span class="text-gray-600">Kategori:</span>
                                         <span class="ml-2 font-medium text-gray-900">
@@ -56,21 +56,21 @@
                                         </span>
                                     </div>
                                     <div>
-                                        <span class="text-gray-600">Harga:</span>
+                                        <span class="text-gray-600">Total Harga:</span>
                                         <span class="ml-2 font-bold text-blue-600">
-                                            {{ $this->formatCurrency($produk->harga_produk) }}
+                                            {{ $this->formatCurrency($transaksi->total_harga) }}
                                         </span>
                                     </div>
                                     <div>
-                                        <span class="text-gray-600">Wilayah:</span>
+                                        <span class="text-gray-600">Stasiun:</span>
                                         <span class="ml-2 font-medium text-gray-900">
-                                            {{ $produk->wilayah_peta ?? 'N/A' }}
+                                            {{ $transaksi->stasiun->kode_stasiun }} - {{ $transaksi->stasiun->nama_stasiun }}
                                         </span>
                                     </div>
                                     <div>
-                                        <span class="text-gray-600">Total Terjual:</span>
+                                        <span class="text-gray-600">Durasi Data:</span>
                                         <span class="ml-2 font-medium text-gray-900">
-                                            {{ number_format($produk->jumlah_terjual) }}
+                                            {{ \Carbon\Carbon::parse($transaksi->waktu_awal_pemesanan)->format('d M Y, H:i') }} - {{ \Carbon\Carbon::parse($transaksi->waktu_akhir_pemesanan)->format('d M Y, H:i') }}
                                         </span>
                                     </div>
                                 </div>
@@ -136,7 +136,7 @@
                                     <label class="text-sm font-medium text-gray-600">Jumlah Transaksi</label>
                                     <div class="mt-1">
                                         <span class="text-2xl font-bold text-blue-600">
-                                            {{ $this->formatCurrency($transaksi->jumlah_transaksi) }}
+                                            {{ $this->formatCurrency($transaksi->total_harga) }}
                                         </span>
                                     </div>
                                 </div>
@@ -169,9 +169,16 @@
                     <div class="p-6">
                         <div class="flex items-center space-x-3">
                             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                @if (auth()->check() && auth()->user()->avatar)
+                                    <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="Your Avatar"
+                                        class="w-12 h-12 rounded-full object-cover">
+                                @else
+                                    <img src="{{ asset('images/default-avatar.png') }}" alt="Default Avatar"
+                                        class="w-12 h-12 rounded-full object-cover">
+                                @endif
+                                {{-- <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
+                                </svg> --}}
                             </div>
                             <div>
                                 <h3 class="font-semibold text-gray-900">{{ $transaksi->user->name }}</h3>
@@ -189,14 +196,22 @@
                     <div class="p-6">
                         <div class="space-y-3 text-sm">
                             <div class="flex justify-between">
-                                <span class="text-gray-600">Harga Produk:</span>
-                                <span class="font-medium text-gray-900">{{ $this->formatCurrency($produk->harga_produk) }}</span>
+                                <span class="text-gray-600">Harga Data per Jam:</span>
+                                <span class="font-medium text-gray-900">{{ $this->formatCurrency($produk->harga_per_jam ) }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Durasi Data Pemesanan (dalam jam):</span>
+                                <span class="font-medium text-gray-900">{{ $jamDifference  }} Jam</span>
+                            </div>
+                             <div class="flex justify-between">
+                                <span class="text-gray-600">Subtotal: </span>
+                                <span class="font-medium text-gray-900">{{ $this->formatCurrency($produk->harga_per_jam) }} x {{ $jamDifference  }}</span>
                             </div>
                             <div class="border-t border-gray-200 pt-3">
                                 <div class="flex justify-between">
                                     <span class="font-semibold text-gray-900">Total:</span>
                                     <span class="font-bold text-blue-600 text-lg">
-                                        {{ $this->formatCurrency($transaksi->jumlah_transaksi) }}
+                                        {{ $this->formatCurrency($transaksi->total_harga) }}
                                     </span>
                                 </div>
                             </div>

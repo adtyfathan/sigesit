@@ -17,68 +17,88 @@
                             <div class="absolute inset-0 bg-gradient-to-br from-white/50 to-blue-50/50 rounded-r-3xl"></div>
         
                             <div class="relative z-10 space-y-6">
-                                <!-- Category Badge -->
-                                <div
-                                    class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 border border-blue-200/50 shadow-sm">
-                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                        <path
-                                            d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
-                                    </svg>
-                                    {{ $produk->kategori->nama_kategori ?? 'Kategori' }}
-                                </div>
         
                                 <!-- Product Title -->
                                 <h1
-                                    class="text-4xl lg:text-5xl font-black text-gray-900 leading-tight tracking-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                                    class="text-4xl font-black text-gray-900 leading-tight tracking-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                                     {{ $produk->nama_produk }}
                                 </h1>
         
-                                <!-- Stats Row -->
-                                <div class="flex flex-wrap gap-6 text-sm">
-                                    <div
-                                        class="flex items-center gap-2 bg-green-50 px-3 py-2 rounded-full border border-green-200/50">
-                                        <svg class="w-6 h-6 text-white bg-green-500 rounded-full p-1" viewBox="0 0 20 20" fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd"
-                                                d="M16.707 6.293a1 1 0 00-1.414 0L9 12.586 6.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l7-7a1 1 0 000-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-
-                                        <span class="text-green-700 font-medium">{{ $produk->jumlah_terjual }} terjual</span>
-                                    </div>
-                                    <div
-                                        class="flex items-center gap-2 bg-purple-50 px-4 py-2 rounded-full border border-purple-200/50">
-                                        <svg class="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        <span class="text-purple-700 font-medium">{{ $produk->wilayah_peta }}</span>
-                                    </div>
-                                </div>
-        
                                 <!-- Price Section -->
-                                <div class="relative group">
-                                    <div
-                                        class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300">
-                                    </div>
-                                    <div
-                                        class="relative bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl p-6 shadow-2xl transform hover:scale-105 transition-all duration-300">
-                                        <div class="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 rounded-2xl">
+                                <div>
+                                    <p class="text-gray-500 text-sm font-medium mb-1">Harga Data per Jam</p>
+                                    <p class="text-3xl font-bold text-black">
+                                        {{ $this->formatPrice($produk->harga_per_jam) }}
+                                    </p>
+                                </div>
+
+                                <!-- Enhanced Input Form Section -->
+                                <div class="space-y-6">
+                                
+                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                            <!-- Stasiun Selection -->
+                                            <div class="lg:col-span-2">
+                                                <label for="stasiun_id" class="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                    Stasiun Pasang Surut
+                                                </label>
+                                                <div class="relative">
+                                                    <select name="stasiun_id" id="stasiun_id" wire:model="stasiun_id"
+                                                        class="w-full px-4 py-4 bg-white border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 appearance-none text-gray-700 font-medium shadow-sm hover:border-gray-300">
+                                                        <option value="" class="text-gray-500">Pilih stasiun yang diinginkan</option>
+                                                        @foreach ($stasiuns as $stasiun)
+                                                            <option value="{{ $stasiun->id }}" class="text-gray-700">{{ $stasiun->kode_stasiun }} -
+                                                                {{ $stasiun->nama_stasiun }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                
+                                            <!-- Start Time -->
+                                            <div class="space-y-3">
+                                                <label for="waktu_awal_pemesanan"
+                                                    class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    Waktu Awal Pemesanan Data
+                                                </label>
+                                                <div class="relative">
+                                                    <input type="datetime-local" name="waktu_awal_pemesanan" id="waktu_awal_pemesanan"
+                                                        wire:model="waktu_awal_pemesanan"
+                                                        class="w-full px-4 py-4 bg-white border-2 border-gray-200 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 text-gray-700 font-medium shadow-sm hover:border-gray-300">
+                                                </div>
+                                            </div>
+                                
+                                            <!-- End Time -->
+                                            <div class="space-y-3">
+                                                <label for="waktu_akhir_pemesanan"
+                                                    class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                                    <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    Waktu Akhir Pemesanan Data
+                                                </label>
+                                                <div class="relative">
+                                                    <input type="datetime-local" name="waktu_akhir_pemesanan" id="waktu_akhir_pemesanan"
+                                                        wire:model="waktu_akhir_pemesanan"
+                                                        class="w-full px-4 py-4 bg-white border-2 border-gray-200 rounded-xl focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-200 text-gray-700 font-medium shadow-sm hover:border-gray-300">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="relative">
-                                            <p class="text-blue-100 text-sm font-small mb-1">Harga Produk</p>
-                                            <p class="text-2xl lg:text-3xl font-black text-white tracking-tight">
-                                                {{ $this->formatPrice($produk->harga_produk) }}
-                                            </p>
-                                        </div>
-                                    </div>
                                 </div>
         
                                 <!-- Action Buttons -->
                                 <div class="space-y-4">
                                     <!-- Main Buy Button -->
-                                    <button wire:click="goToCheckout({{ $produk->id }})"
+                                    <button wire:click="goToCheckout()"
                                         class="w-full relative group overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl">
                                         <div
                                             class="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 group-hover:from-white/20 group-hover:to-white/10 transition-all duration-300">
@@ -141,93 +161,9 @@
 
                 <!-- Tabs Section -->
                 <div class="bg-white rounded-3xl shadow-xl overflow-hidden mt-8 mb-8">
-                    <!-- Tab Navigation -->
-                    <div class="border-b border-gray-200 bg-gray-50 px-6">
-                        <nav class="flex space-x-8">
-                            <button wire:click="setActiveTab('overview')"
-                                class="py-4 px-2 border-b-2 font-medium text-sm transition-all duration-300 {{ $activeTab === 'overview' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                                Overview
-                            </button>
-                            <button wire:click="setActiveTab('description')"
-                                class="py-4 px-2 border-b-2 font-medium text-sm transition-all duration-300 {{ $activeTab === 'description' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                                Deskripsi Detail
-                            </button>
-                            <button wire:click="setActiveTab('specifications')"
-                                class="py-4 px-2 border-b-2 font-medium text-sm transition-all duration-300 {{ $activeTab === 'specifications' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                                Spesifikasi
-                            </button>
-                        </nav>
-                    </div>
                 
                     <!-- Tab Content -->
                     <div class="p-8">
-                        @if($activeTab === 'overview')
-                            <div class="space-y-8">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <!-- Product Information -->
-                                    <div class="space-y-6">
-                                        <h3 class="text-2xl font-bold text-gray-900">Informasi Produk</h3>
-                                        <div class="space-y-4">
-                                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                                                <span class="text-gray-600 font-medium">Wilayah Peta</span>
-                                                <span class="text-gray-900 font-semibold">{{ $produk->wilayah_peta }}</span>
-                                            </div>
-                                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                                                <span class="text-gray-600 font-medium">Kategori</span>
-                                                <span
-                                                    class="text-gray-900 font-semibold">{{ $produk->kategori->nama_kategori ?? 'Tidak tersedia' }}</span>
-                                            </div>
-                                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                                                <span class="text-gray-600 font-medium">Total Penjualan</span>
-                                                <span class="text-gray-900 font-semibold">{{ $produk->jumlah_terjual }} kali</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Key Features -->
-                                    <div class="space-y-6">
-                                        <h3 class="text-2xl font-bold text-gray-900">Fitur Unggulan</h3>
-                                        <div class="space-y-4">
-                                            <div class="flex items-start space-x-3 p-4 bg-blue-50 rounded-xl">
-                                                <div
-                                                    class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd"
-                                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                </div>
-                                                <span class="text-gray-700">Data geografis akurat dan terpercaya</span>
-                                            </div>
-                                            <div class="flex items-start space-x-3 p-4 bg-blue-50 rounded-xl">
-                                                <div
-                                                    class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd"
-                                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                </div>
-                                                <span class="text-gray-700">Format standar industri</span>
-                                            </div>
-                                            <div class="flex items-start space-x-3 p-4 bg-blue-50 rounded-xl">
-                                                <div
-                                                    class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd"
-                                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                </div>
-                                                <span class="text-gray-700">Update berkala dan maintenance</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                
-                        @if($activeTab === 'description')
                             <div class="max-w-4xl">
                                 <h3 class="text-2xl font-bold text-gray-900 mb-6">Deskripsi Produk</h3>
                                 <div class="prose prose-lg max-w-none">
@@ -251,56 +187,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
-                
-                        @if($activeTab === 'specifications')
-                            <div class="max-w-4xl">
-                                <h3 class="text-2xl font-bold text-gray-900 mb-6">Spesifikasi Teknis</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-200">
-                                        <h4 class="font-semibold text-gray-900 mb-3 flex items-center">
-                                            <svg class="w-5 h-5 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm12 2v8H4V6h12z" />
-                                            </svg>
-                                            Format Data
-                                        </h4>
-                                        <p class="text-gray-700">Shapefile (.shp), GeoJSON, KML</p>
-                                    </div>
-                                    <div class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-2xl border border-green-200">
-                                        <h4 class="font-semibold text-gray-900 mb-3 flex items-center">
-                                            <svg class="w-5 h-5 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                            Sistem Koordinat
-                                        </h4>
-                                        <p class="text-gray-700">WGS84 (EPSG:4326)</p>
-                                    </div>
-                                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-2xl border border-purple-200">
-                                        <h4 class="font-semibold text-gray-900 mb-3 flex items-center">
-                                            <svg class="w-5 h-5 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                                                <path
-                                                    d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-                                            </svg>
-                                            Resolusi
-                                        </h4>
-                                        <p class="text-gray-700">High Resolution (1:10,000)</p>
-                                    </div>
-                                    <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-6 rounded-2xl border border-amber-200">
-                                        <h4 class="font-semibold text-gray-900 mb-3 flex items-center">
-                                            <svg class="w-5 h-5 mr-2 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                            Ukuran File
-                                        </h4>
-                                        <p class="text-gray-700">~50MB (compressed)</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
+
                     </div>
                 </div>
     

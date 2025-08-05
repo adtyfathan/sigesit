@@ -37,10 +37,6 @@
         <div class="text-center py-12">
             <h3 class="text-lg font-semibold text-gray-900 mb-2">Tidak ada produk ditemukan</h3>
             <p class="text-gray-600 mb-4">Coba ubah kata kunci pencarian Anda</p>
-            <button wire:click="clearSearch"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
-                Lihat Semua Produk
-            </button>
         </div>
     @endif
 
@@ -54,13 +50,6 @@
                     <div class="relative h-48 bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
                         <img src="{{ asset('storage/' . $produk->gambar_produk) }}" alt="{{ $produk['nama_produk'] }}"
                             class="w-full h-full object-cover">
-
-                        <!-- Sale Badge -->
-                        @if($produk['jumlah_terjual'] > 0)
-                            <div class="absolute top-3 left-3 bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                                {{ $produk['jumlah_terjual'] }} Terjual
-                            </div>
-                        @endif
                     </div>
 
                     <!-- produk Content -->
@@ -70,16 +59,6 @@
                             {{ $produk['nama_produk'] }}
                         </h3>
 
-                        <!-- Location -->
-                        <div class="flex items-center text-sm text-gray-600 mb-3">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            {{ $produk['wilayah_peta'] }}
-                        </div>
-
                         <!-- Description -->
                         <p class="text-gray-600 text-sm mb-4 line-clamp-3">
                             {{ $produk['deskripsi_produk'] }}
@@ -88,7 +67,7 @@
                         <!-- Price -->
                         <div class="flex items-center justify-between mb-4">
                             <div class="text-2xl font-bold text-blue-600">
-                                Rp {{ number_format($produk['harga_produk'], 0, ',', '.') }}
+                                Rp {{ number_format($produk['harga_per_jam'], 0, ',', '.') }}
                             </div>
                         </div>
 

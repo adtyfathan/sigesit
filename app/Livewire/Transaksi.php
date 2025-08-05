@@ -7,12 +7,14 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use App\Models\Transaksi as TransaksiModel;
 use App\Models\Skm;
+use Carbon\Carbon;
 
 class Transaksi extends Component
 {
     public $transaksi;
     public $produk;
     public $submittedSkm;
+    public $jamDifference;
     
     public function mount($transaksiId)
     {
@@ -39,6 +41,11 @@ class Transaksi extends Component
         $this->submittedSkm = Skm::where('transaksi_id', $this->transaksi->id)
             ->where('user_id', Auth::user()->id)
             ->exists();
+
+        $start = Carbon::parse($this->transaksi->waktu_awal_pemesanan);
+        $end = Carbon::parse($this->transaksi->waktu_akhir_pemesanan);
+
+        $this->jamDifference = $start->diffInHours($end);
     }
 
     public function getStatusColorClass()
