@@ -6,7 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;    
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Produk;
 use App\Models\Berita;
@@ -28,139 +28,130 @@ class Index extends Component
     public $operators;
     public $bendaharas;
     public $transaksis;
-    public $currentYear;
     public $skmDatas;
-    public $bidangDatas = [];
-    public $layananDatas = [];
-    public $trenDatas = []; 
-    public $distribusiLabels = [];
-    public $distribusiDatas = [];   
 
-    public function mount(){
+    public $chartData;
+
+    public function mount()
+    {
         if (!Auth::check() || Auth::user()->role_id != 2) {
             abort(403, 'Anda tidak memiliki akses.');
         }
 
-        $this->loadData();   
+        $this->loadAllData();
     }
+    
+    // Semua data dimuat di sini, termasuk data chart
+    public function loadAllData()
+    {
+        $this->users = User::all();
+        $this->produks = Produk::all();
+        $this->beritas = Berita::all();
+        $this->kategoris = Kategori::all();
+        $this->transaksis = Transaksi::all();
+        $this->skmDatas = Skm::all();
 
-    public function loadData(){
-        $this->users = User::get();
-        $this->produks = Produk::get();
-        $this->beritas = Berita::get();
-        $this->kategoris = Kategori::get();
         $this->umums = $this->users->where('role_id', 1);
-        $this->admins = $this->users->where('role_id', 2); 
+        $this->admins = $this->users->where('role_id', 2);
         $this->operators = $this->users->where('role_id', 3);
         $this->bendaharas = $this->users->where('role_id', 4);
-        $this->transaksis = Transaksi::get();
-        $this->skmDatas = Skm::get();
 
-        // SKM
-        $this->bidangDatas = $this->calcBidangDatas();
-        $this->layananDatas = $this->calcLayananData();
-        $this->trenDatas = $this->calcTrenData();
-        $this->distribusiDatas = $this->calcDistribusiData();
+        $this->prepareChartData();
     }
 
-    public function calcBidangDatas(){
-        if (empty($this->skmDatas) || count($this->skmDatas) === 0) {
-            return [0, 0, 0]; // Return zeros if no data
-        }
+    private function prepareChartData()
+    {
+        $skmsCollection = collect($this->skmDatas);
 
-        $fasilitasValue = 0;
-        $petugasValue = 0;
-        $aksesibilitasValue = 0;
+        $avgFasilitas = round($skmsCollection->avg('skor_fasilitas') ?? 0, 1);
+        $avgPetugas = round($skmsCollection->avg('skor_petugas') ?? 0, 1);
+        $avgAksesibilitas = round($skmsCollection->avg('skor_aksesibilitas') ?? 0, 1);
+        $avgPengiriman = round($skmsCollection->avg('skor_pengiriman') ?? 0, 1);
 
-        foreach($this->skmDatas as $skm){
-            $fasilitasValue += $skm->skor_fasilitas;
-            $petugasValue += $skm->skor_petugas;
-            $aksesibilitasValue += $skm->skor_aksesibilitas;
-        }
+        $kepuasanOverall = [
+            'kurang' => 0,
+            'cukup' => 0,
+            'puas' => 0,
+            'sangat_puas' => 0,
+        ];
+        foreach ($skmsCollection as $skm) {
+            $calculatedLayanan = (
+                ($skm->skor_fasilitas ?? 0) +
+                ($skm->skor_petugas ?? 0) +
+                ($skm->skor_aksesibilitas ?? 0) +
+                ($skm->skor_pengiriman ?? 0)
+            ) / 4;
 
-        $jumlahDataSkm = count($this->skmDatas);
-
-        $fasilitasValue = $fasilitasValue / $jumlahDataSkm;
-        $petugasValue = $petugasValue / $jumlahDataSkm;
-        $aksesibilitasValue = $aksesibilitasValue / $jumlahDataSkm;
-
-        return [$fasilitasValue, $petugasValue, $aksesibilitasValue];
-    }
-
-    public function calcLayananData(){
-        if (empty($this->skmDatas) || count($this->skmDatas) === 0) {
-            return [0, 0, 0, 0]; // Return zeros if no data
-        }
-        
-        $kurang = 0;
-        $cukup = 0;
-        $puas = 0;
-        $sangatPuas = 0;
-
-        foreach($this->skmDatas as $skm){
-            if ($skm->skor_layanan === 'kurang'){
-                $kurang += 1;
-            } else if ($skm->skor_layanan === 'cukup'){
-                $cukup += 1;
-            } else if ($skm->skor_layanan === 'puas'){
-                $puas += 1;
-            } else if ($skm->skor_layanan === 'sangat puas'){
-                $sangatPuas += 1;
+            if ($calculatedLayanan > 8) {
+                $kepuasanOverall['sangat_puas']++;
+            } elseif ($calculatedLayanan > 6) {
+                $kepuasanOverall['puas']++;
+            } elseif ($calculatedLayanan > 4) {
+                $kepuasanOverall['cukup']++;
+            } else {
+                $kepuasanOverall['kurang']++;
             }
         }
-        
-        return [$kurang, $cukup, $puas, $sangatPuas];
-    }
 
-    public function calcTrenData(){
-        $this->currentYear = Carbon::now()->year;
-    
-        $monthlyData = array_fill(0, 12, 0);
+        $monthlyAverages = function ($scoreColumn) use ($skmsCollection) {
+            return $skmsCollection->groupBy(function ($data) {
+                return Carbon::parse($data->created_at)->format('Y-m');
+            })->map(function ($group) use ($scoreColumn) {
+                $validScores = $group->filter(function ($item) use ($scoreColumn) {
+                    return isset($item->$scoreColumn) && is_numeric($item->$scoreColumn);
+                })->pluck($scoreColumn);
+                return $validScores->count() > 0 ? round($validScores->avg(), 1) : null;
+            })->sortKeys();
+        };
 
-        // Check if there's any SKM data before querying
-        $skmCount = Skm::count();
-        if ($skmCount === 0) {
-            return $monthlyData; // Return array of zeros
-        }
-        
-        $surveyCounts = Skm::select(
-                DB::raw('MONTH(tanggal_survey) as month'),
-                DB::raw('COUNT(*) as count')
-            )
-            ->whereYear('tanggal_survey', $this->currentYear)
-            ->groupBy(DB::raw('MONTH(tanggal_survey)'))
-            ->orderBy(DB::raw('MONTH(tanggal_survey)'))
-            ->get();
-        
-        foreach ($surveyCounts as $surveyCount) {
-            $monthlyData[$surveyCount->month - 1] = $surveyCount->count;
-        }
-        
-        return $monthlyData;
-    }
+        $trendLabels = [];
+        $trendFasilitasData = [];
+        $trendPetugasData = [];
+        $trendAksesibilitasData = [];
+        $trendPengirimanData = [];
 
-    public function calcDistribusiData(){
-         $this->distribusiLabels = []; // Reset labels
-        
-        // Check if there are products
-        if (empty($this->produks) || count($this->produks) === 0) {
-            return []; // Return empty array if no products
+        $startDateForChart = Carbon::now()->subMonths(11)->startOfMonth();
+        $currentMonth = $startDateForChart->copy();
+        while ($currentMonth->lessThanOrEqualTo(Carbon::now())) {
+            $monthKey = $currentMonth->format('Y-m');
+            $trendLabels[] = $currentMonth->format('M Y');
+
+            $trendFasilitasData[] = $monthlyAverages('skor_fasilitas')->get($monthKey) ?? null;
+            $trendPetugasData[] = $monthlyAverages('skor_petugas')->get($monthKey) ?? null;
+            $trendAksesibilitasData[] = $monthlyAverages('skor_aksesibilitas')->get($monthKey) ?? null;
+            $trendPengirimanData[] = $monthlyAverages('skor_pengiriman')->get($monthKey) ?? null;
+
+            $currentMonth->addMonth();
         }
-        
+
+        $distribusiLabels = [];
+        $distribusiDatas = [];
+
         $counts = Skm::join('transaksi', 'skm.transaksi_id', '=', 'transaksi.id')
             ->join('produk', 'transaksi.produk_id', '=', 'produk.id')
-            ->select('produk.id', DB::raw('count(skm.id) as jumlah_survey'))
-            ->groupBy('produk.id')
-            ->pluck('jumlah_survey', 'produk.id');
-        
-        $result = [];
-        
+            ->select('produk.nama_produk', DB::raw('count(skm.id) as jumlah_survey'))
+            ->groupBy('produk.nama_produk')
+            ->pluck('jumlah_survey', 'produk.nama_produk');
+
         foreach ($this->produks as $produk) {
-            $this->distribusiLabels[] = $produk->nama_produk;
-            $result[] = $counts[$produk->id] ?? 0;
+            $distribusiLabels[] = $produk->nama_produk;
+            $distribusiDatas[] = $counts[$produk->nama_produk] ?? 0;
         }
 
-        return $result;
+        $this->chartData = [
+            'avgFasilitas' => $avgFasilitas,
+            'avgPetugas' => $avgPetugas,
+            'avgAksesibilitas' => $avgAksesibilitas,
+            'avgPengiriman' => $avgPengiriman,
+            'kepuasanOverall' => $kepuasanOverall,
+            'trendLabels' => $trendLabels,
+            'trendFasilitasData' => $trendFasilitasData,
+            'trendPetugasData' => $trendPetugasData,
+            'trendAksesibilitasData' => $trendAksesibilitasData,
+            'trendPengirimanData' => $trendPengirimanData,
+            'distribusiLabels' => $distribusiLabels,
+            'distribusiDatas' => $distribusiDatas,
+        ];
     }
 
     #[Layout('layouts.admin')]
