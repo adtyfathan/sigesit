@@ -12,10 +12,10 @@ use Illuminate\Validation\Rule;
 class Create extends Component
 {
     public $transaksi;
-    public $skorLayanan;
     public $skorFasilitas;
     public $skorPetugas;
     public $skorAksesibilitas;
+    public $skorPengiriman;
     public $komentar;
     
     public function mount($transaksiId){
@@ -40,25 +40,21 @@ class Create extends Component
 
     public function store(){
         $validated = $this->validate([
-            'skorLayanan' => [
-                'required',
-                'string',
-                Rule::in(['kurang', 'cukup', 'puas', 'sangat puas']),
-            ],
             'skorFasilitas' => 'required|numeric|min:1|max:10',
             'skorPetugas' => 'required|numeric|min:1|max:10',
             'skorAksesibilitas' => 'required|numeric|min:1|max:10',
+            'skorPengiriman' => 'required|numeric|min:1|max:10',
             'komentar' => 'nullable|string',
         ]);
 
-        $totalSkor = ($validated['skorFasilitas'] + $validated['skorPetugas'] + $validated['skorAksesibilitas']) / 3;
+        $skorLayanan = ($validated['skorFasilitas'] + $validated['skorPetugas'] + $validated['skorAksesibilitas'] + $validated['skorPengiriman']) / 4;
 
         Skm::create([
-            'total_skor' => $totalSkor,
-            'skor_layanan' => $validated['skorLayanan'],
+            'skor_layanan' => $skorLayanan,
             'skor_fasilitas' => $validated['skorFasilitas'],
             'skor_petugas' => $validated['skorPetugas'],
             'skor_aksesibilitas' => $validated['skorAksesibilitas'],
+            'skor_pengiriman' => $validated['skorPengiriman'],
             'komentar' => $validated['komentar'],
             'user_id' => Auth::user()->id,
             'transaksi_id' => $this->transaksi->id,

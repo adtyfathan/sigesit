@@ -225,7 +225,7 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener('livewire:initialized', () => {
+        document.addEventListener('livewire:navigated', () => {
             const chartData = @json($chartData);
 
             if (chartData && Object.keys(chartData.kepuasanOverall).length > 0 && Object.values(chartData.kepuasanOverall).reduce((sum, val) => sum + val, 0) > 0) {

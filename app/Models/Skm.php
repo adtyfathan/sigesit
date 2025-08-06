@@ -14,11 +14,11 @@ class Skm extends Model
     protected $table = 'skm';
 
     protected $fillable = [
-        'total_skor',
         'skor_layanan',
         'skor_fasilitas',
         'skor_petugas',
         'skor_aksesibilitas',
+        'skor_pengiriman',
         'komentar',
         'user_id',
         'transaksi_id',

@@ -17,104 +17,104 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         @php
-            $skmDatasCollection = collect($skmDatas);
+$skmDatasCollection = collect($skmDatas);
 
-            // Menghitung rata-rata dari 4 skor aspek
-            $avgFasilitas = round($skmDatasCollection->avg('skor_fasilitas'), 1);
-            $avgPetugas = round($skmDatasCollection->avg('skor_petugas'), 1);
-            $avgAksesibilitas = round($skmDatasCollection->avg('skor_aksesibilitas'), 1);
-            $avgPengiriman = round($skmDatasCollection->avg('skor_pengiriman'), 1);
+// Menghitung rata-rata dari 4 skor aspek
+$avgFasilitas = round($skmDatasCollection->avg('skor_fasilitas'), 1);
+$avgPetugas = round($skmDatasCollection->avg('skor_petugas'), 1);
+$avgAksesibilitas = round($skmDatasCollection->avg('skor_aksesibilitas'), 1);
+$avgPengiriman = round($skmDatasCollection->avg('skor_pengiriman'), 1);
 
 
-            $kepuasanOverall = [
-                'kurang' => 0,
-                'cukup' => 0,
-                'puas' => 0,
-                'sangat_puas' => 0,
-            ];
+$kepuasanOverall = [
+    'kurang' => 0,
+    'cukup' => 0,
+    'puas' => 0,
+    'sangat_puas' => 0,
+];
 
-            foreach ($skmDatasCollection as $data) {
-                // Perbarui logika untuk menghitung skor_layanan
-                $calculatedLayanan = (isset($data->skor_fasilitas) && isset($data->skor_petugas) && isset($data->skor_aksesibilitas) && isset($data->skor_pengiriman))
-                    ? ($data->skor_fasilitas + $data->skor_petugas + $data->skor_aksesibilitas + $data->skor_pengiriman) / 4
-                    : 0;
+foreach ($skmDatasCollection as $data) {
+    // Perbarui logika untuk menghitung skor_layanan
+    $calculatedLayanan = (isset($data->skor_fasilitas) && isset($data->skor_petugas) && isset($data->skor_aksesibilitas) && isset($data->skor_pengiriman))
+        ? ($data->skor_fasilitas + $data->skor_petugas + $data->skor_aksesibilitas + $data->skor_pengiriman) / 4
+        : 0;
 
-                $kepuasanLayanan = '';
-                if ($calculatedLayanan > 8) {
-                    $kepuasanLayanan = 'sangat puas';
-                } elseif ($calculatedLayanan > 6) {
-                    $kepuasanLayanan = 'puas';
-                } elseif ($calculatedLayanan > 4) {
-                    $kepuasanLayanan = 'cukup';
-                } else {
-                    $kepuasanLayanan = 'kurang';
-                }
+    $kepuasanLayanan = '';
+    if ($calculatedLayanan > 8) {
+        $kepuasanLayanan = 'sangat puas';
+    } elseif ($calculatedLayanan > 6) {
+        $kepuasanLayanan = 'puas';
+    } elseif ($calculatedLayanan > 4) {
+        $kepuasanLayanan = 'cukup';
+    } else {
+        $kepuasanLayanan = 'kurang';
+    }
 
-                switch ($kepuasanLayanan) {
-                    case 'kurang':
-                        $kepuasanOverall['kurang']++;
-                        break;
-                    case 'cukup':
-                        $kepuasanOverall['cukup']++;
-                        break;
-                    case 'puas':
-                        $kepuasanOverall['puas']++;
-                        break;
-                    case 'sangat puas':
-                        $kepuasanOverall['sangat_puas']++;
-                        break;
-                }
+    switch ($kepuasanLayanan) {
+        case 'kurang':
+            $kepuasanOverall['kurang']++;
+            break;
+        case 'cukup':
+            $kepuasanOverall['cukup']++;
+            break;
+        case 'puas':
+            $kepuasanOverall['puas']++;
+            break;
+        case 'sangat puas':
+            $kepuasanOverall['sangat_puas']++;
+            break;
+    }
+}
+
+// Hitung rata-rata bulanan
+$getMonthlyAverages = function ($scoreColumn) use ($skmDatasCollection) {
+    return $skmDatasCollection->groupBy(function ($data) {
+        if (isset($data->tanggal_survey) && !empty($data->tanggal_survey)) {
+            try {
+                return \Carbon\Carbon::parse($data->tanggal_survey)->format('Y-m');
+            } catch (\Exception $e) {
+                return 'invalid-date';
             }
+        }
+        return 'no-date';
+    })->filter(function ($group, $key) {
+        return $key !== 'invalid-date' && $key !== 'no-date';
+    })->map(function ($group) use ($scoreColumn) {
+        $validScores = $group->filter(function ($item) use ($scoreColumn) {
+            return isset($item->$scoreColumn) && is_numeric($item->$scoreColumn);
+        })->pluck($scoreColumn);
+        return $validScores->count() > 0 ? round($validScores->avg(), 1) : null;
+    })->filter();
+};
 
-            // Hitung rata-rata bulanan
-            $getMonthlyAverages = function ($scoreColumn) use ($skmDatasCollection) {
-                return $skmDatasCollection->groupBy(function ($data) {
-                    if (isset($data->tanggal_survey) && !empty($data->tanggal_survey)) {
-                        try {
-                            return \Carbon\Carbon::parse($data->tanggal_survey)->format('Y-m');
-                        } catch (\Exception $e) {
-                            return 'invalid-date';
-                        }
-                    }
-                    return 'no-date';
-                })->filter(function ($group, $key) {
-                    return $key !== 'invalid-date' && $key !== 'no-date';
-                })->map(function ($group) use ($scoreColumn) {
-                    $validScores = $group->filter(function ($item) use ($scoreColumn) {
-                        return isset($item->$scoreColumn) && is_numeric($item->$scoreColumn);
-                    })->pluck($scoreColumn);
-                    return $validScores->count() > 0 ? round($validScores->avg(), 1) : null;
-                })->filter();
-            };
+$rawMonthlyFasilitasScores = $getMonthlyAverages('skor_fasilitas');
+$rawMonthlyPetugasScores = $getMonthlyAverages('skor_petugas');
+$rawMonthlyAksesibilitasScores = $getMonthlyAverages('skor_aksesibilitas');
+$rawMonthlyPengirimanScores = $getMonthlyAverages('skor_pengiriman');
 
-            $rawMonthlyFasilitasScores = $getMonthlyAverages('skor_fasilitas');
-            $rawMonthlyPetugasScores = $getMonthlyAverages('skor_petugas');
-            $rawMonthlyAksesibilitasScores = $getMonthlyAverages('skor_aksesibilitas');
-            $rawMonthlyPengirimanScores = $getMonthlyAverages('skor_pengiriman');
-
-            $trendLabels = [];
-            $trendFasilitasData = [];
-            $trendPetugasData = [];
-            $trendAksesibilitasData = [];
-            $trendPengirimanData = [];
+$trendLabels = [];
+$trendFasilitasData = [];
+$trendPetugasData = [];
+$trendAksesibilitasData = [];
+$trendPengirimanData = [];
 
 
-            // Generate semua bulan dalam rentang yang ditentukan
-            $startDateForChart = \Carbon\Carbon::create(2025, 1, 1)->startOfMonth();
-            $endDateForChart = \Carbon\Carbon::create(2025, 12, 1)->endOfMonth();
-            $currentMonth = $startDateForChart->copy();
-            while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
-                $monthKey = $currentMonth->format('Y-m');
-                $trendLabels[] = $currentMonth->format('M Y');
+// Generate semua bulan dalam rentang yang ditentukan
+$startDateForChart = \Carbon\Carbon::create(2025, 1, 1)->startOfMonth();
+$endDateForChart = \Carbon\Carbon::create(2025, 12, 1)->endOfMonth();
+$currentMonth = $startDateForChart->copy();
+while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
+    $monthKey = $currentMonth->format('Y-m');
+    $trendLabels[] = $currentMonth->format('M Y');
 
-                $trendFasilitasData[] = $rawMonthlyFasilitasScores->get($monthKey);
-                $trendPetugasData[] = $rawMonthlyPetugasScores->get($monthKey);
-                $trendAksesibilitasData[] = $rawMonthlyAksesibilitasScores->get($monthKey);
-                $trendPengirimanData[] = $rawMonthlyPengirimanScores->get($monthKey);
+    $trendFasilitasData[] = $rawMonthlyFasilitasScores->get($monthKey);
+    $trendPetugasData[] = $rawMonthlyPetugasScores->get($monthKey);
+    $trendAksesibilitasData[] = $rawMonthlyAksesibilitasScores->get($monthKey);
+    $trendPengirimanData[] = $rawMonthlyPengirimanScores->get($monthKey);
 
 
-                $currentMonth->addMonth();
-            }
+    $currentMonth->addMonth();
+}
         @endphp
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -199,9 +199,12 @@
                     <div class="flex-shrink-0">
                         <div
                             class="w-12 h-12 bg-gradient-to-br from-red-100 to-red-200 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15.828 10 10l-4.243 4.242a2 2 0 11-2.828-2.828L10 10l4.243-4.242a2 2 0 112.828 2.828L11.828 15.828 10 10l-4.243 4.242a2 2 0 11-2.828-2.828L10 10l4.243-4.242z" />
+                            <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM10 17l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                             </svg>
+
+
                         </div>
                     </div>
                     <div class="ml-4">
@@ -246,7 +249,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('livewire:navigated', function() {
         const skmData = {
             kepuasanOverall: @json($kepuasanOverall),
             avgFasilitas: {{ $avgFasilitas }},
