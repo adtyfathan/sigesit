@@ -3,7 +3,7 @@
         <h1 class="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
 
         <!-- Payment Status Indicator -->
-        @if($paymentStatus)
+        {{-- @if($paymentStatus)
                 <div class="mb-6 p-4 rounded-lg border-l-4 
                         {{ $paymentStatus === 'success' ? 'bg-green-50 border-green-400' :
         ($paymentStatus === 'pending' ? 'bg-yellow-50 border-yellow-400' : 'bg-red-50 border-red-400') }}">
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-        @endif
+        @endif --}}
 
         <!-- Product Details -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
@@ -146,7 +146,7 @@
 <script>
     let statusCheckInterval;
 
-    document.addEventListener('livewire:initialized', function () {
+    document.addEventListener('livewire:navigated', function () {
         // Listen for payment modal event
         Livewire.on('show-payment-modal', function (data) {
             const snapToken = data[0].snapToken;

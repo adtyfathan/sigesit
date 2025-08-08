@@ -29,10 +29,27 @@
                                 </div>
                             </div>
 
+                            {{-- transaction details --}}
                             <div class="md:col-span-2 space-y-3">
+                                <h4 class="text-base font-semibold text-gray-900 mb-1">{{ $transaksi->produk->nama_produk }}</h4>
+
                                 <div>
-                                    <h4 class="text-base font-semibold text-gray-900 mb-1">{{ $transaksi->produk->nama_produk }}</h4>
+                                    <h4 class="text-base font-md text-gray-900 mb-1">Total Harga</h4>
                                     <p class="text-sm text-gray-600">Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</p>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-base font-md text-gray-900 mb-1">Stasiun</h4>
+                                    <p class="text-sm text-gray-600">{{ $transaksi->stasiun->nama_stasiun }}</p>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-base font-md text-gray-900 mb-1">Durasi Data Pemesanan</h4>
+                                    <span>
+                                        {{ \Carbon\Carbon::parse($transaksi->waktu_awal_pemesanan)->format('d M Y, H:i') }}
+                                        -
+                                        {{ \Carbon\Carbon::parse($transaksi->waktu_akhir_pemesanan)->format('d M Y, H:i') }}
+                                    </span>
                                 </div>
 
                                 <div class="flex gap-4 text-sm">

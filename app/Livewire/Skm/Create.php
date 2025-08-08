@@ -23,7 +23,10 @@ class Create extends Component
             abort(403, 'Anda tidak memiliki akses.');
         }
 
-        $this->transaksi = Transaksi::with('produk')->find($transaksiId);       
+        $this->transaksi = Transaksi::with(
+            'produk',
+            'stasiun'
+        )->find($transaksiId);       
         
         if($this->transaksi == null){
             abort(404, 'Transaksi tidak ditemukan.');

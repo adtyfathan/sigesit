@@ -56,7 +56,11 @@ use App\Livewire\Admin\Pesan\Pesan;
 
 // Route::post('/skm', [SkmController::class, 'store'])->withoutMiddleware(['auth', 'web']);
 
-Route::view('/', 'welcome');
+Route::get('/', function () {
+    return redirect('/login');
+});
+
+// Route::redirect('/', route('login'));
 
 Route::get('/home', Home::class)->name('home');
 
