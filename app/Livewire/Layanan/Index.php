@@ -30,8 +30,14 @@ class Index extends Component
         if (empty($this->search)) {
             $this->produks = Produk::get();
         } else {
-            $this->produks = Produk::where('nama_produk', 'like', '%' . $this->search . '%')
-                ->orWhere('deskripsi_produk', 'like', '%' . $this->search . '%')
+            $this->produks = Produk::where(
+                'nama_produk', 
+                'like', 
+                '%' . $this->search . '%')
+                ->orWhere(
+                    'deskripsi_produk', 
+                    'like', 
+                    '%' . $this->search . '%')
                 ->get();
         }
     }

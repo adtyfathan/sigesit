@@ -31,13 +31,13 @@
                     <nav class="p-4 space-y-2">
                         <!-- Dashboard -->
                         <a href="{{ route('admin.dashboard.index') }}" wire:navigate
-                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200
+                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200 hover:text-black
                                 {{ request()->routeIs('admin.dashboard.*') ? 'bg-blue-500 text-white font-bold' : '' }}">
                             <span>Dashboard</span>
                         </a>
 
                         <a href="{{ route('admin.produk.index') }}" wire:navigate
-                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200
+                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200 hover:text-black
                             {{ request()->routeIs('admin.produk.*') ? 'bg-blue-500 text-white font-bold' : '' }}">
                             <span>Produk</span>
                         </a>
@@ -48,19 +48,19 @@
                         </a> --}}
 
                         <a href="{{ route('admin.akun.index') }}" wire:navigate
-                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200
+                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200 hover:text-black
                             {{ request()->routeIs('admin.akun.*') ? 'bg-blue-500 text-white font-bold' : '' }}">
                             <span>Akun</span>
                         </a>
 
                         <a href="{{ route('admin.kategori.index') }}" wire:navigate
-                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200
+                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200 hover:text-black
                             {{ request()->routeIs('admin.kategori.*') ? 'bg-blue-500 text-white font-bold' : '' }}">
                             <span>Kategori</span>
                         </a>
 
                         <a href="{{ route('admin.pesan.index') }}" wire:navigate
-                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200
+                            class="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200 hover:text-black
                             {{ request()->routeIs('admin.pesan.*') ? 'bg-blue-500 text-white font-bold' : '' }}">
                             <span>Pesan</span>
                         </a>

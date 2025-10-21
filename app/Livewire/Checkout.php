@@ -91,7 +91,10 @@ class Checkout extends Component
             $this->isProcessing = false;
             
             // Dispatch browser event to show payment modal
-            $this->dispatch('show-payment-modal', ['snapToken' => $snapToken, 'orderId' => $orderId]);
+            $this->dispatch(
+                'show-payment-modal', 
+                ['snapToken' => $snapToken, 'orderId' => $orderId]
+            );
             
         } catch (\Exception $e) {
             $this->isProcessing = false;
@@ -160,17 +163,26 @@ class Checkout extends Component
 
     public function handlePaymentError($result)
     {
-        $transaction = Transaksi::where('order_id', $result['order_id'])->first();
+        $transaction = Transaksi::where(
+            'order_id', 
+            $result['order_id']
+            )->first();
         
         if ($transaction) {
-            session()->flash('error', 'Pembayaran gagal. Silakan coba lagi.');
+            session()->flash(
+                'error', 
+                'Pembayaran gagal. Silakan coba lagi.'
+            );
 
         }
     }
 
     public function redirectToReview(){
 
-            return $this->redirect(route('transaksi.show', $this->transaksi->id), navigate: true);
+            return $this->redirect(route(
+                'transaksi.show', 
+                $this->transaksi->id
+            ), navigate: true);
         
     }
 

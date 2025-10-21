@@ -54,7 +54,7 @@
     </section> --}}
 
     {{-- TERPOPULER Section --}}
-    <section class="py-16 bg-gray-50">
+    {{-- <section class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">TERPOPULER</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -127,10 +127,10 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     {{-- Hasil SKM Section --}}
-    <section class="py-16 bg-white">
+    {{-- <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-12">Hasil Survei Kepuasan Masyarakat (SKM)</h2>
             <p class="text-lg text-gray-600 mb-10">Kami berkomitmen untuk terus meningkatkan kualitas pelayanan berdasarkan masukan dari Anda.</p>
@@ -176,7 +176,7 @@
                 </svg>
             </a>
         </div>
-    </section>
+    </section> --}}
 
 
     {{-- FAQ Section --}}

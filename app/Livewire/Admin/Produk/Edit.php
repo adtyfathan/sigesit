@@ -46,8 +46,10 @@ class Edit extends Component
         ]);
         
         if($this->gambar_produk){
-            if($this->produk->gambar_produk && Storage::disk('public')->exists($this->produk->gambar_produk)){
-                Storage::disk('public')->delete($this->produk->gambar_produk);
+            if($this->produk->gambar_produk && Storage::disk('public')
+                ->exists($this->produk->gambar_produk)){
+                Storage::disk('public')
+                    ->delete($this->produk->gambar_produk);
             }
 
             $validated['gambar_produk'] = $this->gambar_produk->store('produk', 'public');

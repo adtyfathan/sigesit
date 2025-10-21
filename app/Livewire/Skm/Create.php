@@ -50,7 +50,12 @@ class Create extends Component
             'komentar' => 'nullable|string',
         ]);
 
-        $skorLayanan = ($validated['skorFasilitas'] + $validated['skorPetugas'] + $validated['skorAksesibilitas'] + $validated['skorPengiriman']) / 4;
+        $skorLayanan = (
+            $validated['skorFasilitas']
+             + $validated['skorPetugas'] 
+             + $validated['skorAksesibilitas'] 
+             + $validated['skorPengiriman']) 
+             / 4;
 
         Skm::create([
             'skor_layanan' => $skorLayanan,
@@ -66,7 +71,10 @@ class Create extends Component
 
         // dd($skm);
         session()->flash('success', 'Survey berhasil disimapan.');
-        return $this->redirect(route('transaksi.show', $this->transaksi->id), navigate: true);
+        return $this->redirect(route(
+            'transaksi.show', 
+            $this->transaksi->id
+        ), navigate: true);
     }
 
     #[Layout('layouts.app')]

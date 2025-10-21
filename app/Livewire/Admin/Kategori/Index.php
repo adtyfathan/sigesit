@@ -16,7 +16,7 @@ class Index extends Component
             abort(403, 'Anda tidak memiliki akses.');
         }
 
-        $this->kategoris = Kategori::get();
+        $this->kategoris = Kategori::with('produk')->get();
     }   
 
     public function delete($kategoriId){
