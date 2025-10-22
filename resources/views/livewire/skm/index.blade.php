@@ -263,6 +263,75 @@ while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
             trendPengirimanData: @json($trendPengirimanData)
         };
 
+        // --- Custom Plugin untuk Menampilkan Persentase (Tanpa Plugin Eksternal) ---
+        const percentageTextPlugin = {
+            id: 'percentageTextPlugin',
+            afterDraw: function(chart) {
+                if (chart.config.type !== 'doughnut' && chart.config.type !== 'pie') {
+                    return;
+                }
+
+                const data = chart.data.datasets[0].data;
+                const total = data.reduce((sum, val) => sum + val, 0);
+
+                if (total === 0) return;
+
+                const ctx = chart.ctx;
+                ctx.save();
+                
+                // Dapatkan titik pusat chart area
+                const xCenter = (chart.chartArea.left + chart.chartArea.right) / 2;
+                const yCenter = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+                
+                // Iterasi melalui setiap elemen data (slice)
+                chart.getDatasetMeta(0).data.forEach((element, index) => {
+                    const value = data[index];
+                    if (value === 0) return;
+
+                    const percentage = (value / total * 100).toFixed(1);
+                    const label = percentage + '%';
+                    
+                    // Hitung sudut tengah (mid-angle)
+                    const angle = element.startAngle + (element.endAngle - element.startAngle) / 2;
+                    
+                    // Tentukan radius untuk posisi teks (di tengah tebalnya donut)
+                    const outerRadius = element.outerRadius;
+                    const innerRadius = element.innerRadius; 
+                    const radius = (outerRadius + innerRadius) / 2;
+                    
+                    // Hitung posisi (x, y) final
+                    const finalX = xCenter + radius * Math.cos(angle);
+                    const finalY = yCenter + radius * Math.sin(angle);
+
+                    // --- PENYESUAIAN GAYA TULISAN DI SINI ---
+                    ctx.fillStyle = '#fff'; // Warna Teks: Putih
+                    
+                    // MENGHAPUS BOLD: Ganti 'bold 14px Arial' menjadi hanya '12px Arial'
+                    ctx.font = '12px Arial'; 
+                    
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    
+                    // MENGURANGI KETEBALAN OUTLINE: Ganti lineWidth dari 2 menjadi 1 atau hapus
+                    ctx.strokeStyle = '#333'; // Ganti warna outline menjadi abu-abu gelap
+                    ctx.lineWidth = 1; // Kurangi ketebalan outline menjadi 1
+                    
+                    // Gambar outline teks
+                    ctx.strokeText(label, finalX, finalY);
+
+                    // Gambar teks
+                    ctx.fillText(label, finalX, finalY);
+                    // ----------------------------------------
+                });
+
+                ctx.restore();
+            }
+        };
+
+        // Daftarkan plugin kustom
+        Chart.register(percentageTextPlugin);
+
+
         // 1. Overall Satisfaction Donut Chart
         const overallSatisfactionCtx = document.getElementById('overallSatisfactionChart');
         if (overallSatisfactionCtx) {
@@ -297,7 +366,7 @@ while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'right',
+                            position: 'bottom',
                         },
                         tooltip: {
                             callbacks: {
