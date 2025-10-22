@@ -225,10 +225,74 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // --- Custom Plugin untuk Menampilkan Persentase (Definisi) ---
+        const percentageTextPluginAdmin = {
+            id: 'percentageTextPluginAdmin',
+            afterDraw: function(chart) {
+                if (chart.canvas.id !== 'pieChart') {
+                    return;
+                }
+
+                const meta = chart.getDatasetMeta(0);
+                if (!meta || meta.data.length === 0 || chart.data.datasets[0].data.length === 0) {
+                    return;
+                }
+                
+                const data = chart.data.datasets[0].data;
+                const total = data.reduce((sum, val) => sum + val, 0);
+
+                if (total === 0) return;
+
+                const ctx = chart.ctx;
+                ctx.save();
+                
+                const xCenter = (chart.chartArea.left + chart.chartArea.right) / 2;
+                const yCenter = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+                
+                meta.data.forEach((element, index) => {
+                    const value = data[index];
+                    const percentageValue = (value / total * 100);
+                    
+                    if (value === 0 || percentageValue < 5) return; 
+
+                    const percentage = percentageValue.toFixed(1);
+                    const label = percentage + '%';
+                    
+                    const angle = element.startAngle + (element.endAngle - element.startAngle) / 2;
+                    
+                    const outerRadius = element.outerRadius;
+                    const radius = outerRadius * 0.7; // 70%
+                    
+                    const finalX = xCenter + radius * Math.cos(angle);
+                    const finalY = yCenter + radius * Math.sin(angle);
+
+                    // --- GAYA TULISAN ---
+                    ctx.fillStyle = '#fff'; 
+                    ctx.font = '12px Arial'; 
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    
+                    ctx.strokeStyle = '#333'; 
+                    ctx.lineWidth = 1;      
+                    
+                    ctx.strokeText(label, finalX, finalY);
+                    ctx.fillText(label, finalX, finalY);
+                });
+
+                ctx.restore();
+            }
+        };
+        // -------------------------------------------------------------------------
+
+
         document.addEventListener('livewire:navigated', () => {
+        
+            Chart.register(percentageTextPluginAdmin);
+             
             const chartData = @json($chartData);
 
             if (chartData && Object.keys(chartData.kepuasanOverall).length > 0 && Object.values(chartData.kepuasanOverall).reduce((sum, val) => sum + val, 0) > 0) {
+                
                 // Bar Chart (Nilai Rata-rata per Bidang)
                 const ctxBar = document.getElementById('barChart');
                 new Chart(ctxBar, {
@@ -270,7 +334,7 @@
                     }
                 });
 
-                // Pie Chart (Kepuasan Layanan)
+                // Pie Chart (Kepuasan Layanan) - TARGET
                 const ctxPie = document.getElementById('pieChart');
                 new Chart(ctxPie, {
                     type: 'pie',
@@ -298,8 +362,10 @@
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
+                            // AKTIVASI PLUGIN KUSTOM UNTUK CHART INI
+                            plugins: [percentageTextPluginAdmin.id], 
                             legend: {
-                                position: 'right',
+                                position: 'bottom',
                             },
                             tooltip: {
                                 callbacks: {
