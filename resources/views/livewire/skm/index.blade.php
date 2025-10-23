@@ -279,11 +279,9 @@ while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
                 const ctx = chart.ctx;
                 ctx.save();
                 
-                // Dapatkan titik pusat chart area
                 const xCenter = (chart.chartArea.left + chart.chartArea.right) / 2;
                 const yCenter = (chart.chartArea.top + chart.chartArea.bottom) / 2;
                 
-                // Iterasi melalui setiap elemen data (slice)
                 chart.getDatasetMeta(0).data.forEach((element, index) => {
                     const value = data[index];
                     if (value === 0) return;
@@ -291,35 +289,24 @@ while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
                     const percentage = (value / total * 100).toFixed(1);
                     const label = percentage + '%';
                     
-                    // Hitung sudut tengah (mid-angle)
                     const angle = element.startAngle + (element.endAngle - element.startAngle) / 2;
                     
-                    // Tentukan radius untuk posisi teks (di tengah tebalnya donut)
                     const outerRadius = element.outerRadius;
-                    const innerRadius = element.innerRadius; 
+                    const innerRadius = chart.config.type === 'pie' ? 0 : element.innerRadius; 
                     const radius = (outerRadius + innerRadius) / 2;
                     
-                    // Hitung posisi (x, y) final
                     const finalX = xCenter + radius * Math.cos(angle);
                     const finalY = yCenter + radius * Math.sin(angle);
 
-                    // --- PENYESUAIAN GAYA TULISAN DI SINI ---
-                    ctx.fillStyle = '#fff'; // Warna Teks: Putih
-                    
-                    // MENGHAPUS BOLD: Ganti 'bold 14px Arial' menjadi hanya '12px Arial'
+                    ctx.fillStyle = '#fff'; 
                     ctx.font = '12px Arial'; 
-                    
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
                     
-                    // MENGURANGI KETEBALAN OUTLINE: Ganti lineWidth dari 2 menjadi 1 atau hapus
-                    ctx.strokeStyle = '#333'; // Ganti warna outline menjadi abu-abu gelap
-                    ctx.lineWidth = 1; // Kurangi ketebalan outline menjadi 1
+                    ctx.strokeStyle = '#333'; 
+                    ctx.lineWidth = 1; 
                     
-                    // Gambar outline teks
                     ctx.strokeText(label, finalX, finalY);
-
-                    // Gambar teks
                     ctx.fillText(label, finalX, finalY);
                     // ----------------------------------------
                 });
@@ -332,11 +319,12 @@ while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
         Chart.register(percentageTextPlugin);
 
 
-        // 1. Overall Satisfaction Donut Chart
+        // 1. Overall Satisfaction PIE Chart (Diubah dari Doughnut)
         const overallSatisfactionCtx = document.getElementById('overallSatisfactionChart');
         if (overallSatisfactionCtx) {
             new Chart(overallSatisfactionCtx.getContext('2d'), {
-                type: 'doughnut',
+                // PERUBAHAN PENTING: type diubah dari 'doughnut' menjadi 'pie'
+                type: 'pie', 
                 data: {
                     labels: ['Kurang', 'Cukup', 'Puas', 'Sangat Puas'],
                     datasets: [{
@@ -347,10 +335,10 @@ while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
                             skmData.kepuasanOverall.sangat_puas
                         ],
                         backgroundColor: [
-                            'rgba(239, 68, 68, 0.8)',
-                            'rgba(251, 191, 36, 0.8)',
-                            'rgba(34, 197, 94, 0.8)',
-                            'rgba(59, 130, 246, 0.8)'
+                            'rgba(239, 68, 68, 0.8)', // Merah
+                            'rgba(251, 191, 36, 0.8)', // Kuning
+                            'rgba(34, 197, 94, 0.8)', // Hijau
+                            'rgba(59, 130, 246, 0.8)' // Biru
                         ],
                         borderColor: [
                             'rgba(239, 68, 68, 1)',
@@ -364,6 +352,8 @@ while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    // PENYESUAIAN TAMBAHAN: Hapus cut-out (untuk pie chart)
+                    cutout: '0%', 
                     plugins: {
                         legend: {
                             position: 'bottom',
@@ -383,7 +373,7 @@ while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
             });
         }
 
-        // 2. Bar Chart for Specific Aspects
+        // 2. Bar Chart for Specific Aspects (Tidak diubah)
         const aspectsComparisonCtx = document.getElementById('aspectsComparisonChart');
         if (aspectsComparisonCtx) {
             new Chart(aspectsComparisonCtx.getContext('2d'), {
@@ -430,7 +420,7 @@ while ($currentMonth->lessThanOrEqualTo($endDateForChart)) {
             });
         }
 
-        // 3. Satisfaction Trend Line Chart
+        // 3. Satisfaction Trend Line Chart (Tidak diubah)
         const satisfactionTrendCtx = document.getElementById('satisfactionTrendChart');
         if (satisfactionTrendCtx) {
             new Chart(satisfactionTrendCtx.getContext('2d'), {
